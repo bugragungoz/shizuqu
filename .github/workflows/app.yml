@@ -3,7 +3,10 @@ name: App
 on:
   push:
     paths-ignore:
-      - '.github/ISSUE_TEMPLATE'
+      - '.github/ISSUE_TEMPLATE/**'
+      - '**.md'
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   build:
@@ -13,42 +16,72 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          submodules: 'recursive'
+          # versionCode = commit count, so the full history is needed
           fetch-depth: 0
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '21'
-      - name: Write key
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'
+
+      - name: Write signing key
+        # Add the KEYSTORE* secrets (see docs/BUILDING.md) to get release APKs
+        # that can be updated in place. Without them, release APKs are signed
+        # with a throw-away debug key.
+        env:
+          KEYSTORE: ${{ secrets.KEYSTORE }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          KEYSTORE_ALIAS_PASSWORD: ${{ secrets.KEYSTORE_ALIAS_PASSWORD }}
+        if: github.event_name != 'pull_request' && env.KEYSTORE != ''
         run: |
-          echo KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }} > signing.properties
-          echo KEYSTORE_ALIAS=${{ secrets.KEYSTORE_ALIAS }} >> signing.properties
-          echo KEYSTORE_ALIAS_PASSWORD='${{ secrets.KEYSTORE_ALIAS_PASSWORD }}' >> signing.properties
-          echo KEYSTORE_FILE=../key.jks >> signing.properties
-          echo ${{ secrets.KEYSTORE }} | base64 --decode > key.jks
+          echo "$KEYSTORE" | base64 --decode > key.jks
+          {
+            echo "KEYSTORE_FILE=../key.jks"
+            echo "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD"
+            echo "KEYSTORE_ALIAS=$KEYSTORE_ALIAS"
+            echo "KEYSTORE_ALIAS_PASSWORD=$KEYSTORE_ALIAS_PASSWORD"
+          } > signing.properties
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
-        with:
-          dependency-graph: generate-and-submit
-          build-scan-publish: true
-          build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
-          build-scan-terms-of-use-agree: "yes"
-      - name: Build with Gradle
-        id: buildWithGradle
+
+      - name: Install Android SDK packages
         run: |
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null || true
-          echo 'android.sdk.channel=3' >> gradle.properties
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" \
+            "platforms;android-37.0" "build-tools;36.0.0" \
+            "ndk;29.0.14206865" "cmake;3.31.6" > /dev/null
+
+      - name: Build
+        id: build
+        run: |
           echo 'android.native.buildOutput=verbose' >> gradle.properties
           echo 'org.gradle.caching=true' >> gradle.properties
           echo 'org.gradle.parallel=true' >> gradle.properties
           ./gradlew :manager:assemble
-          releaseName=`ls manager/build/outputs/apk/release/shizuku*-v*-release.apk | awk -F '(/|-release.apk)' '{print $6}'` && echo "releaseName=$releaseName" >> $GITHUB_OUTPUT
-      - name: Upload release
+          apk=$(ls manager/build/outputs/apk/release/*-release.apk | head -n1)
+          name=$(basename "$apk" -release.apk)
+          echo "releaseName=$name" >> "$GITHUB_OUTPUT"
+          echo "releaseApk=$apk" >> "$GITHUB_OUTPUT"
+
+      - name: Check hidden API linkage against Android 17
+        # Fails if the APK calls a framework method that does not exist on
+        # Android 17.0 / 17.1 and is not in the reviewed allow-list.
+        run: |
+          for sigs in tools/hiddenapi-check/frameworks/*.sigs.gz; do
+            python3 tools/hiddenapi-check/check.py check "${{ steps.build.outputs.releaseApk }}" "$sigs" \
+              --only android/,com/android/ \
+              --allow tools/hiddenapi-check/allowlist.txt
+          done
+
+      - name: Upload APKs
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ steps.buildWithGradle.outputs.releaseName }}
-          path: "manager/build/outputs"
+          name: ${{ steps.build.outputs.releaseName }}
+          path: |
+            manager/build/outputs/apk
+            manager/build/outputs/mapping
           compression-level: 9

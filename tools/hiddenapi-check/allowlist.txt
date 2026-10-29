@@ -1,0 +1,58 @@
+# Framework references that do not exist on Android 17 but are reviewed as safe:
+# every one is either behind an SDK_INT check for older Android versions, or a
+# try { new } catch (NoSuchMethodError) { old } fallback, or in compat code
+# that this app never calls. Add an entry only after reading the call site.
+#
+# Format: <class descriptor>.<name><descriptor>   (as printed by check.py)
+#         optionally followed by "requires <new signature>": the old reference
+#         is then only accepted if the APK also calls the new one.
+
+# --- old signatures, only used on Android < 13 (SDK_INT / BuildCompat checks) ---
+Landroid/content/pm/IPackageManager;.getApplicationInfo(Ljava/lang/String;II)Landroid/content/pm/ApplicationInfo;
+Landroid/content/pm/IPackageManager;.getInstalledApplications(II)Landroid/content/pm/ParceledListSlice;
+Landroid/content/pm/IPackageManager;.getInstalledPackages(II)Landroid/content/pm/ParceledListSlice;
+Landroid/content/pm/IPackageManager;.getPackageInfo(Ljava/lang/String;II)Landroid/content/pm/PackageInfo;
+Landroid/content/pm/IPackageManager;.getPackageUid(Ljava/lang/String;II)I
+Landroid/content/pm/IPackageManager;.resolveContentProvider(Ljava/lang/String;II)Landroid/content/pm/ProviderInfo;
+Landroid/content/pm/IPackageManager;.checkSignatures(Ljava/lang/String;Ljava/lang/String;)I
+Landroid/app/IActivityManager;.getContentProviderExternal(Ljava/lang/String;ILandroid/os/IBinder;)Landroid/app/ContentProviderHolder;
+Landroid/app/IActivityManager;.getContentProviderExternal(Ljava/lang/String;ILandroid/os/IBinder;)Landroid/app/IActivityManager$ContentProviderHolder;
+Landroid/content/IContentProvider;.call(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/os/Bundle;)Landroid/os/Bundle;
+Landroid/content/IContentProvider;.call(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/os/Bundle;)Landroid/os/Bundle;
+Landroid/os/IDeviceIdleController;.addPowerSaveTempWhitelistApp(Ljava/lang/String;JILjava/lang/String;)V
+
+# --- Android 17 changed these; the new signature is tried first, the old one is the fallback ---
+# getInstalledPackages now returns PackageInfoList (see IPackageManager37 / PackageManagerApis)
+Landroid/content/pm/IPackageManager;.getInstalledPackages(JI)Landroid/content/pm/ParceledListSlice; requires Landroid/content/pm/IPackageManager;.getInstalledPackages(JI)Landroid/content/pm/PackageInfoList;
+# getUsers(boolean, boolean, boolean) was removed, getUsers(boolean) is used (UserManagerApis)
+Landroid/os/IUserManager;.getUsers(ZZZ)Ljava/util/List; requires Landroid/os/IUserManager;.getUsers(Z)Ljava/util/List;
+
+# --- permission APIs: chains of try/catch(NoSuchMethodError) over Android 11..17 variants ---
+Landroid/content/pm/IPackageManager;.getPermissionFlags(Ljava/lang/String;Ljava/lang/String;I)I
+Landroid/content/pm/IPackageManager;.getPermissionInfo(Ljava/lang/String;I)Landroid/content/pm/PermissionInfo;
+Landroid/content/pm/IPackageManager;.getPermissionInfo(Ljava/lang/String;Ljava/lang/String;I)Landroid/content/pm/PermissionInfo;
+Landroid/content/pm/IPackageManager;.revokeRuntimePermission(Ljava/lang/String;Ljava/lang/String;I)V
+Landroid/content/pm/IPackageManager;.updatePermissionFlags(Ljava/lang/String;Ljava/lang/String;III)V
+Landroid/content/pm/IPackageManager;.updatePermissionFlags(Ljava/lang/String;Ljava/lang/String;IIZI)V
+Landroid/permission/IPermissionManager;.checkPermission(Ljava/lang/String;Ljava/lang/String;I)I
+Landroid/permission/IPermissionManager;.checkUidPermission(Ljava/lang/String;I)I
+Landroid/permission/IPermissionManager;.getPermissionFlags(Ljava/lang/String;Ljava/lang/String;I)I
+Landroid/permission/IPermissionManager;.grantRuntimePermission(Ljava/lang/String;Ljava/lang/String;I)V
+Landroid/permission/IPermissionManager;.grantRuntimePermission(Ljava/lang/String;Ljava/lang/String;II)V
+Landroid/permission/IPermissionManager;.revokeRuntimePermission(Ljava/lang/String;Ljava/lang/String;I)V
+Landroid/permission/IPermissionManager;.revokeRuntimePermission(Ljava/lang/String;Ljava/lang/String;IILjava/lang/String;)V
+Landroid/permission/IPermissionManager;.revokeRuntimePermission(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)V
+Landroid/permission/IPermissionManager;.updatePermissionFlags(Ljava/lang/String;Ljava/lang/String;IIZI)V
+
+# --- compat helpers this app never calls (kept from upstream HiddenApi) ---
+Landroid/app/IActivityManager;.getTasks(II)Ljava/util/List;
+Landroid/app/IActivityManager;.registerReceiver(Landroid/app/IApplicationThread;Ljava/lang/String;Landroid/content/IIntentReceiver;Landroid/content/IntentFilter;Ljava/lang/String;I)Landroid/content/Intent;
+Landroid/app/IActivityManager;.registerReceiverWithFeature(Landroid/app/IApplicationThread;Ljava/lang/String;Ljava/lang/String;Landroid/content/IIntentReceiver;Landroid/content/IntentFilter;Ljava/lang/String;II)Landroid/content/Intent;
+Landroid/content/pm/ILauncherApps;.addOnAppsChangedListener(Landroid/content/pm/IOnAppsChangedListener;)V
+Lcom/android/internal/app/IAppOpsService;.getHistoricalOps(ILjava/lang/String;Ljava/lang/String;Ljava/util/List;IJJILandroid/os/RemoteCallback;)V
+Lcom/android/internal/app/IAppOpsService;.getHistoricalOps(ILjava/lang/String;Ljava/util/List;JJILandroid/os/RemoteCallback;)V
+Lcom/android/internal/app/IAppOpsService;.getHistoricalOpsFromDiskRaw(ILjava/lang/String;Ljava/lang/String;Ljava/util/List;IJJILandroid/os/RemoteCallback;)V
+Lcom/android/internal/app/IAppOpsService;.getHistoricalOpsFromDiskRaw(ILjava/lang/String;Ljava/util/List;JJILandroid/os/RemoteCallback;)V
+# Android 17 QPR1 added an int parameter to these two; unused here
+Landroid/app/IActivityManager;.getDelegatedShellPermissions()Ljava/util/List;
+Landroid/app/IActivityManager;.stopDelegateShellPermissionIdentity()V
