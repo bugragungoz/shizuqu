@@ -201,11 +201,11 @@ class AdbPairingClient(private val host: String, private val port: Int, private 
     }
 
     private fun setupTlsConnection() {
-        socket = Socket(host, port)
+        socket = AdbSockets.connect(host, port)
         socket.tcpNoDelay = true
 
         val sslContext = key.sslContext
-        val sslSocket = sslContext.socketFactory.createSocket(socket, host, port, true) as SSLSocket
+        val sslSocket = sslContext.socketFactory.createSocket(socket, socket.inetAddress.hostAddress, port, true) as SSLSocket
         sslSocket.startHandshake()
         Log.d(TAG, "Handshake succeeded.")
 

@@ -7,10 +7,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
-import java.io.IOException
-import java.net.InetSocketAddress
 import java.net.NetworkInterface
-import java.net.ServerSocket
 
 @RequiresApi(Build.VERSION_CODES.R)
 class AdbMdns(
@@ -57,27 +54,21 @@ class AdbMdns(
     }
 
     private fun onServiceResolved(resolvedService: NsdServiceInfo) {
+        @Suppress("DEPRECATION")
+        val host = resolvedService.host ?: return
+        // only accept the adbd of this device, not other devices on the network
         if (running && NetworkInterface.getNetworkInterfaces()
                 .asSequence()
                 .any { networkInterface ->
                     networkInterface.inetAddresses
                         .asSequence()
-                        .any { resolvedService.host.hostAddress == it.hostAddress }
+                        .any { host.hostAddress == it.hostAddress }
                 }
-            && isPortAvailable(resolvedService.port)
+            && AdbSockets.isPortInUse(resolvedService.port, host)
         ) {
             serviceName = resolvedService.serviceName
             observer.onChanged(resolvedService.port)
         }
-    }
-
-    private fun isPortAvailable(port: Int) = try {
-        ServerSocket().use {
-            it.bind(InetSocketAddress("127.0.0.1", port), 1)
-            false
-        }
-    } catch (e: IOException) {
-        true
     }
 
     internal class DiscoveryListener(private val adbMdns: AdbMdns) : NsdManager.DiscoveryListener {

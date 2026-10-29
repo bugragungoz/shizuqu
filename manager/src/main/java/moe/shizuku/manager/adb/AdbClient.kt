@@ -42,7 +42,7 @@ class AdbClient(private val host: String, private val port: Int, private val key
     private val outputStream get() = if (useTls) tlsOutputStream else plainOutputStream
 
     fun connect() {
-        socket = Socket(host, port)
+        socket = AdbSockets.connect(host, port)
         socket.tcpNoDelay = true
         plainInputStream = DataInputStream(socket.getInputStream())
         plainOutputStream = DataOutputStream(socket.getOutputStream())
@@ -57,7 +57,7 @@ class AdbClient(private val host: String, private val port: Int, private val key
             write(A_STLS, A_STLS_VERSION, 0)
 
             val sslContext = key.sslContext
-            tlsSocket = sslContext.socketFactory.createSocket(socket, host, port, true) as SSLSocket
+            tlsSocket = sslContext.socketFactory.createSocket(socket, socket.inetAddress.hostAddress, port, true) as SSLSocket
             tlsSocket.startHandshake()
             Log.d(TAG, "Handshake succeeded.")
 
