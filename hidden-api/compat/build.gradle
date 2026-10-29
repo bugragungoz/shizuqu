@@ -1,0 +1,39 @@
+plugins {
+    id('com.android.library')
+    id('maven-publish')
+    id('signing')
+    id('dev.rikka.tools.refine')
+}
+
+android {
+    namespace = "rikka.hidden.compat"
+    buildFeatures {
+        buildConfig false
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    annotationProcessor libs.refine.annotation.processor
+    implementation libs.refine.annotation
+    implementation libs.refine.runtime
+
+    compileOnly 'androidx.annotation:annotation:1.3.0'
+    implementation 'dev.rikka.rikkax.buildcompat:buildcompat:34.0.1'
+    implementation 'dev.rikka.rikkax.parcelablelist:parcelablelist:2.0.1'
+
+    compileOnly project(':stub')
+}
+
+ext {
+    POM_NAME = "HiddenApiCompat"
+    POM_DESCRIPTION = "HiddenApiCompat"
+}
