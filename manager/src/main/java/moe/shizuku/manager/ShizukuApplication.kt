@@ -3,6 +3,7 @@ package moe.shizuku.manager
 import android.app.Application
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import com.topjohnwu.superuser.Shell
 import moe.shizuku.manager.ktx.logd
@@ -21,7 +22,15 @@ class ShizukuApplication : Application() {
 
             Shell.setDefaultBuilder(Shell.Builder.create().setFlags(Shell.FLAG_REDIRECT_STDERR))
             if (Build.VERSION.SDK_INT >= 28) {
-                HiddenApiBypass.setHiddenApiExemptions("")
+                // Never let a bypass failure on a new Android version crash the app at launch;
+                // features that need hidden APIs fail on their own and are handled there.
+                try {
+                    if (!HiddenApiBypass.setHiddenApiExemptions("")) {
+                        Log.w("ShizukuApplication", "setHiddenApiExemptions returned false")
+                    }
+                } catch (e: Throwable) {
+                    Log.e("ShizukuApplication", "setHiddenApiExemptions failed", e)
+                }
             }
             if (atLeast30) {
                 System.loadLibrary("adb")

@@ -84,10 +84,11 @@ public class UserService {
                 // null and they throw a NullPointerException. Give them a minimal AppBindData
                 // and try once more. Stock Android never gets here.
                 // Ref: https://github.com/RikkaApps/Shizuku/issues/1198
-                Log.w(TAG, "makeApplication failed, retrying with a bound application", e.getCause());
-                if (!installBoundApplication(activityThread, loadedApk, name != null ? name : pkg + ":user_service")) {
+                if (!causedBy(e, NullPointerException.class)
+                        || !installBoundApplication(activityThread, loadedApk, name != null ? name : pkg + ":user_service")) {
                     throw e;
                 }
+                Log.w(TAG, "makeApplication failed with a NullPointerException, retrying with a bound application", e.getCause());
                 application = (Application) makeApplication.invoke(loadedApk, true, null);
             }
             Field mInitialApplication = activityThread.getClass().getDeclaredField("mInitialApplication");
@@ -148,6 +149,13 @@ public class UserService {
             Log.w(TAG, "installBoundApplication", tr);
             return false;
         }
+    }
+
+    private static boolean causedBy(Throwable t, Class<? extends Throwable> type) {
+        for (int depth = 0; t != null && depth < 10; t = t.getCause(), depth++) {
+            if (type.isInstance(t)) return true;
+        }
+        return false;
     }
 
     private static void setField(Class<?> cls, Object obj, String name, Object value) {
