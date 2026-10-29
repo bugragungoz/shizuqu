@@ -25,23 +25,33 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Write signing key
-        # Add the KEYSTORE* secrets (see docs/BUILDING.md) to get release APKs
-        # that can be updated in place. Without them, release APKs are signed
-        # with a throw-away debug key.
+      - name: Write signing config
+        # Release APKs are signed with signing/release.p12 when the
+        # KEYSTORE_PASSWORD secret is set (see signing/README.md). A different
+        # key can be supplied as the base64 KEYSTORE secret (+ alias secrets).
+        # Without secrets, release APKs get a throw-away debug signature.
         env:
           KEYSTORE: ${{ secrets.KEYSTORE }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           KEYSTORE_ALIAS_PASSWORD: ${{ secrets.KEYSTORE_ALIAS_PASSWORD }}
-        if: github.event_name != 'pull_request' && env.KEYSTORE != ''
+        if: github.event_name != 'pull_request'
         run: |
-          echo "$KEYSTORE" | base64 --decode > key.jks
+          if [ -z "$KEYSTORE_PASSWORD" ]; then
+            echo "::warning::KEYSTORE_PASSWORD secret is not set, release APKs are signed with a debug key"
+            exit 0
+          fi
+          if [ -n "$KEYSTORE" ]; then
+            echo "$KEYSTORE" | base64 --decode > key.jks
+            file=../key.jks
+          else
+            file=../signing/release.p12
+          fi
           {
-            echo "KEYSTORE_FILE=../key.jks"
+            echo "KEYSTORE_FILE=$file"
             echo "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD"
-            echo "KEYSTORE_ALIAS=$KEYSTORE_ALIAS"
-            echo "KEYSTORE_ALIAS_PASSWORD=$KEYSTORE_ALIAS_PASSWORD"
+            echo "KEYSTORE_ALIAS=${KEYSTORE_ALIAS:-release}"
+            echo "KEYSTORE_ALIAS_PASSWORD=${KEYSTORE_ALIAS_PASSWORD:-$KEYSTORE_PASSWORD}"
           } > signing.properties
 
       - name: Setup Gradle
@@ -65,6 +75,20 @@ jobs:
           name=$(basename "$apk" -release.apk)
           echo "releaseName=$name" >> "$GITHUB_OUTPUT"
           echo "releaseApk=$apk" >> "$GITHUB_OUTPUT"
+
+      - name: Check branding
+        # The launcher label must be app.name from branding.properties and no
+        # "Shizuku" may be left in the manager's strings.
+        run: |
+          aapt2="$ANDROID_HOME/build-tools/36.0.0/aapt2"
+          apk="${{ steps.build.outputs.releaseApk }}"
+          name=$(grep '^app.name=' branding.properties | cut -d= -f2-)
+          label=$("$aapt2" dump badging "$apk" | sed -n "s/^application-label:'\(.*\)'$/\1/p")
+          echo "label: $label (expected: $name)"
+          [ "$label" = "$name" ]
+          if "$aapt2" dump strings "$apk" | grep -q 'Shizuku'; then
+            echo "::error::\"Shizuku\" found in the APK's string resources"; exit 1
+          fi
 
       - name: Check hidden API linkage against Android 17
         # Fails if the APK calls a framework method that does not exist on

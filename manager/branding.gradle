@@ -4,24 +4,28 @@
 //
 // The rewritten files go to an overlay directory used by the debug and release
 // source sets, so src/main/res stays identical to upstream and upstream
-// translation updates still merge cleanly. The overlay is regenerated on every
-// Gradle configuration, so editing branding.properties is enough.
+// translation updates still merge cleanly.
+//
+// The overlay is written by the brandResources task, which every build runs
+// before merging resources (so "clean assemble" in one invocation works), and
+// also once at configuration time so the IDE sees it.
 // ---------------------------------------------------------------------------
 
 def brandedResDir = new File(buildDir, 'generated/branding/res')
+def sourceResDir = file('src/main/res')
+def appName = rootProject.ext.branding.appName
 
 def generateBrandedResources = {
-    def appName = rootProject.ext.branding.appName
     def escaped = appName.replace('&', '&amp;').replace('<', '&lt;').replace("'", "\\'")
     def written = [] as Set
 
-    file('src/main/res').eachDirMatch(~/values.*/) { dir ->
+    sourceResDir.eachDirMatch(~/values.*/) { dir ->
         dir.eachFileMatch(~/strings.*\.xml/) { xml ->
             def text = xml.getText('UTF-8')
             if (!text.contains('Shizuku')) return
 
-            // No resource *name* in these files contains "Shizuku" (checked by the
-            // assertion below), so a plain replace only touches user-visible text.
+            // No resource *name* in these files contains "Shizuku" (checked here),
+            // so a plain replace only touches user-visible text.
             if (text =~ /name="[^"]*Shizuku/) {
                 throw new GradleException("${xml}: a resource name contains 'Shizuku', update manager/branding.gradle")
             }
@@ -53,7 +57,19 @@ def generateBrandedResources = {
     }
 }
 
+// for the IDE / first sync
 generateBrandedResources()
+
+def brandResources = tasks.register('brandResources') {
+    description = 'Writes the branded string resource overlay (branding.properties app.name).'
+    inputs.property('appName', appName)
+    inputs.dir(sourceResDir)
+    outputs.dir(brandedResDir)
+    mustRunAfter 'clean'
+    doLast { generateBrandedResources() }
+}
+
+tasks.named('preBuild').configure { dependsOn brandResources }
 
 android.sourceSets.debug.res.srcDirs += brandedResDir
 android.sourceSets.release.res.srcDirs += brandedResDir
