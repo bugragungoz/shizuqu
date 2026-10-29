@@ -28,7 +28,9 @@ if (!(ext.branding.applicationId ==~ /[a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9
 subprojects {
     plugins.withId("com.android.base") {
         android {
-            compileSdk = 37
+            // 37 for the app; the opt-in screenshot tests (-Pscreenshots) render with
+            // layoutlib, which does not know the API 37 android.jar yet
+            compileSdk = rootProject.hasProperty('screenshots') ? 35 : 37
             buildToolsVersion = "36.0.0"
             ndkVersion = "29.0.14206865"
             defaultConfig {
