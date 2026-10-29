@@ -124,9 +124,9 @@ class BootStartService : Service() {
         repeat(ATTEMPTS) { attempt ->
             // adbd turns wireless debugging off again on networks the user did
             // not allow, so set it on every attempt
-            Settings.Global.putInt(cr, "adb_wifi_enabled", 1)
-            Settings.Global.putInt(cr, Settings.Global.ADB_ENABLED, 1)
-            Settings.Global.putLong(cr, "adb_allowed_connection_time", 0L)
+            putSetting { Settings.Global.putInt(cr, "adb_wifi_enabled", 1) }
+            putSetting { Settings.Global.putInt(cr, Settings.Global.ADB_ENABLED, 1) }
+            putSetting { Settings.Global.putLong(cr, "adb_allowed_connection_time", 0L) }
 
             val port = discoverPort()
             Log.i(TAG, "attempt ${attempt + 1}: adb tls port $port")
@@ -137,6 +137,14 @@ class BootStartService : Service() {
             delay(5_000)
         }
         return false
+    }
+
+    private inline fun putSetting(block: () -> Unit) {
+        try {
+            block()
+        } catch (e: Throwable) {
+            Log.w(TAG, "can't write setting", e)
+        }
     }
 
     private suspend fun waitForWifi(): Boolean {
