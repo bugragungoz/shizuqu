@@ -17,11 +17,17 @@ After editing it: `./gradlew clean :manager:assembleRelease`.
 * `moe.shizuku.privileged.api` (default): drop-in replacement for Shizuku.
   Apps that look for Shizuku by package name keep working. You must uninstall
   the original Shizuku first (same package, different signature).
-* Your own id (e.g. `io.github.<you>.<name>`): can be installed next to the
-  original. All apps using the Shizuku API still work (binder delivery and
-  permissions do not depend on the manager's package name), but apps that
-  hard-code `moe.shizuku.privileged.api` to open the manager or to check that
-  it is installed will not find it.
+* Your own id (e.g. `io.github.<you>.<name>`): all apps using the Shizuku API
+  still work (binder delivery and permissions do not depend on the manager's
+  package name), but apps that hard-code `moe.shizuku.privileged.api` to open
+  the manager or to check that it is installed will not find it.
+
+Either way the original Shizuku has to be uninstalled first. Both apps declare
+`moe.shizuku.manager.permission.API_V23` (and `.MANAGER`), which every Shizuku
+client requests, and Android refuses to install a second app with a different
+signature that declares the same permission
+(`INSTALL_FAILED_DUPLICATE_PERMISSION`). Renaming the permission would break
+every existing client, so it stays.
 
 Changing the id later is a new app for Android: authorizations granted in the
 old one are not carried over.

@@ -21,45 +21,42 @@ copied to `out/apk/`.
 
 ## Signing
 
-Without `signing.properties`, both build types are signed with the local
-debug key. Android only installs an update over an existing install when the
-signing key is the same, so create **one** release key and keep it safe -
-losing it means users have to uninstall (and re-authorize every app).
+Android only installs an update over an existing install when it is signed
+with the same key. The release key is in the repository as
+[`signing/release.p12`](../signing/README.md), encrypted with AES-256 under a
+28-character random password that is **not** in the repository.
 
-```bash
-keytool -genkeypair -v -keystore release.jks -alias release \
-    -keyalg RSA -keysize 4096 -validity 36500
-```
-
-`signing.properties` (git-ignored) in the repository root:
+Local release build: create `signing.properties` (git-ignored) in the
+repository root:
 
 ```properties
-KEYSTORE_FILE=../release.jks
-KEYSTORE_PASSWORD=...
+KEYSTORE_FILE=../signing/release.p12
+KEYSTORE_PASSWORD=<password>
 KEYSTORE_ALIAS=release
-KEYSTORE_ALIAS_PASSWORD=...
+KEYSTORE_ALIAS_PASSWORD=<password>
 ```
 
-(`KEYSTORE_FILE` is relative to `manager/`.) Never commit the keystore.
+(`KEYSTORE_FILE` is relative to `manager/`.) Without `signing.properties`,
+both build types are signed with the local debug key.
 
 ## GitHub Actions
 
-`.github/workflows/app.yml` builds on every push, checks the APK against the
+`.github/workflows/app.yml` builds on every push, checks that the label is
+`app.name` with no "Shizuku" left in the strings, checks the APK against the
 Android 17.0 and 17.1 framework signatures and uploads the APKs as a build
 artifact (Actions tab > run > Artifacts).
 
-To get release APKs signed with your key, add these repository secrets
-(Settings > Secrets and variables > Actions):
+To sign CI release APKs with the release key, add **one** repository secret
+(Settings > Secrets and variables > Actions > New repository secret):
 
 | Secret | Value |
 |---|---|
-| `KEYSTORE` | `base64 -w0 release.jks` |
-| `KEYSTORE_PASSWORD` | store password |
-| `KEYSTORE_ALIAS` | `release` |
-| `KEYSTORE_ALIAS_PASSWORD` | key password |
+| `KEYSTORE_PASSWORD` | the password of `signing/release.p12` |
 
-Without them, CI release APKs are signed with the runner's throw-away debug
-key, so each CI build would need a reinstall.
+Without it, CI release APKs are signed with the runner's throw-away debug key
+(and cannot update an installed release). To use a different key instead,
+also set `KEYSTORE` (`base64 -w0 your.jks`), `KEYSTORE_ALIAS` and
+`KEYSTORE_ALIAS_PASSWORD`.
 
 ## Hidden API check locally
 

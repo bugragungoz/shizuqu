@@ -1,4 +1,4 @@
-Shizuqu (working name) - an Android 17 compatible fork of Shizuku
+Shizuqu - an Android 17 compatible fork of Shizuku
 
 This product includes software developed by RikkaApps and contributors:
 
@@ -6,9 +6,9 @@ This product includes software developed by RikkaApps and contributors:
   Shizuku-API     https://github.com/RikkaApps/Shizuku-API     Apache License 2.0  (api/)
   HiddenApi       https://github.com/RikkaW/HiddenApi          MIT License         (hidden-api/)
 
-Shizuku is a trademark-like name of the upstream project; this fork does not
-use it as its app name and does not ship upstream's launcher icons
-(see README.md, "License").
+"Shizuku" is the name of the upstream project. This fork does not use it as
+its app name and does not ship upstream's launcher icons (see README.md,
+"License").
 
 Files changed by this fork are listed in the git history (every change is a
 separate commit on top of upstream commit b844bc49 and the vendored

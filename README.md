@@ -1,6 +1,6 @@
 # Shizuqu
 
-> Working name. The app name, package name and repository name are all set in
+> App name, package name, version and links are set in
 > [`branding.properties`](branding.properties) - see [docs/RENAMING.md](docs/RENAMING.md).
 
 An **Android 17 (API 37) compatible fork of [Shizuku](https://github.com/RikkaApps/Shizuku)**.
@@ -75,6 +75,7 @@ call through `ShizukuBinderWrapper`. See [docs/CLIENT_APPS.md](docs/CLIENT_APPS.
 * [docs/UPDATING_FOR_NEW_ANDROID.md](docs/UPDATING_FOR_NEW_ANDROID.md) - maintenance runbook for the next Android version
 * [docs/RENAMING.md](docs/RENAMING.md) - renaming the app / going public
 * [docs/BUILDING.md](docs/BUILDING.md) - building, signing, CI
+* [docs/SAFETY.md](docs/SAFETY.md) - what the app changes on the phone, risks, how to undo
 
 ## How Shizuku works (short)
 

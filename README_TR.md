@@ -1,4 +1,4 @@
-# Shizuqu (geçici isim) — Türkçe kılavuz
+# Shizuqu — Türkçe kılavuz
 
 Shizuku'nun **Android 17 (API 37) ile uyumlu** fork'u. Shizuku kullanan bütün
 uygulamalar (App Ops, Swift Backup, Hail, Canta, InstallWithOptions, ...)
@@ -31,6 +31,26 @@ incelenerek bulundu (ayrıntı: [docs/ANDROID17.md](docs/ANDROID17.md)):
 6. Bazı üretici ROM'larında (HyperOS vb.) kullanıcı servisleri çöküyordu;
    güvenli bir yedek yol eklendi.
 
+## Güvenlik: telefonuma zarar verebilir mi?
+
+Hayır, telefonu "brick" edemez. Root olmadan servis `shell` kullanıcısıyla
+(bilgisayardan `adb shell` ile aynı yetki) çalışır: sistem/boot bölümlerine
+yazamaz, bootloader'a dokunamaz, root yapmaz, Knox'u bozmaz. Telefonu yeniden
+başlatınca servis tamamen kapanır ("Sistem açılışında başlat" varsayılan olarak
+kapalıdır).
+
+Uygulamanın değiştirdiği şeyler bunlarla sınırlı: kendine `WRITE_SECURE_SETTINGS`
+izni verir, başlatma ekranında kablosuz/USB hata ayıklamayı açar, ADB
+yetkilerinin 7 günde düşmesini kapatır ve hangi uygulamalara izin verdiğinizi
+küçük bir dosyada tutar. Tam liste ve geri alma adımları:
+[docs/SAFETY.md](docs/SAFETY.md).
+
+Asıl risk, **izin verdiğiniz uygulamalardır**: shell yetkisiyle sistem
+uygulamalarını kaldırabilir/devre dışı bırakabilirler (ör. debloater'lar). Sadece
+güvendiğiniz uygulamalara izin verin; tanımadığınız sistem paketlerini
+kaldırmayın. Bir sorun olursa: yeniden başlatın, Shizuqu'yu kaldırın veya
+Geliştirici seçeneklerini kapatın.
+
 ## Kurulum (Galaxy A35, One UI 9, Android 17)
 
 1. **Orijinal Shizuku'yu kaldırın.** Varsayılan paket adı aynı
@@ -54,9 +74,10 @@ incelenerek bulundu (ayrıntı: [docs/ANDROID17.md](docs/ANDROID17.md)):
    Shizuku kaldırılınca verdiği izinler de silinir).
 
 Servis telefon yeniden başlayana kadar çalışır. Root yoksa her yeniden
-başlatmadan sonra tekrar başlatmak gerekir; bunun yerine Ayarlar >
-**Sistem açılışında başlat** açılabilir (Android 13+, son başlatma kablosuz hata
-ayıklama ile yapılmış olmalı, izin verilen bir Wi-Fi ağı gerekli).
+başlatmadan sonra tekrar başlatmak gerekir. İsterseniz Ayarlar > **Sistem
+açılışında başlat**'ı açabilirsiniz (varsayılan kapalı; Android 13+, son
+başlatma kablosuz hata ayıklama ile yapılmış olmalı, izin verilen bir Wi-Fi ağı
+gerekli). Açıkken her açılışta kablosuz hata ayıklamayı kendisi açar.
 
 ### Sorun giderme
 
@@ -89,10 +110,13 @@ echo "sdk.dir=$ANDROID_HOME" > local.properties
 Gerekenler: JDK 21, Android SDK `platforms;android-37.0`, `build-tools;36.0.0`,
 `ndk;29.0.14206865`, `cmake;3.31.6`.
 
-**İmza anahtarı önemli:** Güncellemelerin üstüne kurulabilmesi için hep aynı
-anahtarla imzalanmalı. Bir kere oluşturun, güvenli saklayın ve GitHub
-Secrets'a ekleyin: [docs/BUILDING.md](docs/BUILDING.md). GitHub Actions her
-push'ta APK üretir (Actions sekmesi > çalıştırma > Artifacts).
+**İmza anahtarı:** Güncellemelerin eski sürümün üstüne kurulabilmesi için hep
+aynı anahtarla imzalanması gerekir. Anahtar (`signing/release.p12`) repoda,
+AES-256 ile şifreli duruyor; şifre repoda yok. GitHub'da bir kez
+**Settings > Secrets and variables > Actions > New repository secret** ile
+`KEYSTORE_PASSWORD` adında, değeri size verdiğim şifre olan bir secret ekleyin.
+Sonra her push'ta Actions sekmesindeki APK, telefondakinin üstüne güncelleme
+olarak kurulur. Ayrıntı: [signing/README.md](signing/README.md).
 
 ## Shizuku kullanan kendi uygulamanız için
 

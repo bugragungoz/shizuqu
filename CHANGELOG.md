@@ -22,7 +22,23 @@ Based on Shizuku 13.6.0 (upstream `b844bc49`).
 - Start on boot without root (Android 13+): waits for Wi-Fi in a short
   foreground service and retries, instead of a 3 second window.
 
+### Reliability (review round)
+- Start on boot is off by default (it turns wireless debugging on at boot).
+- Boot start: any connected Wi-Fi counts (not only the default network),
+  fits the ~3 minute short-service limit, stops with its start id, socket
+  read timeout.
+- mDNS discovery: no leaked discovery or listener reuse on fast start/stop
+  or a failed stop.
+- The manager no longer crashes at launch if HiddenApiBypass fails.
+- User service OEM fallback only for NullPointerException, and sets
+  `AppBindData.info`.
+- `clean` + build in one Gradle call no longer loses the branding.
+- Hidden API check also fails on unknown missing classes.
+
 ### Fork
+- New "Shizuqu" icon: a drop shaped as a Q.
+- Release key in `signing/release.p12` (encrypted); CI needs only the
+  `KEYSTORE_PASSWORD` secret.
 - App name, package name, APK name, source URL and version in
   `branding.properties`; own launcher/notification icons.
 - `api/` (Shizuku-API) and `hidden-api/` (HiddenApi) vendored as plain directories.
