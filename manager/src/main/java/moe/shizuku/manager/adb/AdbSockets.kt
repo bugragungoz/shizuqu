@@ -72,6 +72,22 @@ internal object AdbSockets {
         return false
     }
 
+    /**
+     * Whether [address] belongs to one of this device's network interfaces
+     * (same comparison as upstream's AdbMdns: by host address string).
+     */
+    fun isLocalAddress(address: InetAddress): Boolean {
+        val hostAddress = address.hostAddress ?: return false
+        return try {
+            NetworkInterface.getNetworkInterfaces()?.asSequence().orEmpty().any { networkInterface ->
+                networkInterface.inetAddresses.asSequence().any { hostAddress == it.hostAddress }
+            }
+        } catch (e: Throwable) {
+            Log.w(TAG, "isLocalAddress", e)
+            false
+        }
+    }
+
     private fun isLoopback(host: String): Boolean {
         return host == "127.0.0.1" || host == "localhost" || host == "::1"
     }

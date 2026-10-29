@@ -14,9 +14,11 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.IBinder
+import android.os.SystemClock
 import android.provider.Settings
 import android.util.Log
 import androidx.annotation.RequiresApi
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -34,7 +36,6 @@ import moe.shizuku.manager.adb.AdbKey
 import moe.shizuku.manager.adb.AdbMdns
 import moe.shizuku.manager.adb.PreferenceAdbKeyStore
 import rikka.shizuku.Shizuku
-import java.util.concurrent.atomic.AtomicBoolean
 
 /** Entry points for [BootStartService], callable on every API level. */
 object BootStart {
@@ -64,11 +65,15 @@ object BootStart {
  * usually ends before Wi-Fi is connected, so it rarely worked. This short
  * foreground service waits for Wi-Fi (adbd only enables wireless debugging on
  * a network the user allowed before), turns wireless debugging on, finds the
- * TLS port over mDNS and runs the starter, retrying a few times. A short
- * service may run for about 3 minutes, which is plenty.
+ * TLS port over mDNS and runs the starter, retrying a few times.
  *
- * Needs Android 13+ (https://r.android.com/2128832) and WRITE_SECURE_SETTINGS,
- * which the server grants to the manager the first time it starts.
+ * A short service may run for about 3 minutes; everything here fits in
+ * [RUN_BUDGET_MS], and [onTimeout] stops it cleanly if the system ends it
+ * earlier.
+ *
+ * Only runs when the user enabled "Start on boot" (the receiver is disabled by
+ * default). Needs Android 13+ and WRITE_SECURE_SETTINGS, which the server
+ * grants to the manager the first time it starts.
  */
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 class BootStartService : Service() {
@@ -80,19 +85,28 @@ class BootStartService : Service() {
         private const val NOTIFICATION_ID = 3
         private const val RESULT_NOTIFICATION_ID = 4
 
-        private const val WIFI_TIMEOUT_MS = 120_000L
+        private const val RUN_BUDGET_MS = 160_000L
+        private const val WIFI_TIMEOUT_MS = 90_000L
         private const val DISCOVERY_TIMEOUT_MS = 20_000L
+        private const val READ_TIMEOUT_MS = 15_000
         private const val BINDER_TIMEOUT_MS = 10_000L
-        private const val ATTEMPTS = 3
+        private const val MAX_ATTEMPTS = 3
     }
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
+    // only touched on the main thread
     private var job: Job? = null
-    private val finished = AtomicBoolean(false)
+
+    // the newest start request; stopSelfResult(lastStartId) does not stop the
+    // service if a newer startForegroundService() is still being delivered
+    @Volatile
+    private var lastStartId = 0
 
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        lastStartId = startId
         createChannel()
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
@@ -103,25 +117,30 @@ class BootStartService : Service() {
             }
         } catch (e: Throwable) {
             Log.w(TAG, "startForeground failed", e)
-            stopSelf()
+            stopSelfResult(startId)
             return START_NOT_STICKY
         }
 
-        if (job?.isActive != true) {
-            job = scope.launch {
-                val started = try {
-                    startService()
-                } catch (e: Throwable) {
-                    Log.w(TAG, "start on boot failed", e)
-                    false
-                }
-                finish(started)
+        // LOCKED_BOOT_COMPLETED and BOOT_COMPLETED both start the service;
+        // one attempt covers both
+        if (job?.isActive == true) return START_NOT_STICKY
+
+        job = scope.launch {
+            val started = try {
+                startService()
+            } catch (e: CancellationException) {
+                Shizuku.pingBinder()
+            } catch (e: Throwable) {
+                Log.w(TAG, "start on boot failed", e)
+                false
             }
+            finish(started)
         }
         return START_NOT_STICKY
     }
 
     private suspend fun startService(): Boolean {
+        val deadline = SystemClock.elapsedRealtime() + RUN_BUDGET_MS
         if (Shizuku.pingBinder()) return true
 
         if (!waitForWifi()) {
@@ -130,7 +149,13 @@ class BootStartService : Service() {
         }
 
         val cr = contentResolver
-        repeat(ATTEMPTS) { attempt ->
+        for (attempt in 1..MAX_ATTEMPTS) {
+            val remaining = deadline - SystemClock.elapsedRealtime()
+            if (remaining < DISCOVERY_TIMEOUT_MS + BINDER_TIMEOUT_MS) {
+                Log.w(TAG, "out of time after ${attempt - 1} attempt(s)")
+                break
+            }
+
             // adbd turns wireless debugging off again on networks the user did
             // not allow, so set it on every attempt
             putSetting { Settings.Global.putInt(cr, "adb_wifi_enabled", 1) }
@@ -138,14 +163,14 @@ class BootStartService : Service() {
             putSetting { Settings.Global.putLong(cr, "adb_allowed_connection_time", 0L) }
 
             val port = discoverPort()
-            Log.i(TAG, "attempt ${attempt + 1}: adb tls port $port")
+            Log.i(TAG, "attempt $attempt: adb tls port $port")
             if (port > 0 && runStarter(port)) {
                 return true
             }
             if (Shizuku.pingBinder()) return true
-            delay(5_000)
+            delay(3_000)
         }
-        return false
+        return Shizuku.pingBinder()
     }
 
     private inline fun putSetting(block: () -> Unit) {
@@ -159,14 +184,18 @@ class BootStartService : Service() {
     private suspend fun waitForWifi(): Boolean {
         val cm = getSystemService(ConnectivityManager::class.java) ?: return true
         return withTimeoutOrNull(WIFI_TIMEOUT_MS) {
-            while (!isOnWifi(cm)) delay(2_000)
+            while (!isWifiConnected(cm)) delay(2_000)
             true
         } ?: false
     }
 
-    private fun isOnWifi(cm: ConnectivityManager): Boolean {
-        val caps = cm.getNetworkCapabilities(cm.activeNetwork) ?: return false
-        return caps.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+    // Any connected Wi-Fi counts, not only the default network: a Wi-Fi
+    // without internet access is often not the default but adbd works on it.
+    @Suppress("DEPRECATION")
+    private fun isWifiConnected(cm: ConnectivityManager): Boolean {
+        return cm.allNetworks.any { network ->
+            cm.getNetworkCapabilities(network)?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) == true
+        }
     }
 
     private suspend fun discoverPort(): Int {
@@ -185,7 +214,7 @@ class BootStartService : Service() {
     private suspend fun runStarter(port: Int): Boolean {
         try {
             val key = AdbKey(PreferenceAdbKeyStore(ShizukuSettings.getPreferences()), "shizuku")
-            AdbClient("127.0.0.1", port, key).use { client ->
+            AdbClient("127.0.0.1", port, key, READ_TIMEOUT_MS).use { client ->
                 client.connect()
                 client.shellCommand(Starter.internalCommand, null)
             }
@@ -200,21 +229,22 @@ class BootStartService : Service() {
     }
 
     private fun finish(started: Boolean) {
-        if (!finished.compareAndSet(false, true)) return
         Log.i(TAG, "finished, started=$started")
         if (!started) {
             getSystemService(NotificationManager::class.java)
                 .notify(RESULT_NOTIFICATION_ID, failedNotification())
         }
         stopForeground(STOP_FOREGROUND_REMOVE)
-        stopSelf()
+        stopSelfResult(lastStartId)
     }
 
-    // Android 14+: a short service must stop when its time is up
+    // Android 14+: the system ends a short service after about 3 minutes and
+    // requires it to stop right away
     override fun onTimeout(startId: Int) {
         Log.w(TAG, "short service timeout")
         job?.cancel()
-        finish(Shizuku.pingBinder())
+        stopForeground(STOP_FOREGROUND_REMOVE)
+        stopSelf()
     }
 
     override fun onTimeout(startId: Int, fgsType: Int) {

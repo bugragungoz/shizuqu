@@ -7,7 +7,6 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
-import java.net.NetworkInterface
 
 @RequiresApi(Build.VERSION_CODES.R)
 class AdbMdns(
@@ -101,13 +100,8 @@ class AdbMdns(
         @Suppress("DEPRECATION")
         val host = resolvedService.host ?: return
         // only accept the adbd of this device, not other devices on the network
-        if (running && NetworkInterface.getNetworkInterfaces()
-                .asSequence()
-                .any { networkInterface ->
-                    networkInterface.inetAddresses
-                        .asSequence()
-                        .any { host.hostAddress == it.hostAddress }
-                }
+        if (running
+            && AdbSockets.isLocalAddress(host)
             && AdbSockets.isPortInUse(resolvedService.port, host)
         ) {
             serviceName = resolvedService.serviceName
@@ -136,6 +130,9 @@ class AdbMdns(
 
         override fun onStopDiscoveryFailed(serviceType: String, errorCode: Int) {
             Log.v(TAG, "onStopDiscoveryFailed: $serviceType, $errorCode")
+
+            // NsdManager forgets the listener after a failed stop as well
+            adbMdns.onDiscoveryStop()
         }
 
         override fun onServiceFound(serviceInfo: NsdServiceInfo) {
