@@ -1,7 +1,5 @@
 plugins {
     id('com.android.library')
-    id('maven-publish')
-    id('signing')
     id('dev.rikka.tools.refine')
 }
 
@@ -15,6 +13,8 @@ android {
             minifyEnabled false
         }
     }
+    // Java 8 like upstream: with source >= 9 javac refuses stub classes in
+    // packages such as dalvik.system ("package exists in another module")
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -30,10 +30,6 @@ dependencies {
     implementation 'dev.rikka.rikkax.buildcompat:buildcompat:34.0.1'
     implementation 'dev.rikka.rikkax.parcelablelist:parcelablelist:2.0.1'
 
-    compileOnly project(':stub')
+    compileOnly project(':hidden-stub')
 }
 
-ext {
-    POM_NAME = "HiddenApiCompat"
-    POM_DESCRIPTION = "HiddenApiCompat"
-}

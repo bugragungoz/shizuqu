@@ -26,6 +26,6 @@ dependencies {
     api project(':rish')
 
     implementation libs.refine.runtime
-    implementation libs.hidden.compat
-    compileOnly libs.hidden.stub
+    implementation project(':hidden-compat')
+    compileOnly project(':hidden-stub')
 }

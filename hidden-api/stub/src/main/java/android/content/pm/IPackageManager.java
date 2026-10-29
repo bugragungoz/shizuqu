@@ -113,6 +113,10 @@ public interface IPackageManager extends IInterface {
     boolean performDexOptMode(String packageName, boolean checkProfiles, String targetCompilerFilter, boolean force, boolean bootComplete, String splitName)
             throws RemoteException;
 
+    // Android 13+
+    int checkSignatures(String pkg1, String pkg2, int userId)
+            throws RemoteException;
+
     int checkSignatures(String pkg1, String pkg2)
             throws RemoteException;
 

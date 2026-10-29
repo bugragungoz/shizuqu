@@ -82,6 +82,15 @@ public class UidObserverAdapter extends IUidObserver.Stub {
 
     }
 
+    /**
+     * Report a change in the oom adjustment of a uid.
+     *
+     * @since API 34 (14)
+     */
+    public void onUidProcAdjChanged(int uid, int adj) throws RemoteException {
+
+    }
+
     @Override
     public boolean onTransact(int code, @NonNull Parcel data, Parcel reply, int flags) throws RemoteException {
         try {

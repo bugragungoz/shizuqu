@@ -28,10 +28,6 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         libs {
-            version('hidden-api', '4.4.0')
-            library('hidden-compat', 'dev.rikka.hidden', 'compat').versionRef('hidden-api')
-            library('hidden-stub', 'dev.rikka.hidden', 'stub').versionRef('hidden-api')
-
             version('refine', '4.4.0')
             library('refine-runtime', 'dev.rikka.tools.refine', 'runtime').versionRef('refine')
             library('refine-annotation', 'dev.rikka.tools.refine', 'annotation').versionRef('refine')
@@ -43,6 +39,12 @@ dependencyResolutionManagement {
 include ':server', ':starter', ':shell'
 include ':manager'
 include ':common'
+
+// Vendored RikkaW/HiddenApi (MIT), patched for Android 17. See hidden-api/README.md
+include ':hidden-stub'
+project(':hidden-stub').projectDir = file('hidden-api/stub')
+include ':hidden-compat'
+project(':hidden-compat').projectDir = file('hidden-api/compat')
 
 def root = "api"
 

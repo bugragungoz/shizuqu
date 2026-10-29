@@ -26,8 +26,21 @@ public class UserManagerApis {
     public static List<UserInfo> getUsers(boolean excludePartial, boolean excludeDying, boolean excludePreCreated) throws RemoteException {
         IUserManager um = userManager.get();
         List<UserInfo> list;
-        if (Build.VERSION.SDK_INT >= 30) {
-            list = um.getUsers(excludePartial, excludeDying, excludePreCreated);
+        if (Build.VERSION.SDK_INT >= 37) {
+            // Android 17 removed getUsers(boolean, boolean, boolean). getUsers(boolean excludeDying)
+            // always excludes partial and pre-created users.
+            try {
+                list = um.getUsers(excludeDying);
+            } catch (NoSuchMethodError e) {
+                list = um.getUsers(excludePartial, excludeDying, excludePreCreated);
+            }
+        } else if (Build.VERSION.SDK_INT >= 30) {
+            try {
+                list = um.getUsers(excludePartial, excludeDying, excludePreCreated);
+            } catch (NoSuchMethodError e) {
+                // Android 17 preview builds still report SDK_INT 36
+                list = um.getUsers(excludeDying);
+            }
         } else {
             try {
                 list = um.getUsers(excludeDying);

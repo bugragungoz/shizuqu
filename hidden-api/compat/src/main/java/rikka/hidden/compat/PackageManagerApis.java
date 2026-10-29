@@ -5,11 +5,13 @@ import static rikka.hidden.compat.Services.packageManager;
 import android.annotation.SuppressLint;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.IPackageManager;
+import android.content.pm.IPackageManager37;
 import android.content.pm.PackageInfo;
 import android.content.pm.ParceledListSlice;
 import android.content.pm.ProviderInfo;
 import android.os.Build;
 import android.os.RemoteException;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,10 +20,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import dev.rikka.tools.refine.Refine;
 import rikka.buildcompat.BuildCompat;
+import rikka.hidden.compat.util.ReflectCompat;
 
 @SuppressWarnings("unused")
 public class PackageManagerApis {
+
+    private static final String TAG = "PackageManagerApis";
 
     @SuppressLint("NewApi")
     @Nullable
@@ -69,24 +75,61 @@ public class PackageManagerApis {
     @SuppressLint("NewApi")
     @Nullable
     public static ParceledListSlice<ApplicationInfo> getInstalledApplications(long flags, int userId) throws RemoteException {
-        if (BuildCompat.isAtLeastT()) {
+        IPackageManager pm = packageManager.get();
+        if (!BuildCompat.isAtLeastT()) {
             //noinspection unchecked
-            return packageManager.get().getInstalledApplications(flags, userId);
-        } else {
+            return pm.getInstalledApplications((int) flags, userId);
+        }
+        try {
             //noinspection unchecked
-            return packageManager.get().getInstalledApplications((int) flags, userId);
+            return pm.getInstalledApplications(flags, userId);
+        } catch (NoSuchMethodError e) {
+            // Not changed as of Android 17 QPR1, but getInstalledPackages was, so be ready
+            //noinspection unchecked
+            return (ParceledListSlice<ApplicationInfo>) ReflectCompat.invokeAnyReturnType(pm,
+                    "getInstalledApplications", new Class<?>[]{long.class, int.class}, flags, userId);
         }
     }
 
+    /**
+     * Returns installed packages.
+     * <p>
+     * Android 17 (API 37) changed the return type of
+     * {@code IPackageManager#getInstalledPackages(long, int)} from {@code ParceledListSlice}
+     * to {@code PackageInfoList} (a subclass of {@code ParceledListSlice}). Calling the old
+     * descriptor throws {@link NoSuchMethodError} there, so both variants are tried, and a
+     * reflection fallback covers future return type changes.
+     */
     @SuppressLint("NewApi")
     @Nullable
     public static ParceledListSlice<PackageInfo> getInstalledPackages(long flags, int userId) throws RemoteException {
-        if (BuildCompat.isAtLeastT()) {
+        IPackageManager pm = packageManager.get();
+        if (!BuildCompat.isAtLeastT()) {
             //noinspection unchecked
-            return packageManager.get().getInstalledPackages(flags, userId);
-        } else {
+            return pm.getInstalledPackages((int) flags, userId);
+        }
+
+        boolean preferApi37 = Build.VERSION.SDK_INT >= 37;
+        if (preferApi37) {
+            try {
+                return Refine.<IPackageManager37>unsafeCast(pm).getInstalledPackages(flags, userId);
+            } catch (NoSuchMethodError ignored) {
+            }
+        }
+        try {
             //noinspection unchecked
-            return packageManager.get().getInstalledPackages((int) flags, userId);
+            return pm.getInstalledPackages(flags, userId);
+        } catch (NoSuchMethodError e) {
+            if (!preferApi37) {
+                // Android 17 preview builds still report SDK_INT 36
+                try {
+                    return Refine.<IPackageManager37>unsafeCast(pm).getInstalledPackages(flags, userId);
+                } catch (NoSuchMethodError ignored) {
+                }
+            }
+            //noinspection unchecked
+            return (ParceledListSlice<PackageInfo>) ReflectCompat.invokeAnyReturnType(pm,
+                    "getInstalledPackages", new Class<?>[]{long.class, int.class}, flags, userId);
         }
     }
 
@@ -98,7 +141,8 @@ public class PackageManagerApis {
             if (parceledListSlice != null && parceledListSlice.getList() != null) {
                 return parceledListSlice.getList();
             }
-        } catch (Throwable ignored) {
+        } catch (Throwable e) {
+            Log.w(TAG, "getInstalledPackages failed (flags=" + flags + ", userId=" + userId + ")", e);
         }
         return Collections.emptyList();
     }
@@ -110,7 +154,8 @@ public class PackageManagerApis {
             if (parceledListSlice != null && parceledListSlice.getList() != null) {
                 return parceledListSlice.getList();
             }
-        } catch (Throwable ignored) {
+        } catch (Throwable e) {
+            Log.w(TAG, "getInstalledApplications failed (flags=" + flags + ", userId=" + userId + ")", e);
         }
         return Collections.emptyList();
     }
@@ -181,8 +226,18 @@ public class PackageManagerApis {
         }
     }
 
-    public int checkSignatures(String pkg1, String pkg2) throws RemoteException {
+    public static int checkSignatures(String pkg1, String pkg2, int userId) throws RemoteException {
+        if (BuildCompat.isAtLeastT()) {
+            try {
+                return packageManager.get().checkSignatures(pkg1, pkg2, userId);
+            } catch (NoSuchMethodError ignored) {
+            }
+        }
         return packageManager.get().checkSignatures(pkg1, pkg2);
+    }
+
+    public int checkSignatures(String pkg1, String pkg2) throws RemoteException {
+        return checkSignatures(pkg1, pkg2, 0);
     }
 
     public int checkUidSignatures(int uid1, int uid2) throws RemoteException {

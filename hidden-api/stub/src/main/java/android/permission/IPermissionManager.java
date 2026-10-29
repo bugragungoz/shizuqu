@@ -33,7 +33,15 @@ public interface IPermissionManager extends IInterface {
     void revokeRuntimePermission(String packageName, String permissionName, String persistentDeviceId, int userId, String reason)
             throws RemoteException;
 
+    // Android 14 QPR+ (persistentDeviceId), still the signature on Android 17
+    int getPermissionFlags(String packageName, String permissionName, String persistentDeviceId, int userId)
+            throws RemoteException;
+
     int getPermissionFlags(String permissionName, String packageName, int userId)
+            throws RemoteException;
+
+    // Android 14 QPR+ (persistentDeviceId), still the signature on Android 17
+    void updatePermissionFlags(String packageName, String permissionName, int flagMask, int flagValues, boolean checkAdjustPolicyFlagPermission, String persistentDeviceId, int userId)
             throws RemoteException;
 
     void updatePermissionFlags(String permissionName, String packageName, int flagMask, int flagValues, boolean checkAdjustPolicyFlagPermission, int userId)

@@ -104,6 +104,12 @@ public class PermissionManagerApis {
     }
 
     public static int getPermissionFlags(String permissionName, String packageName, int userId) throws RemoteException {
+        if (Build.VERSION.SDK_INT >= 34) {
+            try {
+                return permissionManager.get().getPermissionFlags(packageName, permissionName, "default:0", userId);
+            } catch (NoSuchMethodError ignored) {
+            }
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             return permissionManager.get().getPermissionFlags(packageName, permissionName, userId);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -114,6 +120,13 @@ public class PermissionManagerApis {
     }
 
     public static void updatePermissionFlags(String permissionName, String packageName, int flagMask, int flagValues, boolean checkAdjustPolicyFlagPermission, int userId) throws RemoteException {
+        if (Build.VERSION.SDK_INT >= 34) {
+            try {
+                permissionManager.get().updatePermissionFlags(packageName, permissionName, flagMask, flagValues, checkAdjustPolicyFlagPermission, "default:0", userId);
+                return;
+            } catch (NoSuchMethodError ignored) {
+            }
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             permissionManager.get().updatePermissionFlags(packageName, permissionName, flagMask, flagValues, checkAdjustPolicyFlagPermission, userId);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
