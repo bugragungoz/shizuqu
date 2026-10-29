@@ -136,6 +136,7 @@ public class UserService {
             Object appBindData = constructor.newInstance();
             setField(appBindDataClass, appBindData, "processName", processName);
             setField(appBindDataClass, appBindData, "appInfo", appInfo);
+            setField(appBindDataClass, appBindData, "info", loadedApk);
             try {
                 Object compatInfo = Class.forName("android.content.res.CompatibilityInfo")
                         .getField("DEFAULT_COMPATIBILITY_INFO").get(null);

@@ -105,8 +105,15 @@ public class PermissionManagerApis {
 
     public static int getPermissionFlags(String permissionName, String packageName, int userId) throws RemoteException {
         if (Build.VERSION.SDK_INT >= 34) {
+            IPermissionManager perm = permissionManager.get();
             try {
-                return permissionManager.get().getPermissionFlags(packageName, permissionName, "default:0", userId);
+                // Android 14 QPR3+ (incl. Android 17)
+                return perm.getPermissionFlags(packageName, permissionName, "default:0", userId);
+            } catch (NoSuchMethodError ignored) {
+            }
+            try {
+                // Android 14 QPR2
+                return perm.getPermissionFlags(packageName, permissionName, 0, userId);
             } catch (NoSuchMethodError ignored) {
             }
         }
@@ -121,8 +128,16 @@ public class PermissionManagerApis {
 
     public static void updatePermissionFlags(String permissionName, String packageName, int flagMask, int flagValues, boolean checkAdjustPolicyFlagPermission, int userId) throws RemoteException {
         if (Build.VERSION.SDK_INT >= 34) {
+            IPermissionManager perm = permissionManager.get();
             try {
-                permissionManager.get().updatePermissionFlags(packageName, permissionName, flagMask, flagValues, checkAdjustPolicyFlagPermission, "default:0", userId);
+                // Android 14 QPR3+ (incl. Android 17)
+                perm.updatePermissionFlags(packageName, permissionName, flagMask, flagValues, checkAdjustPolicyFlagPermission, "default:0", userId);
+                return;
+            } catch (NoSuchMethodError ignored) {
+            }
+            try {
+                // Android 14 QPR2
+                perm.updatePermissionFlags(packageName, permissionName, flagMask, flagValues, checkAdjustPolicyFlagPermission, 0, userId);
                 return;
             } catch (NoSuchMethodError ignored) {
             }
