@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import dev.rikka.tools.refine.Refine;
@@ -73,7 +74,22 @@ public class UserService {
             mPackageInfo.setAccessible(true);
             Object loadedApk = mPackageInfo.get(context);
             Method makeApplication = loadedApk.getClass().getDeclaredMethod("makeApplication", boolean.class, Instrumentation.class);
-            Application application = (Application) makeApplication.invoke(loadedApk, true, null);
+            Application application;
+            try {
+                application = (Application) makeApplication.invoke(loadedApk, true, null);
+            } catch (InvocationTargetException e) {
+                // Some OEM frameworks (HyperOS, Transsion, possibly others) read the bound
+                // application's process name / package name inside makeApplication. This
+                // process was started by ActivityThread.systemMain(), so mBoundApplication is
+                // null and they throw a NullPointerException. Give them a minimal AppBindData
+                // and try once more. Stock Android never gets here.
+                // Ref: https://github.com/RikkaApps/Shizuku/issues/1198
+                Log.w(TAG, "makeApplication failed, retrying with a bound application", e.getCause());
+                if (!installBoundApplication(activityThread, loadedApk, name != null ? name : pkg + ":user_service")) {
+                    throw e;
+                }
+                application = (Application) makeApplication.invoke(loadedApk, true, null);
+            }
             Field mInitialApplication = activityThread.getClass().getDeclaredField("mInitialApplication");
             mInitialApplication.setAccessible(true);
             mInitialApplication.set(activityThread, application);
@@ -96,5 +112,51 @@ public class UserService {
         }
 
         return new Pair<>(service, token);
+    }
+
+    private static boolean installBoundApplication(ActivityThread activityThread, Object loadedApk, String processName) {
+        try {
+            Field mBoundApplication = activityThread.getClass().getDeclaredField("mBoundApplication");
+            mBoundApplication.setAccessible(true);
+            if (mBoundApplication.get(activityThread) != null) {
+                return false;
+            }
+
+            // ActivityThread.currentPackageName() dereferences appInfo once
+            // mBoundApplication is set, so never install one without it.
+            Object appInfo = loadedApk.getClass().getMethod("getApplicationInfo").invoke(loadedApk);
+            if (appInfo == null) {
+                return false;
+            }
+
+            Class<?> appBindDataClass = Class.forName("android.app.ActivityThread$AppBindData");
+            Constructor<?> constructor = appBindDataClass.getDeclaredConstructor();
+            constructor.setAccessible(true);
+            Object appBindData = constructor.newInstance();
+            setField(appBindDataClass, appBindData, "processName", processName);
+            setField(appBindDataClass, appBindData, "appInfo", appInfo);
+            try {
+                Object compatInfo = Class.forName("android.content.res.CompatibilityInfo")
+                        .getField("DEFAULT_COMPATIBILITY_INFO").get(null);
+                setField(appBindDataClass, appBindData, "compatInfo", compatInfo);
+            } catch (Throwable ignored) {
+            }
+
+            mBoundApplication.set(activityThread, appBindData);
+            return true;
+        } catch (Throwable tr) {
+            Log.w(TAG, "installBoundApplication", tr);
+            return false;
+        }
+    }
+
+    private static void setField(Class<?> cls, Object obj, String name, Object value) {
+        try {
+            Field field = cls.getDeclaredField(name);
+            field.setAccessible(true);
+            field.set(obj, value);
+        } catch (Throwable ignored) {
+            // not present on this Android version
+        }
     }
 }
