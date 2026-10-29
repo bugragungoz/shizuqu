@@ -169,28 +169,33 @@ OBJECT_MEMBERS = {
 
 
 def load_allowlist(path):
-    """Returns {reference: required_alternative_or_None}.
+    """Returns ({reference: required_alternative_or_None}, {class descriptor}).
 
     "<ref> requires <alt>" means <ref> is only acceptable as a fallback when the
-    APK also references <alt> (the new signature), which must exist."""
+    APK also references <alt> (the new signature), which must exist.
+    "class <descriptor>" allows a referenced class that is not in the dump
+    (it lives in another boot jar, or only exists on other Android versions)."""
     allowed = {}
+    classes = set()
     if not path:
-        return allowed
+        return allowed, classes
     with open(path) as f:
         for line in f:
             line = line.split("#", 1)[0].strip()
             if not line:
                 continue
-            if " requires " in line:
+            if line.startswith("class "):
+                classes.add(line[6:].strip())
+            elif " requires " in line:
                 ref, alt = (x.strip() for x in line.split(" requires ", 1))
                 allowed[ref] = alt
             else:
                 allowed[line] = None
-    return allowed
+    return allowed, classes
 
 
 def check(apk, sigs, prefixes, allowlist=None):
-    allowed = load_allowlist(allowlist)
+    allowed, allowed_classes = load_allowlist(allowlist)
     classes, methods, fields = load_sigs(sigs)
     own = set()
     refs = {}
@@ -254,6 +259,14 @@ def check(apk, sigs, prefixes, allowlist=None):
             print(f"  [{kind}] {cls}.{member}")
             for c in sorted(callers)[:5]:
                 print(f"        from {c}")
+    unknown_classes = {c: callers for c, callers in missing_class.items() if c not in allowed_classes}
+    if unknown_classes:
+        print(f"\n{len(unknown_classes)} referenced class(es) NOT FOUND in {sigs} and not allow-listed:")
+        for c, callers in sorted(unknown_classes.items()):
+            print(f"  {c}")
+            for caller in sorted(callers)[:3]:
+                print(f"        from {caller}")
+        unexpected.extend(("C", c, "", callers) for c, callers in unknown_classes.items())
     if missing_class and os.environ.get("VERBOSE"):
         print(f"\n{len(missing_class)} referenced class(es) not in the dump (often fine: java.*, "
               f"androidx, or classes only present on other Android versions):")

@@ -56,3 +56,47 @@ Lcom/android/internal/app/IAppOpsService;.getHistoricalOpsFromDiskRaw(ILjava/lan
 # Android 17 QPR1 added an int parameter to these two; unused here
 Landroid/app/IActivityManager;.getDelegatedShellPermissions()Ljava/util/List;
 Landroid/app/IActivityManager;.stopDelegateShellPermissionIdentity()V
+# Android 14 QPR2 (int deviceId) variants, tried after the QPR3+ (String persistentDeviceId) ones
+Landroid/permission/IPermissionManager;.getPermissionFlags(Ljava/lang/String;Ljava/lang/String;II)I
+Landroid/permission/IPermissionManager;.updatePermissionFlags(Ljava/lang/String;Ljava/lang/String;IIZII)V
+
+# --- classes that are not in framework.jar ---
+# Public SDK classes that live in other boot jars / Mainline modules
+# (ICU, location, connectivity, ART/libcore, SDK extensions, MediaProvider,
+# profiling, Conscrypt, graphics). The dumps only cover framework.jar.
+class Landroid/graphics/ColorMatrix;
+class Landroid/icu/number/FormattedNumber;
+class Landroid/icu/number/LocalizedNumberFormatter;
+class Landroid/icu/number/NumberFormatter;
+class Landroid/icu/number/UnlocalizedNumberFormatter;
+class Landroid/icu/text/DateFormat$HourCycle;
+class Landroid/icu/text/DateFormat;
+class Landroid/icu/text/DateTimePatternGenerator;
+class Landroid/icu/text/DecimalFormatSymbols;
+class Landroid/icu/text/DisplayContext;
+class Landroid/icu/util/Calendar;
+class Landroid/icu/util/MeasureUnit;
+class Landroid/icu/util/TimeZone;
+class Landroid/icu/util/ULocale;
+class Landroid/location/GnssMeasurementsEvent$Callback;
+class Landroid/location/GnssStatus$Callback;
+class Landroid/location/GnssStatus;
+class Landroid/location/GpsSatellite;
+class Landroid/location/GpsStatus;
+class Landroid/location/LocationManager;
+class Landroid/location/LocationRequest$Builder;
+class Landroid/net/ConnectivityManager;
+class Landroid/net/NetworkCapabilities;
+class Landroid/net/NetworkInfo;
+class Landroid/net/TrafficStats;
+class Landroid/net/nsd/NsdManager;
+class Landroid/net/nsd/NsdServiceInfo;
+class Landroid/os/ProfilingManager;
+class Landroid/os/ext/SdkExtensions;
+class Landroid/provider/MediaStore;
+class Landroid/system/Os;
+class Landroid/system/OsConstants;
+class Landroid/system/StructStat;
+class Lcom/android/org/conscrypt/Conscrypt;
+# Android 7.x only (IActivityManager before it became AIDL), behind an SDK_INT check
+class Landroid/app/IActivityManager$ContentProviderHolder;
