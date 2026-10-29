@@ -68,6 +68,16 @@ ayıklama ile yapılmış olmalı, izin verilen bir Wi-Fi ağı gerekli).
 | Uygulama "Shizuku çalışmıyor" diyor | Uygulamayı kapatıp açın; hâlâ olmuyorsa servisi yeniden başlatın |
 | Telefon yeniden başlayınca durdu | Root olmadan normal; "Sistem açılışında başlat"ı açın veya elle başlatın |
 
+## Takip edilen risk: cihaz içi ADB kısıtlaması
+
+Google, Temmuz 2026'da adbd'nin sadece Wi-Fi arayüzünü (`wlan0`) dinlemesini
+tartışmaya açtı; bu, Shizuku'nun telefondan kendi kendine başlatılmasını
+(127.0.0.1 bağlantısı) kırar. Ekim 2026 itibarıyla karar yok, Android 17 kaynak
+kodu hâlâ tüm arayüzleri dinliyor. Fork buna karşı şimdiden hazır: 127.0.0.1
+reddedilirse telefonun kendi Wi-Fi IP adresine bağlanmayı deniyor. Bu da
+çalışmazsa bilgisayardan `adb shell` ile başlatma veya root/Sui yolu kalır.
+Ayrıntı: [docs/ANDROID17.md §8](docs/ANDROID17.md#8-watch-list-restricting-on-device-adb).
+
 ## Derleme
 
 ```bash

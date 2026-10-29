@@ -154,6 +154,32 @@ dereferences it as soon as `mBoundApplication` is non-null.
   was connected). The Wi-Fi network must have been allowed with "Always
   allow on this network".
 
+## 8. Watch list: restricting on-device ADB
+
+In July 2026 a Google engineer suggested in the adb feature request
+[issuetracker 526109803](https://issuetracker.google.com/issues/526109803)
+to bind adbd only to the Wi-Fi interface (`wlan0`), citing exploits through
+the localhost socket (CVE-2026-0073, patched in May 2026, is related). That
+would break every app that starts itself through wireless debugging on
+`127.0.0.1` (Shizuku, LADB, libadb users). As of October 2026 nothing is
+decided: no AOSP change, no bulletin, and `android17-release` still listens
+on all interfaces (see §6).
+
+What the fork already does about it:
+
+* `AdbSockets.connect()` falls back to the device's own Wi-Fi address when
+  loopback is refused, and mDNS discovery also probes the resolved address.
+  That keeps working if adbd binds to the `wlan0` **address**. It would not
+  help if adbd used `SO_BINDTODEVICE` (local traffic arrives on `lo`) or
+  rejected local peers.
+* Starting from a computer (`adb shell <starter path>`), root and Sui do not
+  depend on loopback.
+
+If the change lands it would most likely ship in the adbd Mainline module
+(`com.google.android.adbd`, updated through Google Play system updates),
+so watch `daemon/adb_wifi.cpp` in `platform/packages/modules/adb` and the
+`service.adb.listen_addrs` property.
+
 ## What was not changed
 
 * The Shizuku binder protocol, the `moe.shizuku.manager.permission.API_V23`
