@@ -15,34 +15,78 @@ class AdbMdns(
     private val observer: Observer<Int>
 ) {
 
-    private var registered = false
+    // NsdManager reports start/stop asynchronously, so track three states:
+    // running   - the caller wants results (start() .. stop())
+    // requested - discoverServices() was called and the discovery has not stopped yet
+    // registered - onDiscoveryStarted() arrived, stopServiceDiscovery() is allowed
+    // Upstream only had "registered": a stop() before onDiscoveryStarted() left the
+    // discovery running forever, and start() right after stop() could reuse a listener
+    // that was still in use (IllegalArgumentException).
+    private val lock = Any()
+    @Volatile
     private var running = false
+    private var requested = false
+    private var registered = false
     private var serviceName: String? = null
     private val listener = DiscoveryListener(this)
     private val nsdManager: NsdManager = context.getSystemService(NsdManager::class.java)
 
     fun start() {
-        if (running) return
-        running = true
-        if (!registered) {
-            nsdManager.discoverServices(serviceType, NsdManager.PROTOCOL_DNS_SD, listener)
+        synchronized(lock) {
+            if (running) return
+            running = true
+            if (!requested) discoverLocked()
         }
     }
 
     fun stop() {
-        if (!running) return
-        running = false
-        if (registered) {
+        synchronized(lock) {
+            if (!running) return
+            running = false
+            // if the discovery has not started yet, onDiscoveryStart() stops it
+            if (registered) stopDiscoveryLocked()
+        }
+    }
+
+    private fun discoverLocked() {
+        requested = true
+        try {
+            nsdManager.discoverServices(serviceType, NsdManager.PROTOCOL_DNS_SD, listener)
+        } catch (e: Throwable) {
+            requested = false
+            Log.w(TAG, "discoverServices failed", e)
+        }
+    }
+
+    private fun stopDiscoveryLocked() {
+        try {
             nsdManager.stopServiceDiscovery(listener)
+        } catch (e: Throwable) {
+            Log.w(TAG, "stopServiceDiscovery failed", e)
         }
     }
 
     private fun onDiscoveryStart() {
-        registered = true
+        synchronized(lock) {
+            registered = true
+            if (!running) stopDiscoveryLocked()
+        }
     }
 
     private fun onDiscoveryStop() {
-        registered = false
+        synchronized(lock) {
+            registered = false
+            requested = false
+            // start() was called again while the old discovery was stopping
+            if (running) discoverLocked()
+        }
+    }
+
+    private fun onDiscoveryFailed() {
+        synchronized(lock) {
+            registered = false
+            requested = false
+        }
     }
 
     private fun onServiceFound(info: NsdServiceInfo) {
@@ -80,6 +124,8 @@ class AdbMdns(
 
         override fun onStartDiscoveryFailed(serviceType: String, errorCode: Int) {
             Log.v(TAG, "onStartDiscoveryFailed: $serviceType, $errorCode")
+
+            adbMdns.onDiscoveryFailed()
         }
 
         override fun onDiscoveryStopped(serviceType: String) {
