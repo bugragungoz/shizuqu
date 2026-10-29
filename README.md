@@ -1,85 +1,102 @@
-# Shizuku
+# Shizuqu
 
-## Background
+> Working name. The app name, package name and repository name are all set in
+> [`branding.properties`](branding.properties) - see [docs/RENAMING.md](docs/RENAMING.md).
 
-When developing apps that requires root, the most common method is to run some commands in the su shell. For example, there is an app that uses the `pm enable/disable` command to enable/disable components.
+An **Android 17 (API 37) compatible fork of [Shizuku](https://github.com/RikkaApps/Shizuku)**.
+It is a drop-in replacement: every app that uses the Shizuku API keeps working,
+no change needed on their side.
 
-This method has very big disadvantages:
+Upstream Shizuku 13.6.0 has not been updated since June 2025. On Android 17 its
+"Authorized applications" list is empty and apps that were already running when
+the service started never get access. This fork fixes that, verified against the
+real Android 17.0 and 17.1 framework and the AOSP `android17-release` sources.
 
-1. **Extremely slow** (Multiple process creation)
-2. Needs to process texts (**Super unreliable**)
-3. The possibility is limited to available commands
-4. Even if ADB has sufficient permissions, the app requires root privileges to run
+[Türkçe kullanım kılavuzu → README_TR.md](README_TR.md)
 
-Shizuku uses a completely different way. See detailed description below.
+## What is fixed
 
-## User guide & Download
+| Problem on Android 17 | Cause | Fix |
+|---|---|---|
+| Authorized apps list shows 0 apps | `IPackageManager.getInstalledPackages()` returns `PackageInfoList` now; the old call throws `NoSuchMethodError`, swallowed into an empty list | API 37 signature first, old one and a reflection fallback after |
+| Apps already running when the service starts get no binder ("Shizuku is not running") | same empty list in `sendBinderToClient()` | same fix |
+| Apps in a work profile, Samsung Secure Folder or Dual Messenger never get access | `IUserManager.getUsers(boolean, boolean, boolean)` was removed; only user 0 was seen | `getUsers(boolean)` on API 37 |
+| Hidden API access in the manager on 17 / 17.1 | HiddenApiBypass 6.1 | 6.2 |
+| User services crash on some OEM ROMs (HyperOS, ...) | OEM code reads the bound application in `makeApplication` | retry with a minimal `AppBindData` |
+| "Start on boot" without root almost never worked | 3 s window, usually before Wi-Fi is up | short foreground service that waits for Wi-Fi and retries |
 
-<https://shizuku.rikka.app/>
+Details and evidence: [docs/ANDROID17.md](docs/ANDROID17.md).
 
-## How does Shizuku work?
+Also in this fork:
 
-First, we need to talk about how app use system APIs. For example, if the app wants to get installed apps, we all know we should use `PackageManager#getInstalledPackages()`. This is actually an interprocess communication (IPC) process of the app process and system server process, just the Android framework did the inner works for us.
+* [`tools/hiddenapi-check`](tools/hiddenapi-check): finds every framework method
+  an APK calls that does not exist on a given Android build. CI runs it against
+  Android 17.0 and 17.1 on every push. Upstream 13.6.0 fails it, this fork passes.
+* The hidden API layer ([RikkaW/HiddenApi](https://github.com/RikkaW/HiddenApi))
+  and the client API ([Shizuku-API](https://github.com/RikkaApps/Shizuku-API)) are
+  vendored as plain directories, so they can be fixed in the same commit.
+* Own launcher icons (upstream's may not be reused) and all branding in one file.
 
-Android uses `binder` to do this type of IPC. `Binder` allows the server-side to learn the uid and pid of the client-side, so that the system server can check if the app has the permission to do the operation.
+## Install
 
-Usually, if there is a "manager" (e.g., `PackageManager`) for apps to use, there should be a "service" (e.g., `PackageManagerService`) in the system server process. We can simply think if the app holds the `binder` of the "service", it can communicate with the "service". The app process will receive binders of system services on start.
+1. Uninstall the original Shizuku (same package name by default, different signature).
+2. Install the APK (GitHub Actions artifact, or build it, see below).
+3. Open the app and start the service:
+   * **Without root, Android 11+**: Developer options > Wireless debugging > on,
+     allow the current Wi-Fi network, then use "Pair" and "Start" in the app.
+   * With root: "Start" in the root card.
+   * From a computer: `adb shell <path shown in the app>`.
+4. Open the apps that use Shizuku and grant access again (uninstalling the
+   original Shizuku removes its permission grants).
 
-Shizuku guides users to run a process, Shizuku server, with root or ADB first. When the app starts, the `binder` to Shizuku server will also be sent to the app.
+Samsung (One UI 9): turn off **Auto Blocker** while pairing/starting, and see
+[docs/ANDROID17.md §7](docs/ANDROID17.md#7-samsung-one-ui-9).
 
-The most important feature Shizuku provides is something like be a middle man to receive requests from the app, sent them to the system server, and send back the results. You can see the `transactRemote` method in `rikka.shizuku.server.ShizukuService` class, and `moe.shizuku.api.ShizukuBinderWrapper` class for the detail.
+## Build
 
-So, we reached our goal, to use system APIs with higher permission. And to the app, it is almost identical to the use of system APIs directly.
+```bash
+git clone https://github.com/bugragungoz/shizuqu.git && cd shizuqu
+echo "sdk.dir=$ANDROID_HOME" > local.properties
+./gradlew :manager:assembleRelease
+```
 
-## Developer guide
+JDK 21, `platforms;android-37.0`, `build-tools;36.0.0`, `ndk;29.0.14206865`,
+`cmake;3.31.6`. Signing and CI secrets: [docs/BUILDING.md](docs/BUILDING.md).
 
-### API & sample
+## For app developers
 
-https://github.com/RikkaApps/Shizuku-API
+Nothing changes in the API, but Android 17 changed hidden APIs your app may
+call through `ShizukuBinderWrapper`. See [docs/CLIENT_APPS.md](docs/CLIENT_APPS.md).
 
-### Migrating from pre-v11
+## Documentation
 
-> Existing applications still works, of course.
+* [docs/ANDROID17.md](docs/ANDROID17.md) - what broke and how it was fixed
+* [docs/CLIENT_APPS.md](docs/CLIENT_APPS.md) - writing/updating apps that use Shizuku on Android 17+
+* [docs/UPDATING_FOR_NEW_ANDROID.md](docs/UPDATING_FOR_NEW_ANDROID.md) - maintenance runbook for the next Android version
+* [docs/RENAMING.md](docs/RENAMING.md) - renaming the app / going public
+* [docs/BUILDING.md](docs/BUILDING.md) - building, signing, CI
 
-https://github.com/RikkaApps/Shizuku-API#migration-guide-for-existing-applications-use-shizuku-pre-v11
+## How Shizuku works (short)
 
-### Attention
-
-1. ADB permissions are limited
-
-   ADB has limited permissions and different on various system versions. You can see permissions granted to ADB [here](https://github.com/aosp-mirror/platform_frameworks_base/blob/master/packages/Shell/AndroidManifest.xml).
-
-   Before calling the API, you can use `ShizukuService#getUid` to check if Shizuku is running user ADB, or use `ShizukuService#checkPermission` to check if the server has sufficient permissions.
-
-2. Hidden API limitation from Android 9
-
-   As of Android 9, the usage of the hidden APIs is limited for normal apps. Please use other methods (such as <https://github.com/LSPosed/AndroidHiddenApiBypass>).
-
-3. Android 8.0 & ADB
-
-   At present, the way Shizuku service gets the app process is to combine `IActivityManager#registerProcessObserver` and `IActivityManager#registerUidObserver` (26+) to ensure that the app process will be sent when the app starts. However, on API 26, ADB lacks permissions to use `registerUidObserver`, so if you need to use Shizuku in a process that might not be started by an Activity, it is recommended to trigger the send binder by starting a transparent activity.
-
-4. Direct use of `transactRemote` requires attention
-
-   * The API may be different under different Android versions, please be sure to check it carefully. Also, the `android.app.IActivityManager` has the aidl form in API 26 and later, and `android.app.IActivityManager$Stub` exists only on API 26.
-
-   * `SystemServiceHelper.getTransactionCode` may not get the correct transaction code, such as `android.content.pm.IPackageManager$Stub.TRANSACTION_getInstalledPackages` does not exist on API 25 and there is `android.content.pm.IPackageManager$Stub.TRANSACTION_getInstalledPackages_47` (this situation has been dealt with, but it is not excluded that there may be other circumstances). This problem is not encountered with the `ShizukuBinderWrapper` method.
-
-## Developing Shizuku itself
-
-### Build
-
-- Clone with `git clone --recurse-submodules`
-- Run gradle task `:manager:assembleDebug` or `:manager:assembleRelease`
-
-The `:manager:assembleDebug` task generates a debuggable server. You can attach a debugger to `shizuku_server` to debug the server. Be aware that, in Android Studio, "Run/Debug configurations" - "Always install with package manager" should be checked, so that the server will use the latest code.
+The manager starts a process (the "server") through adb or root. Its uid is
+2000 (shell) or 0 (root). The server sends its binder to every app that
+declares the `moe.shizuku.manager.permission.API_V23` permission, through
+that app's `<package>.shizuku` content provider. Apps then forward binder
+calls to system services through the server (`ShizukuBinderWrapper`), or run
+their own code in a process started by the server (user services). See
+[upstream's README](https://github.com/RikkaApps/Shizuku#how-does-shizuku-work)
+for the full explanation.
 
 ## License
 
-All code files in this project are licensed under Apache 2.0
+Code: Apache License 2.0 ([LICENSE](LICENSE)), as upstream. `hidden-api/`: MIT.
+See [NOTICE](NOTICE).
 
-Under Apache 2.0 section 6, specifically:
+Upstream asks (Apache 2.0 section 6) not to use its launcher icons, and not to
+publish to app stores an APK named "Shizuku", using the
+`moe.shizuku.privileged.api` application id or declaring
+`moe.shizuku.manager.permission.*` permissions. This fork has its own name and
+icons; keep it to GitHub releases / personal use. See
+[docs/RENAMING.md](docs/RENAMING.md#before-making-it-public-or-publishing-it).
 
-* You are **FORBIDDEN** to use `manager/src/main/res/mipmap*/ic_launcher*.png` image files, unless for displaying Shizuku itself.
-
-* You are **FORBIDDEN** to use `Shizuku` as app name or use `moe.shizuku.privileged.api` as application id or declare `moe.shizuku.manager.permission.*` permission.
+Thanks to RikkaApps and the Shizuku contributors.
