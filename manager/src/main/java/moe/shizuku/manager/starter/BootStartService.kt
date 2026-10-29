@@ -36,6 +36,27 @@ import moe.shizuku.manager.adb.PreferenceAdbKeyStore
 import rikka.shizuku.Shizuku
 import java.util.concurrent.atomic.AtomicBoolean
 
+/** Entry points for [BootStartService], callable on every API level. */
+object BootStart {
+
+    private const val TAG = "BootStart"
+
+    /** Android 13+ and the WRITE_SECURE_SETTINGS grant the server gives the manager. */
+    fun canStart(context: Context): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                && context.checkSelfPermission(WRITE_SECURE_SETTINGS) == PackageManager.PERMISSION_GRANTED
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    fun start(context: Context) {
+        try {
+            context.startForegroundService(Intent(context, BootStartService::class.java))
+        } catch (e: Throwable) {
+            Log.w(TAG, "can't start BootStartService", e)
+        }
+    }
+}
+
 /**
  * Starts the service through wireless debugging after a reboot (no root).
  *
@@ -63,19 +84,6 @@ class BootStartService : Service() {
         private const val DISCOVERY_TIMEOUT_MS = 20_000L
         private const val BINDER_TIMEOUT_MS = 10_000L
         private const val ATTEMPTS = 3
-
-        fun canStart(context: Context): Boolean {
-            return Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
-                    && context.checkSelfPermission(WRITE_SECURE_SETTINGS) == PackageManager.PERMISSION_GRANTED
-        }
-
-        fun start(context: Context) {
-            try {
-                context.startForegroundService(Intent(context, BootStartService::class.java))
-            } catch (e: Throwable) {
-                Log.w(TAG, "can't start BootStartService", e)
-            }
-        }
     }
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
@@ -90,6 +98,7 @@ class BootStartService : Service() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                 startForeground(NOTIFICATION_ID, progressNotification(), ServiceInfo.FOREGROUND_SERVICE_TYPE_SHORT_SERVICE)
             } else {
+                // Android 13: foreground service types are not required yet
                 startForeground(NOTIFICATION_ID, progressNotification())
             }
         } catch (e: Throwable) {

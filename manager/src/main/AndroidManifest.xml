@@ -151,10 +151,12 @@
             android:exported="false"
             android:foregroundServiceType="shortService" />
 
+        <!-- Off by default: "Start on boot" in Settings turns it on.
+             Without root it enables wireless debugging at boot, which should be the user's choice. -->
         <receiver
             android:name=".receiver.BootCompleteReceiver"
             android:directBootAware="true"
-            android:enabled="true"
+            android:enabled="false"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />

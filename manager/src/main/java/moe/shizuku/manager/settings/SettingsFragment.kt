@@ -63,12 +63,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         val componentName = ComponentName(context.packageName, BootCompleteReceiver::class.java.name)
 
-        startOnBootPreference.isChecked = context.packageManager.isComponentEnabled(componentName)
+        // the receiver is disabled in the manifest, so "default" means off
+        startOnBootPreference.isChecked = context.packageManager.isComponentEnabled(componentName, defaultValue = false)
         startOnBootPreference.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                 if (newValue is Boolean) {
                     context.packageManager.setComponentEnabled(componentName, newValue)
-                    context.packageManager.isComponentEnabled(componentName) == newValue
+                    context.packageManager.isComponentEnabled(componentName, defaultValue = false) == newValue
                 } else false
             }
         languagePreference.onPreferenceChangeListener =

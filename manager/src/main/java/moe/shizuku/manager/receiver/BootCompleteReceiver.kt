@@ -3,12 +3,13 @@ package moe.shizuku.manager.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.util.Log
 import com.topjohnwu.superuser.Shell
 import moe.shizuku.manager.AppConstants
 import moe.shizuku.manager.ShizukuSettings
 import moe.shizuku.manager.ShizukuSettings.LaunchMethod
-import moe.shizuku.manager.starter.BootStartService
+import moe.shizuku.manager.starter.BootStart
 import moe.shizuku.manager.starter.Starter
 import moe.shizuku.manager.utils.UserHandleCompat
 import rikka.shizuku.Shizuku
@@ -25,10 +26,11 @@ class BootCompleteReceiver : BroadcastReceiver() {
 
         if (ShizukuSettings.getLastLaunchMode() == LaunchMethod.ROOT) {
             rootStart(context)
-        } else if (ShizukuSettings.getLastLaunchMode() == LaunchMethod.ADB
-            && BootStartService.canStart(context)) { // Android 13+, https://r.android.com/2128832
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU // https://r.android.com/2128832
+            && ShizukuSettings.getLastLaunchMode() == LaunchMethod.ADB
+            && BootStart.canStart(context)) {
             // waits for Wi-Fi and retries, see BootStartService
-            BootStartService.start(context)
+            BootStart.start(context)
         } else {
             Log.w(AppConstants.TAG, "No support start on boot")
         }
