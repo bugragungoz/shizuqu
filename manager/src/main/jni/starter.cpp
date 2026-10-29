@@ -31,7 +31,11 @@
 #define EXIT_FATAL_KILL 9
 #define EXIT_FATAL_BINDER_BLOCKED_BY_SELINUX 10
 
-#define PACKAGE_NAME "moe.shizuku.privileged.api"
+// Passed by manager/build.gradle from branding.properties (app.applicationId)
+#ifndef SHIZUKU_PACKAGE_NAME
+#define SHIZUKU_PACKAGE_NAME "moe.shizuku.privileged.api"
+#endif
+#define PACKAGE_NAME SHIZUKU_PACKAGE_NAME
 #define SERVER_NAME "shizuku_server"
 #define SERVER_CLASS_PATH "rikka.shizuku.server.ShizukuService"
 

@@ -6,19 +6,38 @@ idea.module {
     excludeDirs += file('out')
 }
 
+// ---- Fork branding (see branding.properties) ----
+def brandingProps = new Properties()
+file('branding.properties').withInputStream { brandingProps.load(it) }
+def brandingValue = { String key ->
+    def value = brandingProps.getProperty(key)?.trim()
+    if (!value) throw new GradleException("branding.properties: '$key' is missing")
+    return value
+}
+ext.branding = [
+        appName      : brandingValue('app.name'),
+        applicationId: brandingValue('app.applicationId'),
+        fileName     : brandingValue('app.fileName'),
+        sourceUrl    : brandingValue('app.sourceUrl'),
+        versionBase  : brandingValue('app.versionBase'),
+]
+if (!(ext.branding.applicationId ==~ /[a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)+/)) {
+    throw new GradleException("branding.properties: app.applicationId '${ext.branding.applicationId}' is not a valid package name")
+}
+
 subprojects {
     plugins.withId("com.android.base") {
         android {
-            compileSdk = 36
+            compileSdk = 37
             buildToolsVersion = "36.0.0"
-            ndkVersion = "29.0.13113456"
+            ndkVersion = "29.0.14206865"
             defaultConfig {
                 minSdk = 24
                 targetSdk = 36
             }
             compileOptions {
-                sourceCompatibility = JavaVersion.VERSION_21
-                targetCompatibility = JavaVersion.VERSION_21
+                sourceCompatibility JavaVersion.VERSION_21
+                targetCompatibility JavaVersion.VERSION_21
             }
         }
     }
@@ -27,7 +46,7 @@ subprojects {
 apply from: 'api/manifest.gradle'
 def gitCommitId = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 def gitCommitCount = Integer.parseInt('git rev-list --count HEAD'.execute([], project.rootDir).text.trim())
-def baseVersionName = "${api_version_major}.6.0"
+def baseVersionName = ext.branding.versionBase
 ext {
     versionCode = gitCommitCount
     versionName = "${baseVersionName}.r${gitCommitCount}.${gitCommitId}"

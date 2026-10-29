@@ -118,6 +118,7 @@ With %1$s, in any terminal app, you can connect to and interact with the shell r
     <!-- About -->
     <string name="action_about">About</string>
     <string name="about_view_source_code"><![CDATA[View source code at %s]]></string>
+    <string name="about_based_on_upstream"><![CDATA[Based on %s by RikkaApps (Apache License 2.0)]]></string>
 
     <!-- Stop -->
     <string name="action_stop">Stop Shizuku</string>

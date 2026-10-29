@@ -5,10 +5,15 @@ plugins {
 android {
     namespace 'rikka.shizuku.common'
     buildFeatures {
-        buildConfig = false
+        buildConfig = true
+    }
+    defaultConfig {
+        // Single source of truth for the manager package name (branding.properties),
+        // used by the server, the user-service starter and rish.
+        buildConfigField 'String', 'MANAGER_APPLICATION_ID', "\"${rootProject.ext.branding.applicationId}\""
     }
 }
 
 dependencies {
-    compileOnly libs.hidden.stub
+    compileOnly project(':hidden-stub')
 }

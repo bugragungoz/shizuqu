@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import moe.shizuku.manager.BuildConfig
 import moe.shizuku.manager.R
 import moe.shizuku.manager.ShizukuSettings
 import moe.shizuku.manager.app.AppBarActivity
@@ -96,10 +97,13 @@ abstract class HomeActivity : AppBarActivity() {
             R.id.action_about -> {
                 val binding = AboutDialogBinding.inflate(LayoutInflater.from(this), null, false)
                 binding.sourceCode.movementMethod = LinkMovementMethod.getInstance()
-                binding.sourceCode.text = getString(
+                binding.sourceCode.text = (getString(
                     R.string.about_view_source_code,
-                    "<b><a href=\"https://github.com/RikkaApps/Shizuku\">GitHub</a></b>"
-                ).toHtml()
+                    "<b><a href=\"${BuildConfig.SOURCE_URL}\">GitHub</a></b>"
+                ) + "<br>" + getString(
+                    R.string.about_based_on_upstream,
+                    "<b><a href=\"https://github.com/RikkaApps/Shizuku\">Shizuku</a></b>"
+                )).toHtml()
                 binding.icon.setImageBitmap(
                     AppIconCache.getOrLoadBitmap(
                         this,

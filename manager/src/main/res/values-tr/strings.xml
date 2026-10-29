@@ -67,6 +67,7 @@
     <string name="dialog_stop_message">Shizuku hizmeti durdurulacak.</string>
     <string name="action_stop">Shizuku’yu durdur</string>
     <string name="about_view_source_code">%s ’da kaynak kodunu görüntüle</string>
+    <string name="about_based_on_upstream">RikkaApps tarafından geliştirilen %s projesine dayanır (Apache Lisansı 2.0)</string>
     <string name="action_about">Hakkında</string>
     <string name="settings_translation_summary">%s , dilinize çevirmemize yardımcı olun</string>
     <string name="settings_translation">Çeviriye katılın</string>

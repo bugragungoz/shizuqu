@@ -12,12 +12,14 @@ plugins {
 android {
     namespace 'moe.shizuku.manager'
     defaultConfig {
-        applicationId "moe.shizuku.privileged.api"
+        applicationId rootProject.ext.branding.applicationId
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
+        buildConfigField 'String', 'SOURCE_URL', "\"${rootProject.ext.branding.sourceUrl}\""
         externalNativeBuild {
             cmake {
-                arguments '-DANDROID_STL=none'
+                arguments '-DANDROID_STL=none',
+                        "-DSHIZUKU_PACKAGE_NAME=${rootProject.ext.branding.applicationId}"
             }
         }
     }
@@ -112,7 +114,7 @@ afterEvaluate {
 
 android.applicationVariants.configureEach { variant ->
     variant.outputs.configureEach {
-        outputFileName = "shizuku-v${variant.versionName}-${variant.name}.apk"
+        outputFileName = "${rootProject.ext.branding.fileName}-v${variant.versionName}-${variant.name}.apk"
 
         variant.assembleProvider.get().doLast {
             def outDir = new File(rootDir, "out")
@@ -152,8 +154,8 @@ dependencies {
     implementation project(':api')
     implementation project(':provider')
 
-    implementation libs.hidden.compat
-    compileOnly libs.hidden.stub
+    implementation project(':hidden-compat')
+    compileOnly project(':hidden-stub')
 
     implementation 'androidx.browser:browser:1.8.0'
     implementation 'androidx.core:core-ktx:1.16.0'
@@ -186,7 +188,8 @@ dependencies {
     implementation 'io.github.vvb2060.ndk:boringssl:20250114'
     implementation 'org.lsposed.libcxx:libcxx:27.0.12077973'
 
-    implementation 'org.lsposed.hiddenapibypass:hiddenapibypass:6.1'
+    // 6.2 fixes hidden API access on Android 17 (API 37 / 37.1)
+    implementation 'org.lsposed.hiddenapibypass:hiddenapibypass:6.2'
 
     implementation 'org.bouncycastle:bcpkix-jdk18on:1.80'
 
@@ -194,3 +197,4 @@ dependencies {
 }
 
 apply from: rootProject.file('signing.gradle')
+apply from: 'branding.gradle'
