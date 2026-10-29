@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Fork launcher icon (foreground). Hexagon ring with a "Q" tail. -->
+<!-- Shizuqu launcher icon, foreground: a water drop ("shizuku" means drop) shaped as a "Q". -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
@@ -8,12 +8,10 @@
     <path
         android:fillColor="#FFFFFFFF"
         android:fillType="evenOdd"
-        android:pathData="M54,28L76.52,41L76.52,67L54,80L31.48,67L31.48,41Z M54,36L38.41,45L38.41,63L54,72L69.59,63L69.59,45Z" />
+        android:pathData="M54,29.3 C59.2,36.1 69.2,46.9 69.2,58.1 A15.2,15.2 0 0 1 38.8,58.1 C38.8,46.9 48.8,36.1 54,29.3 Z M54,49.7 A8.4,8.4 0 1 0 54,66.5 A8.4,8.4 0 1 0 54,49.7 Z" />
     <path
-        android:fillColor="#FFFFFFFF"
-        android:pathData="M58.5,65.5L63.5,60.5L77,74L72,79Z" />
-    <path
-        android:fillColor="#FFFFFFFF"
-        android:fillAlpha="0.55"
-        android:pathData="M54,44L62.66,49L62.66,59L54,64L45.34,59L45.34,49Z" />
+        android:pathData="M57.6,61.7 L68.4,72.5"
+        android:strokeWidth="6"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineCap="round" />
 </vector>
