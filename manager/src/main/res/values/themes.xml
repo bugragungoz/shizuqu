@@ -5,6 +5,48 @@
         <item name="android:statusBarColor">?android:colorBackground</item>
 
         <item name="appColorPrimary">@color/app_color_light</item>
+        <!-- Bugra design system: type, shape, cards (res/values/design_bugra.xml) -->
+        <!-- Fonts come from text appearances only. A theme-level fontFamily would win over
+             every text appearance's font (AppCompat reads it as a view attribute). -->
+        <item name="android:textAppearance">@style/TextAppearance.Shizuqu.Platform</item>
+        <item name="android:textAppearanceSmall">@style/TextAppearance.Shizuqu.Platform.Small</item>
+        <item name="android:textAppearanceMedium">@style/TextAppearance.Shizuqu.Platform.Medium</item>
+        <item name="android:textAppearanceLarge">@style/TextAppearance.Shizuqu.Platform.Large</item>
+        <item name="android:textAppearanceSmallInverse">@style/TextAppearance.Shizuqu.Platform.Small.Inverse</item>
+        <item name="android:textAppearanceMediumInverse">@style/TextAppearance.Shizuqu.Platform.Medium.Inverse</item>
+        <item name="android:textAppearanceLargeInverse">@style/TextAppearance.Shizuqu.Platform.Large.Inverse</item>
+        <item name="android:textAppearanceButton">@style/TextAppearance.Shizuqu.Platform.Button</item>
+        <item name="android:textAppearanceListItem">@style/TextAppearance.Shizuqu.ListItem</item>
+        <item name="android:textAppearanceListItemSmall">@style/TextAppearance.Shizuqu.ListItem</item>
+        <item name="textAppearanceListItem">@style/TextAppearance.Shizuqu.ListItem</item>
+        <item name="textAppearanceListItemSmall">@style/TextAppearance.Shizuqu.ListItem</item>
+        <item name="textAppearanceDisplayLarge">@style/TextAppearance.Shizuqu.DisplayLarge</item>
+        <item name="textAppearanceDisplayMedium">@style/TextAppearance.Shizuqu.DisplayMedium</item>
+        <item name="textAppearanceDisplaySmall">@style/TextAppearance.Shizuqu.DisplaySmall</item>
+        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.Shizuqu.HeadlineLarge</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.Shizuqu.HeadlineMedium</item>
+        <item name="textAppearanceHeadlineSmall">@style/TextAppearance.Shizuqu.HeadlineSmall</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.Shizuqu.TitleLarge</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.Shizuqu.TitleMedium</item>
+        <item name="textAppearanceTitleSmall">@style/TextAppearance.Shizuqu.TitleSmall</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.Shizuqu.BodyLarge</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.Shizuqu.BodyMedium</item>
+        <item name="textAppearanceBodySmall">@style/TextAppearance.Shizuqu.BodySmall</item>
+        <item name="textAppearanceLabelLarge">@style/TextAppearance.Shizuqu.LabelLarge</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.Shizuqu.LabelMedium</item>
+        <item name="textAppearanceLabelSmall">@style/TextAppearance.Shizuqu.LabelSmall</item>
+        <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.Shizuqu.Corner.ExtraSmall</item>
+        <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.Shizuqu.Corner.Small</item>
+        <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.Shizuqu.Corner.Medium</item>
+        <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.Shizuqu.Corner.Large</item>
+        <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.Shizuqu.Corner.ExtraLarge</item>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Shizuqu.Corner.Small</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Shizuqu.Corner.Medium</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Shizuqu.Corner.Large</item>
+        <item name="materialCardViewStyle">@style/Widget.Shizuqu.Card</item>
+        <item name="materialCardViewFilledStyle">@style/Widget.Shizuqu.Card</item>
+        <item name="materialCardViewOutlinedStyle">@style/Widget.Shizuqu.Card</item>
+
         <item name="homeCardStyle">@style/Card.Light</item>
 
         <item name="android:windowActionBar">false</item>
@@ -17,6 +59,48 @@
 
     <style name="Base.AppTheme" parent="Theme.Material3.Dark.Shizuku">
         <item name="appColorPrimary">@color/app_color_dark</item>
+        <!-- Bugra design system: type, shape, cards (res/values/design_bugra.xml) -->
+        <!-- Fonts come from text appearances only. A theme-level fontFamily would win over
+             every text appearance's font (AppCompat reads it as a view attribute). -->
+        <item name="android:textAppearance">@style/TextAppearance.Shizuqu.Platform</item>
+        <item name="android:textAppearanceSmall">@style/TextAppearance.Shizuqu.Platform.Small</item>
+        <item name="android:textAppearanceMedium">@style/TextAppearance.Shizuqu.Platform.Medium</item>
+        <item name="android:textAppearanceLarge">@style/TextAppearance.Shizuqu.Platform.Large</item>
+        <item name="android:textAppearanceSmallInverse">@style/TextAppearance.Shizuqu.Platform.Small.Inverse</item>
+        <item name="android:textAppearanceMediumInverse">@style/TextAppearance.Shizuqu.Platform.Medium.Inverse</item>
+        <item name="android:textAppearanceLargeInverse">@style/TextAppearance.Shizuqu.Platform.Large.Inverse</item>
+        <item name="android:textAppearanceButton">@style/TextAppearance.Shizuqu.Platform.Button</item>
+        <item name="android:textAppearanceListItem">@style/TextAppearance.Shizuqu.ListItem</item>
+        <item name="android:textAppearanceListItemSmall">@style/TextAppearance.Shizuqu.ListItem</item>
+        <item name="textAppearanceListItem">@style/TextAppearance.Shizuqu.ListItem</item>
+        <item name="textAppearanceListItemSmall">@style/TextAppearance.Shizuqu.ListItem</item>
+        <item name="textAppearanceDisplayLarge">@style/TextAppearance.Shizuqu.DisplayLarge</item>
+        <item name="textAppearanceDisplayMedium">@style/TextAppearance.Shizuqu.DisplayMedium</item>
+        <item name="textAppearanceDisplaySmall">@style/TextAppearance.Shizuqu.DisplaySmall</item>
+        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.Shizuqu.HeadlineLarge</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.Shizuqu.HeadlineMedium</item>
+        <item name="textAppearanceHeadlineSmall">@style/TextAppearance.Shizuqu.HeadlineSmall</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.Shizuqu.TitleLarge</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.Shizuqu.TitleMedium</item>
+        <item name="textAppearanceTitleSmall">@style/TextAppearance.Shizuqu.TitleSmall</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.Shizuqu.BodyLarge</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.Shizuqu.BodyMedium</item>
+        <item name="textAppearanceBodySmall">@style/TextAppearance.Shizuqu.BodySmall</item>
+        <item name="textAppearanceLabelLarge">@style/TextAppearance.Shizuqu.LabelLarge</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.Shizuqu.LabelMedium</item>
+        <item name="textAppearanceLabelSmall">@style/TextAppearance.Shizuqu.LabelSmall</item>
+        <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.Shizuqu.Corner.ExtraSmall</item>
+        <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.Shizuqu.Corner.Small</item>
+        <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.Shizuqu.Corner.Medium</item>
+        <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.Shizuqu.Corner.Large</item>
+        <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.Shizuqu.Corner.ExtraLarge</item>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Shizuqu.Corner.Small</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Shizuqu.Corner.Medium</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Shizuqu.Corner.Large</item>
+        <item name="materialCardViewStyle">@style/Widget.Shizuqu.Card</item>
+        <item name="materialCardViewFilledStyle">@style/Widget.Shizuqu.Card</item>
+        <item name="materialCardViewOutlinedStyle">@style/Widget.Shizuqu.Card</item>
+
         <item name="homeCardStyle">@style/Card</item>
 
         <item name="android:windowActionBar">false</item>

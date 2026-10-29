@@ -22,11 +22,11 @@
             android:id="@android:id/text1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="monospace"
             android:paddingStart="@dimen/list_item_padding"
             android:paddingTop="16dp"
             android:paddingEnd="@dimen/list_item_padding"
             android:paddingBottom="16dp"
+            style="@style/Widget.Shizuqu.TextView.Code"
             android:textColor="?android:textColorPrimary"
             android:textIsSelectable="true"
             android:textSize="12sp" />

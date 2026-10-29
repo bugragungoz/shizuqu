@@ -11,8 +11,8 @@
             android:id="@android:id/text1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/Widget.Shizuqu.TextView.Code"
             android:textColor="?android:textColorPrimary"
-            android:fontFamily="monospace"
             android:padding="24dp"
             android:textIsSelectable="true"/>
 

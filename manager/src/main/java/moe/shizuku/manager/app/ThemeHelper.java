@@ -17,15 +17,27 @@ public class ThemeHelper {
 
     public static final String KEY_LIGHT_THEME = "light_theme";
     public static final String KEY_BLACK_NIGHT_THEME = "black_night_theme";
+    /** @deprecated replaced by {@link #KEY_COLOR_PALETTE}, kept so old settings files stay readable */
+    @Deprecated
     public static final String KEY_USE_SYSTEM_COLOR = "use_system_color";
 
     public static boolean isBlackNightTheme(Context context) {
         return ShizukuSettings.getPreferences().getBoolean(KEY_BLACK_NIGHT_THEME, EnvironmentUtils.isWatch(context));
     }
 
+    /** Preference key of the color palette; values are {@link Palette#getId()}. */
+    public static final String KEY_COLOR_PALETTE = "color_palette";
+
+    public static Palette getPalette() {
+        return Palette.Companion.fromId(ShizukuSettings.getPreferences().getString(KEY_COLOR_PALETTE, null));
+    }
+
+    public static void setPalette(Palette palette) {
+        ShizukuSettings.getPreferences().edit().putString(KEY_COLOR_PALETTE, palette.getId()).apply();
+    }
+
     public static boolean isUsingSystemColor() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
-                && ShizukuSettings.getPreferences().getBoolean(KEY_USE_SYSTEM_COLOR, true);
+        return getPalette() == Palette.SYSTEM;
     }
 
     public static String getTheme(Context context) {

@@ -47,9 +47,9 @@
             android:summary="@string/settings_black_night_theme_summary"
             android:title="@string/settings_black_night_theme" />
 
-        <rikka.material.preference.MaterialSwitchPreference
-            android:key="use_system_color"
-            android:title="@string/settings_use_system_color" />
+        <moe.shizuku.manager.settings.PalettePreference
+            android:key="color_palette"
+            android:title="@string/settings_color_palette" />
 
     </PreferenceCategory>
 

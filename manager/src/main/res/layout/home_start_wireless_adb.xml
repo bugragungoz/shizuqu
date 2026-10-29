@@ -41,13 +41,13 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@android:id/button3"
-        style="@style/CardButton"
+        style="@style/CardButton.Outlined"
         android:text="@string/home_wireless_adb_view_guide_button"
         app:icon="@drawable/ic_outline_open_in_new_24" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@android:id/button2"
-        style="@style/CardButton"
+        style="@style/CardButton.Outlined"
         android:text="@string/adb_pairing"
         app:icon="@drawable/ic_baseline_link_24" />
 

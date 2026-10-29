@@ -157,7 +157,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:duplicateParentState="true"
-                    android:fontFamily="sans-serif-medium"
+                    android:fontFamily="@font/geist_medium"
                     android:text="@string/adb_pairing_tutorial_content_network_limation_not_foreground"
                     android:textAppearance="?textAppearanceBodyMedium"
                     android:textColor="?colorOnSecondaryContainer" />
@@ -206,7 +206,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:duplicateParentState="true"
-                    android:fontFamily="sans-serif-medium"
+                    android:fontFamily="@font/geist_medium"
                     android:text="@string/adb_pairing_tutorial_content_miui_2"
                     android:textAppearance="?textAppearanceBodyMedium"
                     android:textColor="?colorOnErrorContainer" />

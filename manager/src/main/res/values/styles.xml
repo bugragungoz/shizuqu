@@ -22,10 +22,17 @@
     </style>
 
     <style name="CardTitle">
-        <item name="android:textAppearance">?textAppearanceBodyLarge</item>
+        <item name="android:textAppearance">?textAppearanceTitleMedium</item>
         <item name="android:textColor">?android:textColorPrimary</item>
         <item name="android:textSize">16sp</item>
         <item name="android:lineSpacingExtra">1sp</item>
+    </style>
+
+    <!-- Secondary card actions: one filled (primary) action per card, the rest outlined -->
+    <style name="CardButton.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="iconPadding">12dp</item>
     </style>
 
     <style name="CardSummary">
@@ -75,7 +82,9 @@
         <item name="android:focusable">true</item>
         <item name="android:clipChildren">false</item>
         <item name="android:clipToPadding">false</item>
-        <item name="cardCornerRadius">28dp</item>
+        <item name="cardCornerRadius">14dp</item>
+        <item name="strokeColor">?attr/colorOutlineVariant</item>
+        <item name="strokeWidth">1dp</item>
         <item name="contentPaddingStart">24dp</item>
         <item name="contentPaddingEnd">24dp</item>
         <item name="contentPaddingLeft">24dp</item>
@@ -94,7 +103,7 @@
         <item name="android:padding">16dp</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">?textColorOnPrimaryContainer</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:fontFamily">@font/geist_medium</item>
         <item name="android:gravity">center</item>
     </style>
 

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The "Bugra" palette (default): dark-first, warm black grounds, one accent (Android green).
+  Values come from the Bugra design system (tokens.json) through its Material 3 role mapping:
+    background, surface      -> bg            surfaceContainer      -> surface
+    surfaceContainerHigh     -> surface-2     onSurface             -> ink
+    onSurfaceVariant         -> muted         outlineVariant        -> line (opaque)
+    outline                  -> border-control
+    primary                  -> accent (dark) / accent-ink (light, so text and outlines reach 4.5:1)
+    onPrimary                -> on-accent     primaryContainer      -> accent-quiet / accent fill
+    error                    -> warn          tertiary              -> info
+  Secondary roles are warm neutrals, so the accent stays the only chromatic color.
+-->
+<resources>
+
+    <style name="ThemeOverlay.Palette.Bugra.Dark" parent="">
+        <item name="colorPrimary">#FF3DDC84</item>
+        <item name="colorOnPrimary">#FF131110</item>
+        <item name="colorPrimaryContainer">#FF1D3B29</item>
+        <item name="colorOnPrimaryContainer">#FF9AF5BF</item>
+        <item name="colorPrimaryFixed">#FF8DF7B4</item>
+        <item name="colorPrimaryFixedDim">#FF3DDC84</item>
+        <item name="colorOnPrimaryFixed">#FF00210E</item>
+        <item name="colorOnPrimaryFixedVariant">#FF005229</item>
+        <item name="colorPrimaryInverse">#FF086B37</item>
+
+        <item name="colorSecondary">#FFD2CBC1</item>
+        <item name="colorOnSecondary">#FF131110</item>
+        <item name="colorSecondaryContainer">#FF302C28</item>
+        <item name="colorOnSecondaryContainer">#FFF4F1EC</item>
+        <item name="colorSecondaryFixed">#FFE9E2D8</item>
+        <item name="colorSecondaryFixedDim">#FFCFC8BE</item>
+        <item name="colorOnSecondaryFixed">#FF1F1B16</item>
+        <item name="colorOnSecondaryFixedVariant">#FF4B463F</item>
+
+        <item name="colorTertiary">#FF8AB8E8</item>
+        <item name="colorOnTertiary">#FF0B2C4A</item>
+        <item name="colorTertiaryContainer">#FF1C3247</item>
+        <item name="colorOnTertiaryContainer">#FFD2E6FA</item>
+        <item name="colorTertiaryFixed">#FFD2E6FA</item>
+        <item name="colorTertiaryFixedDim">#FF8AB8E8</item>
+        <item name="colorOnTertiaryFixed">#FF001D33</item>
+        <item name="colorOnTertiaryFixedVariant">#FF1A4A75</item>
+
+        <item name="colorError">#FFE8705A</item>
+        <item name="colorOnError">#FF131110</item>
+        <item name="colorErrorContainer">#FF3B1E17</item>
+        <item name="colorOnErrorContainer">#FFFFC9BD</item>
+
+        <item name="android:colorBackground">#FF131110</item>
+        <item name="colorOnBackground">#FFF4F1EC</item>
+        <item name="colorSurface">#FF131110</item>
+        <item name="colorSurfaceDim">#FF131110</item>
+        <item name="colorSurfaceBright">#FF35302B</item>
+        <item name="colorSurfaceContainerLowest">#FF0C0B0A</item>
+        <item name="colorSurfaceContainerLow">#FF171513</item>
+        <item name="colorSurfaceContainer">#FF1B1917</item>
+        <item name="colorSurfaceContainerHigh">#FF24211E</item>
+        <item name="colorSurfaceContainerHighest">#FF2D2A26</item>
+        <item name="colorOnSurface">#FFF4F1EC</item>
+        <item name="colorSurfaceVariant">#FF24211E</item>
+        <item name="colorOnSurfaceVariant">#FFA29B91</item>
+        <item name="colorOutline">#FF857E74</item>
+        <item name="colorOutlineVariant">#FF2C2926</item>
+        <item name="colorSurfaceInverse">#FFF4F1EC</item>
+        <item name="colorOnSurfaceInverse">#FF131110</item>
+
+        <!-- neutral tones used by the app's own drawables -->
+        <item name="paletteNeutral20">#FF2D2A26</item>
+        <item name="paletteNeutral95">#FFF4F1EC</item>
+    </style>
+
+    <style name="ThemeOverlay.Palette.Bugra.Light" parent="">
+        <item name="colorPrimary">#FF086B37</item>
+        <item name="colorOnPrimary">#FFFFFFFF</item>
+        <item name="colorPrimaryContainer">#FF3DDC84</item>
+        <item name="colorOnPrimaryContainer">#FF131110</item>
+        <item name="colorPrimaryFixed">#FF8DF7B4</item>
+        <item name="colorPrimaryFixedDim">#FF3DDC84</item>
+        <item name="colorOnPrimaryFixed">#FF00210E</item>
+        <item name="colorOnPrimaryFixedVariant">#FF005229</item>
+        <item name="colorPrimaryInverse">#FF3DDC84</item>
+
+        <item name="colorSecondary">#FF5F5850</item>
+        <item name="colorOnSecondary">#FFFFFFFF</item>
+        <item name="colorSecondaryContainer">#FFEBE7E0</item>
+        <item name="colorOnSecondaryContainer">#FF131110</item>
+        <item name="colorSecondaryFixed">#FFE9E2D8</item>
+        <item name="colorSecondaryFixedDim">#FFCFC8BE</item>
+        <item name="colorOnSecondaryFixed">#FF1F1B16</item>
+        <item name="colorOnSecondaryFixedVariant">#FF4B463F</item>
+
+        <item name="colorTertiary">#FF1A5A94</item>
+        <item name="colorOnTertiary">#FFFFFFFF</item>
+        <item name="colorTertiaryContainer">#FFD2E6FA</item>
+        <item name="colorOnTertiaryContainer">#FF0B2C4A</item>
+        <item name="colorTertiaryFixed">#FFD2E6FA</item>
+        <item name="colorTertiaryFixedDim">#FF8AB8E8</item>
+        <item name="colorOnTertiaryFixed">#FF001D33</item>
+        <item name="colorOnTertiaryFixedVariant">#FF1A4A75</item>
+
+        <item name="colorError">#FFA63A25</item>
+        <item name="colorOnError">#FFFFFFFF</item>
+        <item name="colorErrorContainer">#FFFADCD4</item>
+        <item name="colorOnErrorContainer">#FF4A140A</item>
+
+        <item name="android:colorBackground">#FFF6F3EE</item>
+        <item name="colorOnBackground">#FF131110</item>
+        <item name="colorSurface">#FFF6F3EE</item>
+        <item name="colorSurfaceDim">#FFE2DED7</item>
+        <item name="colorSurfaceBright">#FFFBF9F6</item>
+        <item name="colorSurfaceContainerLowest">#FFFFFFFF</item>
+        <item name="colorSurfaceContainerLow">#FFFBF9F6</item>
+        <item name="colorSurfaceContainer">#FFFFFFFF</item>
+        <item name="colorSurfaceContainerHigh">#FFEBE7E0</item>
+        <item name="colorSurfaceContainerHighest">#FFE4DFD7</item>
+        <item name="colorOnSurface">#FF131110</item>
+        <item name="colorSurfaceVariant">#FFEBE7E0</item>
+        <item name="colorOnSurfaceVariant">#FF5F5850</item>
+        <item name="colorOutline">#FF7A7369</item>
+        <item name="colorOutlineVariant">#FFDDD8D0</item>
+        <item name="colorSurfaceInverse">#FF2B2724</item>
+        <item name="colorOnSurfaceInverse">#FFF4F1EC</item>
+
+        <item name="paletteNeutral20">#FF2D2A26</item>
+        <item name="paletteNeutral95">#FFF4F1EC</item>
+    </style>
+
+</resources>

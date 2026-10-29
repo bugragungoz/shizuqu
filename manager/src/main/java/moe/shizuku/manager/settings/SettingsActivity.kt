@@ -9,7 +9,7 @@ class SettingsActivity : AppBarFragmentActivity() {
 
     override fun onApplyUserThemeResource(theme: Resources.Theme, isDecorView: Boolean) {
         super.onApplyUserThemeResource(theme, isDecorView)
-        theme.applyStyle(R.style.ThemeOverlay_Rikka_Material3_Preference, true)
+        theme.applyStyle(R.style.ThemeOverlay_Shizuqu_Preference, true)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

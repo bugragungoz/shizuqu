@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="notification">#3F51B5</color>
+    <!-- notification accent: Bugra green, mid tone so it reads on light and dark shades -->
+    <color name="notification">#1FA35A</color>
 
-    <color name="app_color_light">#3F51B5</color>
-    <color name="app_color_dark">#B1B8DF</color>
+    <!-- Bugra design system accent (Android green) -->
+    <color name="bugra_accent">#3DDC84</color>
+
+    <color name="app_color_light">#086B37</color>
+    <color name="app_color_dark">#3DDC84</color>
 </resources>

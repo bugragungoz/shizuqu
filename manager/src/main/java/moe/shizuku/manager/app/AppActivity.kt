@@ -13,17 +13,12 @@ import rikka.material.app.MaterialActivity
 abstract class AppActivity : MaterialActivity() {
 
     override fun computeUserThemeKey(): String {
-        return ThemeHelper.getTheme(this) + ThemeHelper.isUsingSystemColor()
+        return ThemeHelper.getTheme(this) + ThemeHelper.getPalette().id
     }
 
     override fun onApplyUserThemeResource(theme: Theme, isDecorView: Boolean) {
-        if (ThemeHelper.isUsingSystemColor()) {
-            if (resources.configuration.isNight())
-                theme.applyStyle(R.style.ThemeOverlay_DynamicColors_Dark, true)
-            else
-                theme.applyStyle(R.style.ThemeOverlay_DynamicColors_Light, true)
-        }
-
+        // color roles of the selected palette (Bugra by default), then the pure black overlay
+        theme.applyStyle(ThemeHelper.getPalette().overlay(resources.configuration.isNight()), true)
         theme.applyStyle(ThemeHelper.getThemeStyleRes(this), true)
     }
 

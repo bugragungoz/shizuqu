@@ -134,6 +134,16 @@
     <string name="adb_pairing_tutorial_content_left_is_clickable">Lütfen, \"Kablosuz hata ayıklama\" seçeneğinin sol kısmının tıklanabilir olduğunu, dokunulduğunda yeni bir sayfa açılacağını unutmayın. Yalnızca sağdaki düğmeyi açmak yanlıştır.</string>
     <string name="adb_pairing_tutorial_content_network_limation_not_foreground">Bazı sistemler (MIUI gibi), uygulama standart olarak ön plan hizmetini kullansa bile, arka planda çalıştıklarında ağa erişmesine izin vermez. Lütfen bu tür sistemlerde Shizuku için pil optimizasyon özelliklerini devre dışı bırakın.</string>
     <string name="settings_use_system_color">Sistem tema rengini kullan</string>
+    <string name="settings_color_palette">Renk paleti</string>
+    <string name="palette_indigo">Çivit</string>
+    <string name="palette_ocean">Okyanus</string>
+    <string name="palette_teal">Turkuaz</string>
+    <string name="palette_violet">Menekşe</string>
+    <string name="palette_rose">Gül</string>
+    <string name="palette_amber">Kehribar</string>
+    <string name="palette_graphite">Grafit</string>
+    <string name="palette_state_selected">Seçili</string>
+    <string name="palette_state_not_selected">Seçili değil</string>
     <string name="home_adb_is_limited_title">Fazladan bi adım daha yapmanız gerekiyor</string>
     <string name="dialog_adb_discovery_message_toggle_wireless_debugging">Eğer sürekli arıyorsa lütfen \"Wireless Debugging\" ayarını kapatıp açmayı deneyin.</string>
     <string name="home_app_management_empty">Shizuku iznine ihtiyaç duyan uygulamalar burada gösterilir.</string>

@@ -17,7 +17,7 @@ import moe.shizuku.manager.ShizukuSettings
 import moe.shizuku.manager.ShizukuSettings.KEEP_START_ON_BOOT
 import moe.shizuku.manager.app.ThemeHelper
 import moe.shizuku.manager.app.ThemeHelper.KEY_BLACK_NIGHT_THEME
-import moe.shizuku.manager.app.ThemeHelper.KEY_USE_SYSTEM_COLOR
+import moe.shizuku.manager.app.ThemeHelper.KEY_COLOR_PALETTE
 import moe.shizuku.manager.ktx.isComponentEnabled
 import moe.shizuku.manager.ktx.setComponentEnabled
 import moe.shizuku.manager.ktx.toHtml
@@ -42,7 +42,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private lateinit var startupPreference: PreferenceCategory
     private lateinit var translationPreference: Preference
     private lateinit var translationContributorsPreference: Preference
-    private lateinit var useSystemColorPreference: TwoStatePreference
+    private lateinit var palettePreference: PalettePreference
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         val context = requireContext()
@@ -59,7 +59,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         startupPreference = findPreference("startup")!!
         translationPreference = findPreference("translation")!!
         translationContributorsPreference = findPreference("translation_contributors")!!
-        useSystemColorPreference = findPreference(KEY_USE_SYSTEM_COLOR)!!
+        palettePreference = findPreference(KEY_COLOR_PALETTE)!!
 
         val componentName = ComponentName(context.packageName, BootCompleteReceiver::class.java.name)
 
@@ -112,18 +112,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
             blackNightThemePreference.isVisible = false
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            useSystemColorPreference.onPreferenceChangeListener =
-                Preference.OnPreferenceChangeListener { _: Preference?, value: Any? ->
-                    if (value is Boolean) {
-                        if (ThemeHelper.isUsingSystemColor() != value) {
-                            activity?.recreate()
-                        }
-                    }
-                    true
-                }
-        } else {
-            useSystemColorPreference.isVisible = false
+        palettePreference.onPaletteChanged = {
+            activity?.recreate()
         }
 
         translationPreference.summary =

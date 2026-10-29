@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Bugra design system mapped to Material 3 (shapes, type, cards). Colors are in the
+  palette overlays (themes_palette_*.xml); everything here applies to every palette.
+
+  Shape: extra small 4dp (radius-2xs), small 10dp (radius-sm), medium/large/extra large
+  14dp (radius); buttons, chips and switches keep the Material 3 full (pill) shape.
+  Material's 28dp extra-large corners are not used on cards or dialogs.
+
+  Type: Geist for UI (400 body, 500 labels and list items, 600 titles and headlines; tight
+  tracking on large sizes), JetBrains Mono for commands and logs. Fonts are set only through
+  text appearances (Material 3 roles, the platform ones and the settings overlay), never as a
+  theme-level fontFamily, so each role keeps its weight. Static font files, not variable ones,
+  so the weights are the same on Android 7.
+
+  Cards: flat, surfaceContainer with a 1dp outlineVariant hairline instead of a shadow.
+-->
+<resources>
+
+    <!-- shapes -->
+    <style name="ShapeAppearance.Shizuqu.Corner.ExtraSmall" parent="ShapeAppearance.Material3.Corner.ExtraSmall">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">4dp</item>
+    </style>
+
+    <style name="ShapeAppearance.Shizuqu.Corner.Small" parent="ShapeAppearance.Material3.Corner.Small">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">10dp</item>
+    </style>
+
+    <style name="ShapeAppearance.Shizuqu.Corner.Medium" parent="ShapeAppearance.Material3.Corner.Medium">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">14dp</item>
+    </style>
+
+    <style name="ShapeAppearance.Shizuqu.Corner.Large" parent="ShapeAppearance.Material3.Corner.Large">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">14dp</item>
+    </style>
+
+    <style name="ShapeAppearance.Shizuqu.Corner.ExtraLarge" parent="ShapeAppearance.Material3.Corner.ExtraLarge">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">14dp</item>
+    </style>
+
+    <!-- type -->
+    <style name="TextAppearance.Shizuqu.DisplayLarge" parent="TextAppearance.Material3.DisplayLarge">
+        <item name="fontFamily">@font/geist_semibold</item>
+        <item name="android:fontFamily">@font/geist_semibold</item>
+        <item name="android:letterSpacing">-0.03</item>
+    </style>
+
+    <style name="TextAppearance.Shizuqu.DisplayMedium" parent="TextAppearance.Material3.DisplayMedium">
+        <item name="fontFamily">@font/geist_semibold</item>
+        <item name="android:fontFamily">@font/geist_semibold</item>
+        <item name="android:letterSpacing">-0.03</item>
+    </style>
+
+    <style name="TextAppearance.Shizuqu.DisplaySmall" parent="TextAppearance.Material3.DisplaySmall">
+        <item name="fontFamily">@font/geist_semibold</item>
+        <item name="android:fontFamily">@font/geist_semibold</item>
+        <item name="android:letterSpacing">-0.02</item>
+    </style>
+
+    <style name="TextAppearance.Shizuqu.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="fontFamily">@font/geist_semibold</item>
+        <item name="android:fontFamily">@font/geist_semibold</item>
+        <item name="android:letterSpacing">-0.02</item>
+    </style>
+
+    <style name="TextAppearance.Shizuqu.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="fontFamily">@font/geist_semibold</item>
+        <item name="android:fontFamily">@font/geist_semibold</item>
+        <item name="android:letterSpacing">-0.02</item>
+    </style>
+
+    <style name="TextAppearance.Shizuqu.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="fontFamily">@font/geist_semibold</item>
+        <item name="android:fontFamily">@font/geist_semibold</item>
+        <item name="android:letterSpacing">-0.01</item>
+    </style>
+
+    <style name="TextAppearance.Shizuqu.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="fontFamily">@font/geist_semibold</item>
+        <item name="android:fontFamily">@font/geist_semibold</item>
+        <item name="android:letterSpacing">-0.01</item>
+    </style>
+
+    <style name="TextAppearance.Shizuqu.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="fontFamily">@font/geist_semibold</item>
+        <item name="android:fontFamily">@font/geist_semibold</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="TextAppearance.Shizuqu.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="fontFamily">@font/geist_medium</item>
+        <item name="android:fontFamily">@font/geist_medium</item>
+    </style>
+
+    <style name="TextAppearance.Shizuqu.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="fontFamily">@font/geist</item>
+        <item name="android:fontFamily">@font/geist</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="TextAppearance.Shizuqu.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="fontFamily">@font/geist</item>
+        <item name="android:fontFamily">@font/geist</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="TextAppearance.Shizuqu.BodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="fontFamily">@font/geist</item>
+        <item name="android:fontFamily">@font/geist</item>
+    </style>
+
+    <style name="TextAppearance.Shizuqu.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="fontFamily">@font/geist_medium</item>
+        <item name="android:fontFamily">@font/geist_medium</item>
+    </style>
+
+    <style name="TextAppearance.Shizuqu.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="fontFamily">@font/geist_medium</item>
+        <item name="android:fontFamily">@font/geist_medium</item>
+    </style>
+
+    <style name="TextAppearance.Shizuqu.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
+        <item name="fontFamily">@font/geist_medium</item>
+        <item name="android:fontFamily">@font/geist_medium</item>
+    </style>
+
+    <!-- list items (dialog lists, menus with titles): Material's TitleMedium weight (500) -->
+    <style name="TextAppearance.Shizuqu.ListItem" parent="TextAppearance.Material3.TitleMedium">
+        <item name="fontFamily">@font/geist_medium</item>
+        <item name="android:fontFamily">@font/geist_medium</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <!-- Platform text appearances with the Geist font and nothing else changed. Plain text
+         views use these (TextView's default is textAppearanceSmall). -->
+    <style name="TextAppearance.Shizuqu.Platform" parent="@android:style/TextAppearance.Material">
+        <item name="android:fontFamily">@font/geist</item>
+        <item name="fontFamily">@font/geist</item>
+    </style>
+
+    <style name="TextAppearance.Shizuqu.Platform.Small" parent="@android:style/TextAppearance.Material.Small">
+        <item name="android:fontFamily">@font/geist</item>
+        <item name="fontFamily">@font/geist</item>
+    </style>
+
+    <style name="TextAppearance.Shizuqu.Platform.Medium" parent="@android:style/TextAppearance.Material.Medium">
+        <item name="android:fontFamily">@font/geist</item>
+        <item name="fontFamily">@font/geist</item>
+    </style>
+
+    <style name="TextAppearance.Shizuqu.Platform.Large" parent="@android:style/TextAppearance.Material.Large">
+        <item name="android:fontFamily">@font/geist</item>
+        <item name="fontFamily">@font/geist</item>
+    </style>
+
+    <style name="TextAppearance.Shizuqu.Platform.Small.Inverse" parent="@android:style/TextAppearance.Material.Small.Inverse">
+        <item name="android:fontFamily">@font/geist</item>
+        <item name="fontFamily">@font/geist</item>
+    </style>
+
+    <style name="TextAppearance.Shizuqu.Platform.Medium.Inverse" parent="@android:style/TextAppearance.Material.Medium.Inverse">
+        <item name="android:fontFamily">@font/geist</item>
+        <item name="fontFamily">@font/geist</item>
+    </style>
+
+    <style name="TextAppearance.Shizuqu.Platform.Large.Inverse" parent="@android:style/TextAppearance.Material.Large.Inverse">
+        <item name="android:fontFamily">@font/geist</item>
+        <item name="fontFamily">@font/geist</item>
+    </style>
+
+    <style name="TextAppearance.Shizuqu.Platform.Button" parent="@android:style/TextAppearance.Material.Button">
+        <item name="android:fontFamily">@font/geist_medium</item>
+        <item name="fontFamily">@font/geist_medium</item>
+    </style>
+
+    <!-- Settings: Rikka's Material 3 preference look with the Geist font -->
+    <style name="TextAppearance.Shizuqu.PreferenceTitle" parent="TextAppearance.Rikka.PreferenceTitle.Material3">
+        <item name="android:fontFamily">@font/geist</item>
+        <item name="fontFamily">@font/geist</item>
+    </style>
+
+    <style name="TextAppearance.Shizuqu.PreferenceCategory" parent="TextAppearance.Rikka.CategoryTitle.Material3">
+        <item name="android:fontFamily">@font/geist_medium</item>
+        <item name="fontFamily">@font/geist_medium</item>
+    </style>
+
+    <style name="PreferenceThemeOverlay.Shizuqu" parent="PreferenceThemeOverlay.Rikka.Material3">
+        <item name="preferenceCategoryTitleTextAppearance">@style/TextAppearance.Shizuqu.PreferenceCategory</item>
+    </style>
+
+    <style name="ThemeOverlay.Shizuqu.Preference" parent="ThemeOverlay.Rikka.Material3.Preference">
+        <item name="android:textAppearanceListItem">@style/TextAppearance.Shizuqu.PreferenceTitle</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.Shizuqu</item>
+    </style>
+
+    <!-- commands, ports and logs -->
+    <style name="TextAppearance.Shizuqu.Code" parent="TextAppearance.Material3.BodyMedium">
+        <item name="fontFamily">@font/jetbrains_mono</item>
+        <item name="android:fontFamily">@font/jetbrains_mono</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <!-- text view for commands and logs -->
+    <style name="Widget.Shizuqu.TextView.Code" parent="">
+        <item name="android:textAppearance">@style/TextAppearance.Shizuqu.Code</item>
+        <item name="fontFamily">@font/jetbrains_mono</item>
+        <item name="android:fontFamily">@font/jetbrains_mono</item>
+    </style>
+
+    <!-- flat card: surfaceContainer, 1dp hairline, 14dp corners -->
+    <style name="Widget.Shizuqu.Card" parent="Widget.Material3.CardView.Outlined">
+        <item name="cardBackgroundColor">?attr/colorSurfaceContainer</item>
+        <item name="strokeColor">?attr/colorOutlineVariant</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Shizuqu.Corner.Medium</item>
+    </style>
+
+</resources>

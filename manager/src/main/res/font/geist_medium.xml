@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Geist Medium (500), static instance. SIL OFL 1.1. -->
+<font-family xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <font
+        android:font="@font/geist_w500"
+        android:fontStyle="normal"
+        android:fontWeight="500"
+        app:font="@font/geist_w500"
+        app:fontStyle="normal"
+        app:fontWeight="500" />
+</font-family>
