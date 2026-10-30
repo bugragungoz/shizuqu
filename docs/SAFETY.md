@@ -15,7 +15,7 @@ completely (unless you turn on "Start on boot").
 |---|---|---|
 | Starts one background process, `shizuku_server` (shell user) | when you tap Start | menu > Stop, or reboot |
 | Grants itself `WRITE_SECURE_SETTINGS` | first start (same as upstream Shizuku) | uninstall the app |
-| `adb_wifi_enabled = 1`, `adb_enabled = 1` (turns wireless / USB debugging on) | when you open the wireless "Start" dialog or tap the Quick Settings tile (after unlocking), and at boot if "Start on boot" is on | Developer options |
+| `adb_wifi_enabled = 1`, `adb_enabled = 1` (turns wireless / USB debugging on) | when you open the wireless "Start" dialog or tap the Quick Settings tile (after unlocking; only if you last started through adb), and at boot if "Start on boot" is on | Developer options |
 | `adb_allowed_connection_time = 0` (ADB authorizations do not expire after 7 days of disuse) | same as above, so the paired key keeps working | Developer options > "Revoke USB debugging authorizations" |
 | `/data/user_de/0/com.android.shell/shizuku.json` (which apps you allowed) | when you allow / deny an app | deny the app, or clear Shell's data |
 | Grants / revokes the Shizuku permission of apps that request it | when you allow / deny an app | the app list in Shizuqu |

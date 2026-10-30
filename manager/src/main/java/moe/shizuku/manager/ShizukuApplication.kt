@@ -1,7 +1,6 @@
 package moe.shizuku.manager
 
 import android.app.Application
-import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
@@ -11,7 +10,15 @@ import org.lsposed.hiddenapibypass.HiddenApiBypass
 import rikka.core.util.BuildUtils.atLeast30
 import rikka.material.app.LocaleDelegate
 
-lateinit var application: ShizukuApplication
+lateinit var application: Application
+
+/** Settings, locale and night mode; also used by the smoke tests' application. */
+fun initApplication(app: Application) {
+    application = app
+    ShizukuSettings.initialize(app)
+    LocaleDelegate.defaultLocale = ShizukuSettings.getLocale()
+    AppCompatDelegate.setDefaultNightMode(ShizukuSettings.getNightMode())
+}
 
 class ShizukuApplication : Application() {
 
@@ -38,16 +45,9 @@ class ShizukuApplication : Application() {
         }
     }
 
-    private fun init(context: Context?) {
-        ShizukuSettings.initialize(context)
-        LocaleDelegate.defaultLocale = ShizukuSettings.getLocale()
-        AppCompatDelegate.setDefaultNightMode(ShizukuSettings.getNightMode())
-    }
-
     override fun onCreate() {
         super.onCreate()
-        application = this
-        init(this)
+        initApplication(this)
     }
 
 }

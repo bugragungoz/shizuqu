@@ -85,9 +85,12 @@ Needs `dexdump` from build-tools (found through `ANDROID_HOME`).
 ```
 
 Robolectric (no device) opens the home screen in every palette, light and
-dark, and checks the palette's colors really apply; it also opens Settings,
-the app list and the two guides. A theme or layout mistake that would crash
-the app at launch fails here (and in CI) instead of on a phone.
+dark, and checks that each palette's primary color really applies (except
+Material You, which follows the wallpaper); it also opens Settings, the app
+list and the two guides, and checks when the Quick Settings tile may start
+the service (never for root users or without the grant). A theme or layout
+mistake that would crash the app at launch fails here (and in CI) instead of
+on a phone.
 
 ## Screenshot tests (design review)
 

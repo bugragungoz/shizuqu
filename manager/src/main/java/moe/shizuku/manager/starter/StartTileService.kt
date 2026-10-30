@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Build
-import android.os.SystemClock
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import android.util.Log
@@ -17,23 +16,16 @@ import rikka.shizuku.Shizuku
  *
  * The tap does what the app's "Start" button for wireless debugging does, through
  * [BootStartService] (turn wireless debugging on, find its port, run the starter), so it
- * needs Android 13+ and a first start from the app (which grants WRITE_SECURE_SETTINGS).
- * Otherwise, and when the service already runs, the tap opens the app.
+ * only works when [BootStart.canStart] allows it (Android 13+, main user, last started
+ * through adb, WRITE_SECURE_SETTINGS granted by a first start). Otherwise, and when the
+ * service already runs, the tap opens the app.
  *
  * On the lock screen the phone has to be unlocked first: starting a privileged service
  * must not be possible without unlocking.
  */
 class StartTileService : TileService() {
 
-    // when the last start was requested; a start takes at most about 3 minutes
-    private var startRequestedAt = 0L
-    private val starting
-        get() = startRequestedAt != 0L && SystemClock.elapsedRealtime() - startRequestedAt < 180_000
-
-    private val binderReceived = Shizuku.OnBinderReceivedListener {
-        startRequestedAt = 0L
-        updateTile()
-    }
+    private val binderReceived = Shizuku.OnBinderReceivedListener { updateTile() }
     private val binderDead = Shizuku.OnBinderDeadListener { updateTile() }
 
     override fun onStartListening() {
@@ -65,15 +57,15 @@ class StartTileService : TileService() {
     }
 
     private fun onClickUnlocked() {
-        if (!Shizuku.pingBinder() && !starting && BootStart.canStart(this) && BootStart.start(this)) {
-            startRequestedAt = SystemClock.elapsedRealtime()
-            updateTile()
+        if (!Shizuku.pingBinder() && !BootStart.running && BootStart.canStart(this) && BootStart.start(this)) {
+            // the service sets BootStart.running a moment later
+            updateTile(starting = true)
         } else {
             openApp()
         }
     }
 
-    private fun updateTile() {
+    private fun updateTile(starting: Boolean = BootStart.running) {
         val tile = qsTile ?: return
         val running = Shizuku.pingBinder()
         tile.label = getString(R.string.app_name)

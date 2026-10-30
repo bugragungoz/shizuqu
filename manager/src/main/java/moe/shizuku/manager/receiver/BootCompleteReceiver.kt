@@ -3,7 +3,6 @@ package moe.shizuku.manager.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.util.Log
 import com.topjohnwu.superuser.Shell
 import moe.shizuku.manager.AppConstants
@@ -26,9 +25,7 @@ class BootCompleteReceiver : BroadcastReceiver() {
 
         if (ShizukuSettings.getLastLaunchMode() == LaunchMethod.ROOT) {
             rootStart(context)
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU // https://r.android.com/2128832
-            && ShizukuSettings.getLastLaunchMode() == LaunchMethod.ADB
-            && BootStart.canStart(context)) {
+        } else if (BootStart.canStart(context)) {
             // waits for Wi-Fi and retries, see BootStartService
             BootStart.start(context)
         } else {

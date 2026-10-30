@@ -20,7 +20,8 @@ import org.robolectric.annotation.Config
 
 /**
  * Opens the app's screens as real activities (Robolectric, no device) in every palette,
- * light and dark, so a theme or layout mistake that crashes at launch fails the build.
+ * light and dark, so a theme or layout mistake that crashes at launch fails the build,
+ * and checks when the Quick Settings tile may start the service.
  *
  * ./gradlew :manager:testDebugUnitTest
  */
@@ -51,13 +52,15 @@ class LaunchSmokeTest {
         for (palette in Palette.available()) {
             for (night in listOf(false, true)) {
                 open(MainActivity::class.java, palette, night) { activity ->
-                    if (palette == Palette.BUGRA) {
-                        // the palette overlay really is applied
-                        assertEquals(
-                            "Bugra primary (night=$night)",
-                            if (night) 0xFF3DDC84.toInt() else 0xFF086B37.toInt(),
-                            activity.colorPrimary()
-                        )
+                    // the palette overlay really is applied (Material You depends on the wallpaper)
+                    val expected = when (palette) {
+                        Palette.BUGRA -> if (night) 0xFF3DDC84.toInt() else 0xFF086B37.toInt()
+                        Palette.SYSTEM -> null
+                        // a preset's swatch is its primary color
+                        else -> palette.swatchColor(activity, night)
+                    }
+                    if (expected != null) {
+                        assertEquals("$palette primary (night=$night)", expected, activity.colorPrimary())
                     }
                 }
             }
@@ -80,10 +83,11 @@ class LaunchSmokeTest {
     }
 
     @Test
-    fun tileWithoutServiceOpensTheApp() {
+    fun tileDoesNotStartWithoutGrant() {
         val tile = Robolectric.setupService(StartTileService::class.java)
         tile.onStartListening()
-        // service not running and never paired: the tap must not try to start anything
+        // service not running and never started from the app: the tap must not start anything
+        // (it opens the app, which Robolectric's tile cannot show)
         tile.onClick()
         tile.onStopListening()
         val started = org.robolectric.Shadows.shadowOf(RuntimeEnvironment.getApplication()).nextStartedService
@@ -92,12 +96,23 @@ class LaunchSmokeTest {
 
     @Test
     fun tileStartsTheServiceOncePaired() {
-        // a first start from the app grants WRITE_SECURE_SETTINGS
+        // a first start from the app through adb grants WRITE_SECURE_SETTINGS
         val app = RuntimeEnvironment.getApplication()
         org.robolectric.Shadows.shadowOf(app).grantPermissions(android.Manifest.permission.WRITE_SECURE_SETTINGS)
+        ShizukuSettings.setLastLaunchMode(ShizukuSettings.LaunchMethod.ADB)
         val tile = Robolectric.setupService(StartTileService::class.java)
         tile.onClick()
         val started = org.robolectric.Shadows.shadowOf(app).nextStartedService
         assertEquals(moe.shizuku.manager.starter.BootStartService::class.java.name, started?.component?.className)
+    }
+
+    @Test
+    fun tileDoesNotTurnOnWirelessDebuggingForRootUsers() {
+        val app = RuntimeEnvironment.getApplication()
+        org.robolectric.Shadows.shadowOf(app).grantPermissions(android.Manifest.permission.WRITE_SECURE_SETTINGS)
+        ShizukuSettings.setLastLaunchMode(ShizukuSettings.LaunchMethod.ROOT)
+        val tile = Robolectric.setupService(StartTileService::class.java)
+        tile.onClick()
+        assertEquals(null, org.robolectric.Shadows.shadowOf(app).nextStartedService)
     }
 }

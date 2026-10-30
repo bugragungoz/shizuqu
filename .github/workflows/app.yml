@@ -74,15 +74,12 @@ jobs:
           echo 'android.native.buildOutput=verbose' >> gradle.properties
           echo 'org.gradle.caching=true' >> gradle.properties
           echo 'org.gradle.parallel=true' >> gradle.properties
-          ./gradlew :manager:assemble
+          # smoke tests (Robolectric: every screen in every palette) in the same run
+          ./gradlew :manager:testDebugUnitTest :manager:assemble
           apk=$(ls manager/build/outputs/apk/release/*-release.apk | head -n1)
           name=$(basename "$apk" -release.apk)
           echo "releaseName=$name" >> "$GITHUB_OUTPUT"
           echo "releaseApk=$apk" >> "$GITHUB_OUTPUT"
-
-      - name: Smoke tests
-        # Robolectric opens every screen in every palette, light and dark
-        run: ./gradlew :manager:testDebugUnitTest
 
       - name: Check branding
         # The launcher label must be app.name from branding.properties and no

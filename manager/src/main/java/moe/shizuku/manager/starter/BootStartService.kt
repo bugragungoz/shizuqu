@@ -6,6 +6,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -16,6 +17,7 @@ import android.os.Build
 import android.os.IBinder
 import android.os.SystemClock
 import android.provider.Settings
+import android.service.quicksettings.TileService
 import android.util.Log
 import androidx.annotation.RequiresApi
 import kotlinx.coroutines.CancellationException
@@ -36,6 +38,7 @@ import moe.shizuku.manager.adb.AdbClient
 import moe.shizuku.manager.adb.AdbKey
 import moe.shizuku.manager.adb.AdbMdns
 import moe.shizuku.manager.adb.PreferenceAdbKeyStore
+import moe.shizuku.manager.utils.UserHandleCompat
 import rikka.shizuku.Shizuku
 
 /** Entry points for [BootStartService], callable on every API level. */
@@ -43,11 +46,23 @@ object BootStart {
 
     private const val TAG = "BootStart"
 
-    /** Android 13+ and the WRITE_SECURE_SETTINGS grant the server gives the manager. */
+    /**
+     * Whether a start through wireless debugging may be tried without asking: Android 13+
+     * (https://r.android.com/2128832), the main user, the last start was through adb (not
+     * root, so wireless debugging is not turned on for someone who never used it), and the
+     * WRITE_SECURE_SETTINGS grant the server gives the manager on its first start.
+     */
     fun canStart(context: Context): Boolean {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                && UserHandleCompat.myUserId() == 0
+                && ShizukuSettings.getLastLaunchMode() == ShizukuSettings.LaunchMethod.ADB
                 && context.checkSelfPermission(WRITE_SECURE_SETTINGS) == PackageManager.PERMISSION_GRANTED
     }
+
+    /** True while [BootStartService] works on a start (read by the Quick Settings tile). */
+    @Volatile
+    var running = false
+        internal set
 
     /** @return false if the system refused to start the service */
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -76,9 +91,9 @@ object BootStart {
  * [RUN_BUDGET_MS], and [onTimeout] stops it cleanly if the system ends it
  * earlier.
  *
- * Only runs when the user enabled "Start on boot" (the receiver is disabled by
- * default). Needs Android 13+ and WRITE_SECURE_SETTINGS, which the server
- * grants to the manager the first time it starts.
+ * Started by the boot receiver (only when the user enabled "Start on boot",
+ * the receiver is disabled by default) and by a tap on the Quick Settings
+ * tile, both only when [BootStart.canStart] allows it.
  */
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 class BootStartService : Service() {
@@ -131,6 +146,8 @@ class BootStartService : Service() {
         // one attempt covers both
         if (job?.isActive == true) return START_NOT_STICKY
 
+        BootStart.running = true
+        refreshTile()
         job = scope.launch {
             val started = try {
                 startService()
@@ -138,7 +155,7 @@ class BootStartService : Service() {
                 // onTimeout or onDestroy: they clean up themselves
                 throw e
             } catch (e: Throwable) {
-                Log.w(TAG, "start on boot failed", e)
+                Log.w(TAG, "start failed", e)
                 false
             }
             // on the main thread, like onStartCommand, so the two never interleave
@@ -150,6 +167,7 @@ class BootStartService : Service() {
     private suspend fun startService(): Boolean {
         val deadline = SystemClock.elapsedRealtime() + RUN_BUDGET_MS
         if (Shizuku.pingBinder()) return true
+        if (!BootStart.canStart(this)) return false
 
         if (!waitForWifi()) {
             Log.w(TAG, "no Wi-Fi within ${WIFI_TIMEOUT_MS / 1000}s")
@@ -242,9 +260,20 @@ class BootStartService : Service() {
         // the attempt is over: a start request delivered after this launches a new one
         // (its coroutine may still look active for a moment)
         job = null
+        BootStart.running = false
+        refreshTile()
         if (!started) notifyFailed()
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelfResult(lastStartId)
+    }
+
+    // asks the system to let the tile redraw its state
+    private fun refreshTile() {
+        try {
+            TileService.requestListeningState(this, ComponentName(this, StartTileService::class.java))
+        } catch (e: Throwable) {
+            Log.w(TAG, "can't refresh the tile", e)
+        }
     }
 
     private fun notifyFailed() {
@@ -257,6 +286,8 @@ class BootStartService : Service() {
     override fun onTimeout(startId: Int) {
         Log.w(TAG, "short service timeout")
         job?.cancel()
+        BootStart.running = false
+        refreshTile()
         if (!Shizuku.pingBinder()) notifyFailed()
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
@@ -269,6 +300,7 @@ class BootStartService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         scope.cancel()
+        BootStart.running = false
     }
 
     private fun createChannel() {

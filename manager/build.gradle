@@ -267,21 +267,28 @@ dependencies {
 apply from: rootProject.file('signing.gradle')
 apply from: 'branding.gradle'
 
-// Robolectric registers BouncyCastle's provider when it starts. The jars on the unit test
-// classpath went through the build's bytecode transforms but keep their signatures, so the
-// JVM rejects them ("SHA-256 digest error"). Put the original, untouched bcprov first and
-// leave out the app's other BouncyCastle jars (the smoke tests do not use them). Keep the
-// version equal to the bcprov Robolectric resolves (:manager:dependencies).
+// Robolectric registers BouncyCastle's provider when it starts. The BouncyCastle jars on
+// the unit test classpath went through the build's bytecode transforms but keep their
+// signature files, so the JVM rejects them ("SHA-256 digest error"). The tests get copies
+// without the signature files (the classes are the same).
 if (!project.hasProperty('screenshots')) {
-    def bouncyCastle = configurations.detachedConfiguration(dependencies.create('org.bouncycastle:bcprov-jdk18on:1.85'))
-    bouncyCastle.transitive = false
-    tasks.withType(Test).configureEach {
-        doFirst { classpath = bouncyCastle + classpath }
+    tasks.withType(Test).configureEach { task ->
+        def unsignedDir = new File(buildDir, "tmp/${task.name}/unsigned")
+        doFirst {
+            unsignedDir.mkdirs()
+            classpath = files(classpath.collect { File jar ->
+                if (!(jar.name ==~ /bc[a-z]+-jdk18on-.*\.jar/)) return jar
+                def copy = new File(unsignedDir, jar.name)
+                if (!copy.exists() || copy.lastModified() < jar.lastModified()) {
+                    copy.delete()
+                    ant.zip(destfile: copy) {
+                        zipfileset(src: jar, excludes: 'META-INF/*.SF,META-INF/*.RSA,META-INF/*.DSA,META-INF/*.EC')
+                    }
+                }
+                copy
+            })
+        }
         // Robolectric reads FileDescriptor internals (JDK 17+ hides them)
         jvmArgs '--add-opens=java.base/java.io=ALL-UNNAMED', '--add-exports=java.base/jdk.internal.access=ALL-UNNAMED'
-    }
-    configurations.matching { it.name.endsWith('UnitTestRuntimeClasspath') }.configureEach {
-        exclude group: 'org.bouncycastle', module: 'bcpkix-jdk18on'
-        exclude group: 'org.bouncycastle', module: 'bcutil-jdk18on'
     }
 }
