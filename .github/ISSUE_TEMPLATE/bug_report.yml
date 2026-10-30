@@ -1,52 +1,49 @@
 name: Bug report
-description: Report a bug of this fork
+description: Something does not work in Shizuqu
+labels: [bug]
 
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Problems with an app that *uses* Shizuqu (App Ops, Swift Backup, ...) belong to
+        that app, unless the same app works with Shizuqu on another Android version.
+
   - type: checkboxes
     id: requirements
     attributes:
-      label: Requirements
+      label: Before reporting
       options:
-        - label: The APK was built from this repository (GitHub Actions or own build)
-        - label: Shizuku is not running in a virtual environment or broken ROM (GrapheneOS)
-        - label: (Root users) No Xposed installed / Xposed is not enabled for Shizuku
+        - label: The APK comes from this repository (a GitHub release, a GitHub Actions build or my own build).
+          required: true
+        - label: I restarted the service (or the phone) and the problem is still there.
+        - label: (Root) Xposed / LSPosed is not enabled for Shizuqu.
 
   - type: input
     id: version
     attributes:
-      label: Latest Shizuku version
-    validations:
-      required: true
-
-  - type: input
-    id: shizuku_version
-    attributes:
-      label: Version in use
+      label: Shizuqu version
+      description: Home screen menu > About, or the first line of a copied start log.
+      placeholder: 13.7.0.r1130.abcdef12
     validations:
       required: true
 
   - type: dropdown
     id: mode
     attributes:
-      label: Mode
+      label: How the service is started
       options:
-        - adb
+        - Wireless debugging (no computer)
+        - adb from a computer
         - root
-        - manual
-    validations:
-      required: true
-
-  - type: input
-    id: android_version
-    attributes:
-      label: Android version
     validations:
       required: true
 
   - type: input
     id: device
     attributes:
-      label: Device
+      label: Device and Android version
+      placeholder: Samsung Galaxy A35 5G, One UI 9.0, Android 17
     validations:
       required: true
 
@@ -54,14 +51,26 @@ body:
     id: reproducer
     attributes:
       label: What did you do
+      placeholder: Steps, one per line.
+    validations:
+      required: true
 
   - type: textarea
-    id: logs
+    id: actual
     attributes:
       label: What happened
-      description: You can upload log and screenshot
+      description: Screenshots help. For start problems, tap "Copy log" on the start screen and paste it below.
+    validations:
+      required: true
 
   - type: textarea
-    id: expected-behaviour
+    id: log
     attributes:
-      label: What do you expect
+      label: Start log
+      description: From "Copy log" on the start screen, if the problem is about starting.
+      render: text
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect
