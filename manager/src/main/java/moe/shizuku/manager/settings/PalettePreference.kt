@@ -7,11 +7,17 @@ import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
+import android.widget.HorizontalScrollView
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RadioButton
 import android.widget.TextView
 import androidx.core.graphics.ColorUtils
+import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.doOnLayout
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import moe.shizuku.manager.R
@@ -55,7 +61,20 @@ class PalettePreference @JvmOverloads constructor(
         val current = ThemeHelper.getPalette()
         val inflater = LayoutInflater.from(context)
 
-        for (palette in Palette.available()) {
+        val palettes = Palette.available()
+        ViewCompat.setAccessibilityDelegate(container, object : AccessibilityDelegateCompat() {
+            override fun onInitializeAccessibilityNodeInfo(host: View, info: AccessibilityNodeInfoCompat) {
+                super.onInitializeAccessibilityNodeInfo(host, info)
+                info.setCollectionInfo(
+                    AccessibilityNodeInfoCompat.CollectionInfoCompat.obtain(
+                        1, palettes.size, false, AccessibilityNodeInfoCompat.CollectionInfoCompat.SELECTION_MODE_SINGLE
+                    )
+                )
+            }
+        })
+
+        var selectedItem: View? = null
+        palettes.forEachIndexed { index, palette ->
             val item = inflater.inflate(R.layout.preference_palette_item, container, false)
             val swatch = item.findViewById<ImageView>(R.id.swatch)
             val label = item.findViewById<TextView>(R.id.label)
@@ -76,9 +95,18 @@ class PalettePreference @JvmOverloads constructor(
             label.text = name
             item.isSelected = selected
             item.contentDescription = name
-            ViewCompat.setStateDescription(
-                item, context.getString(if (selected) R.string.palette_state_selected else R.string.palette_state_not_selected)
-            )
+            // read as a radio button in a group ("Bugra, selected, 1 of 9")
+            ViewCompat.setAccessibilityDelegate(item, object : AccessibilityDelegateCompat() {
+                override fun onInitializeAccessibilityNodeInfo(host: View, info: AccessibilityNodeInfoCompat) {
+                    super.onInitializeAccessibilityNodeInfo(host, info)
+                    info.className = RadioButton::class.java.name
+                    info.isCheckable = true
+                    info.isChecked = selected
+                    info.setCollectionItemInfo(
+                        AccessibilityNodeInfoCompat.CollectionItemInfoCompat.obtain(0, 1, index, 1, false, selected)
+                    )
+                }
+            })
             item.setOnClickListener {
                 if (ThemeHelper.getPalette() != palette) {
                     ThemeHelper.setPalette(palette)
@@ -87,6 +115,16 @@ class PalettePreference @JvmOverloads constructor(
                 }
             }
             container.addView(item)
+            if (selected) selectedItem = item
+        }
+
+        // keep the selected swatch in view (the row scrolls sideways on narrow screens)
+        val scroll = container.parent as? HorizontalScrollView
+        container.doOnLayout {
+            val item = selectedItem ?: return@doOnLayout
+            if (scroll != null && (item.right > scroll.scrollX + scroll.width || item.left < scroll.scrollX)) {
+                scroll.scrollTo(item.left - (scroll.width - item.width) / 2, 0)
+            }
         }
     }
 

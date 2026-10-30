@@ -142,8 +142,6 @@
     <string name="palette_rose">Gül</string>
     <string name="palette_amber">Kehribar</string>
     <string name="palette_graphite">Grafit</string>
-    <string name="palette_state_selected">Seçili</string>
-    <string name="palette_state_not_selected">Seçili değil</string>
     <string name="home_adb_is_limited_title">Fazladan bi adım daha yapmanız gerekiyor</string>
     <string name="dialog_adb_discovery_message_toggle_wireless_debugging">Eğer sürekli arıyorsa lütfen \"Wireless Debugging\" ayarını kapatıp açmayı deneyin.</string>
     <string name="home_app_management_empty">Shizuku iznine ihtiyaç duyan uygulamalar burada gösterilir.</string>
