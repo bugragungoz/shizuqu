@@ -52,6 +52,8 @@ Android installs an update only if it is signed with the same key.
   KEYSTORE_ALIAS_PASSWORD=<password>
   ```
 
+* Only release APKs use this key. Debug APKs are signed with the local debug
+  key, so they cannot be installed over a release.
 * For CI, add the repository secret `KEYSTORE_PASSWORD`. Without it, CI signs
   release APKs with a throw-away key, and those cannot update an installed
   copy.

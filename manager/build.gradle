@@ -79,7 +79,9 @@ android {
     }
     buildTypes {
         debug {
-            signingConfig signingConfigs.sign
+            // the default debug key, never the release key: a debuggable APK signed
+            // with the release key could be installed over the real app
+            signingConfig signingConfigs.debug
         }
         release {
             signingConfig signingConfigs.sign
