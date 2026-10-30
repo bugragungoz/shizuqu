@@ -12,9 +12,12 @@ plugins {
 
 // Screenshot tests render real layouts with layoutlib (no device):
 //   ./gradlew :manager:recordPaparazziDebug -Pscreenshots
-// They are opt-in so the normal build does not depend on layoutlib.
+// They are opt-in so the normal build does not depend on layoutlib. Their code is in
+// src/screenshotTest and joins the unit tests only in this mode; the images stay in
+// src/test/snapshots, where Paparazzi keeps them.
 if (project.hasProperty('screenshots')) {
     apply plugin: 'app.cash.paparazzi'
+    android.sourceSets.test.java.srcDirs += 'src/screenshotTest/java'
     // this mode builds against compileSdk 35 and HiddenApiBypass 6.1: never ship it
     gradle.taskGraph.whenReady { graph ->
         if (graph.allTasks.any { it.name ==~ /(assemble|bundle|package).*Release.*/ }) {
@@ -119,54 +122,23 @@ materialThemeBuilder {
             darkThemeFormat = "Theme.Material3.Dark.%s"
             darkThemeParent = "Theme.Material3.Dark.Rikka"
         }
-        indigo {
-            primaryColor = "#3F51B5"
-            lightThemeFormat = "ThemeOverlay.Palette.%s.Light"
-            lightThemeParent = ""
-            darkThemeFormat = "ThemeOverlay.Palette.%s.Dark"
-            darkThemeParent = ""
-        }
-        ocean {
-            primaryColor = "#1A73E8"
-            lightThemeFormat = "ThemeOverlay.Palette.%s.Light"
-            lightThemeParent = ""
-            darkThemeFormat = "ThemeOverlay.Palette.%s.Dark"
-            darkThemeParent = ""
-        }
-        teal {
-            primaryColor = "#00897B"
-            lightThemeFormat = "ThemeOverlay.Palette.%s.Light"
-            lightThemeParent = ""
-            darkThemeFormat = "ThemeOverlay.Palette.%s.Dark"
-            darkThemeParent = ""
-        }
-        violet {
-            primaryColor = "#7E57C2"
-            lightThemeFormat = "ThemeOverlay.Palette.%s.Light"
-            lightThemeParent = ""
-            darkThemeFormat = "ThemeOverlay.Palette.%s.Dark"
-            darkThemeParent = ""
-        }
-        rose {
-            primaryColor = "#E91E63"
-            lightThemeFormat = "ThemeOverlay.Palette.%s.Light"
-            lightThemeParent = ""
-            darkThemeFormat = "ThemeOverlay.Palette.%s.Dark"
-            darkThemeParent = ""
-        }
-        amber {
-            primaryColor = "#FFA000"
-            lightThemeFormat = "ThemeOverlay.Palette.%s.Light"
-            lightThemeParent = ""
-            darkThemeFormat = "ThemeOverlay.Palette.%s.Dark"
-            darkThemeParent = ""
-        }
-        graphite {
-            primaryColor = "#5F6B7A"
-            lightThemeFormat = "ThemeOverlay.Palette.%s.Light"
-            lightThemeParent = ""
-            darkThemeFormat = "ThemeOverlay.Palette.%s.Dark"
-            darkThemeParent = ""
+        // presets: name (matches Palette.kt) -> seed color
+        [
+            indigo  : '#3F51B5',
+            ocean   : '#1A73E8',
+            teal    : '#00897B',
+            violet  : '#7E57C2',
+            rose    : '#E91E63',
+            amber   : '#FFA000',
+            graphite: '#5F6B7A',
+        ].each { name, seed ->
+            create(name) {
+                primaryColor = seed
+                lightThemeFormat = "ThemeOverlay.Palette.%s.Light"
+                lightThemeParent = ""
+                darkThemeFormat = "ThemeOverlay.Palette.%s.Dark"
+                darkThemeParent = ""
+            }
         }
     }
     generatePalette = true

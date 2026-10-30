@@ -86,7 +86,8 @@ Needs `dexdump` from build-tools (found through `ANDROID_HOME`).
 ```
 
 They render the real layouts and themes with layoutlib (no device or
-emulator) into `manager/src/test/snapshots/images/`: home cards, permission
+emulator). The tests are in `manager/src/screenshotTest/` (compiled only with
+`-Pscreenshots`), the images in `manager/src/test/snapshots/images/`: home cards, permission
 dialog, starter log, palette picker, every palette in light and dark, and the
 icon. Review the images in a diff after changing colors, type, shapes or
 layouts.
