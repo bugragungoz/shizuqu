@@ -156,4 +156,8 @@
     <string name="tile_starting">Başlatılıyor…</string>
     <string name="tile_tap_to_start">Başlatmak için dokunun</string>
     <string name="tile_open_app">Uygulamayı açın</string>
+    <string name="settings_add_tile">Hızlı Ayarlar kutucuğu ekle</string>
+    <string name="settings_add_tile_summary">Bildirim panelinden tek dokunuşla başlatın (kablosuz hata ayıklama ile bir kez başlattıktan sonra)</string>
+    <string name="settings_add_tile_added">Kutucuk eklendi</string>
+    <string name="settings_add_tile_already_added">Kutucuk zaten Hızlı Ayarlar\'da</string>
 </resources>

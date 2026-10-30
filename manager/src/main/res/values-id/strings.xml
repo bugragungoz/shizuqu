@@ -152,4 +152,8 @@
     <string name="notification_boot_start_failed_title">Shizuku tidak dapat dimulai</string>
     <string name="notification_boot_start_failed_text">Debugging nirkabel tidak dapat digunakan. Hubungkan ke jaringan Wi-Fi yang Anda izinkan untuk debugging nirkabel dan mulai Shizuku dari aplikasi.</string>
     <string name="about_based_on_upstream">Berdasarkan %s oleh RikkaApps (Apache License 2.0)</string>
+    <string name="settings_add_tile">Tambahkan kartu Setelan Cepat</string>
+    <string name="settings_add_tile_summary">Mulai dengan satu ketukan dari panel notifikasi (setelah sekali dimulai dengan debugging nirkabel)</string>
+    <string name="settings_add_tile_added">Kartu ditambahkan</string>
+    <string name="settings_add_tile_already_added">Kartu sudah ada di Setelan Cepat</string>
 </resources>

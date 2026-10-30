@@ -153,4 +153,8 @@
     <string name="notification_boot_start_failed_title">Não foi possível iniciar o Shizuku</string>
     <string name="notification_boot_start_failed_text">Não foi possível usar a depuração por Wi-Fi. Conecte-se a uma rede Wi-Fi permitida para a depuração por Wi-Fi e inicie o Shizuku pelo app.</string>
     <string name="about_based_on_upstream">Baseado em %s da RikkaApps (Apache License 2.0)</string>
+    <string name="settings_add_tile">Adicionar bloco às Configurações rápidas</string>
+    <string name="settings_add_tile_summary">Inicie com um toque na aba de notificações (depois de um início pela depuração por Wi-Fi)</string>
+    <string name="settings_add_tile_added">Bloco adicionado</string>
+    <string name="settings_add_tile_already_added">O bloco já está nas Configurações rápidas</string>
 </resources>

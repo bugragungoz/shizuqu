@@ -155,4 +155,8 @@
     <string name="notification_boot_start_failed_title">Не удалось запустить Shizuku</string>
     <string name="notification_boot_start_failed_text">Не удалось использовать отладку по Wi-Fi. Подключитесь к сети Wi-Fi, разрешённой для отладки по Wi-Fi, и запустите Shizuku из приложения.</string>
     <string name="about_based_on_upstream">Основано на %s от RikkaApps (Apache License 2.0)</string>
+    <string name="settings_add_tile">Добавить плитку в быстрые настройки</string>
+    <string name="settings_add_tile_summary">Запуск одним касанием из панели уведомлений (после одного запуска через отладку по Wi-Fi)</string>
+    <string name="settings_add_tile_added">Плитка добавлена</string>
+    <string name="settings_add_tile_already_added">Плитка уже есть в быстрых настройках</string>
 </resources>

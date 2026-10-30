@@ -153,4 +153,8 @@
     <string name="notification_boot_start_failed_title">Shizuku konnte nicht gestartet werden</string>
     <string name="notification_boot_start_failed_text">Kabelloses Debugging konnte nicht verwendet werden. Verbinde dich mit einem WLAN, das du für kabelloses Debugging zugelassen hast, und starte Shizuku in der App.</string>
     <string name="about_based_on_upstream">Basiert auf %s von RikkaApps (Apache License 2.0)</string>
+    <string name="settings_add_tile">Schnelleinstellungs-Kachel hinzufügen</string>
+    <string name="settings_add_tile_summary">Mit einem Tippen aus der Benachrichtigungsleiste starten (nach einem Start per kabellosem Debugging)</string>
+    <string name="settings_add_tile_added">Kachel hinzugefügt</string>
+    <string name="settings_add_tile_already_added">Die Kachel ist bereits in den Schnelleinstellungen</string>
 </resources>

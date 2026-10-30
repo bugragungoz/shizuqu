@@ -154,4 +154,8 @@
     <string name="notification_boot_start_failed_title">Impossibile avviare Shizuku</string>
     <string name="notification_boot_start_failed_text">Impossibile usare il debug wireless. Connettiti a una rete Wi-Fi autorizzata per il debug wireless e avvia Shizuku dall\'app.</string>
     <string name="about_based_on_upstream">Basato su %s di RikkaApps (Apache License 2.0)</string>
+    <string name="settings_add_tile">Aggiungi riquadro Impostazioni rapide</string>
+    <string name="settings_add_tile_summary">Avvia con un tocco dalla tendina delle notifiche (dopo un avvio con debug wireless)</string>
+    <string name="settings_add_tile_added">Riquadro aggiunto</string>
+    <string name="settings_add_tile_already_added">Il riquadro è già nelle Impostazioni rapide</string>
 </resources>

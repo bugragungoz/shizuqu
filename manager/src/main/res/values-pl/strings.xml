@@ -155,4 +155,8 @@
     <string name="notification_boot_start_failed_title">Nie udało się uruchomić Shizuku</string>
     <string name="notification_boot_start_failed_text">Nie udało się użyć debugowania bezprzewodowego. Połącz się z siecią Wi-Fi dozwoloną dla debugowania bezprzewodowego i uruchom Shizuku z aplikacji.</string>
     <string name="about_based_on_upstream">Oparte na %s od RikkaApps (Apache License 2.0)</string>
+    <string name="settings_add_tile">Dodaj kafelek Szybkich ustawień</string>
+    <string name="settings_add_tile_summary">Uruchamiaj jednym dotknięciem z panelu powiadomień (po jednym uruchomieniu przez debugowanie bezprzewodowe)</string>
+    <string name="settings_add_tile_added">Dodano kafelek</string>
+    <string name="settings_add_tile_already_added">Kafelek jest już w Szybkich ustawieniach</string>
 </resources>

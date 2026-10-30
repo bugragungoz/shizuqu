@@ -152,4 +152,8 @@
     <string name="notification_boot_start_failed_title">Shizuku を起動できませんでした</string>
     <string name="notification_boot_start_failed_text">ワイヤレスデバッグを使用できませんでした。ワイヤレスデバッグを許可した Wi-Fi ネットワークに接続し、アプリから Shizuku を起動してください。</string>
     <string name="about_based_on_upstream">RikkaApps の %s がベースです（Apache License 2.0）</string>
+    <string name="settings_add_tile">クイック設定タイルを追加</string>
+    <string name="settings_add_tile_summary">通知パネルからワンタップで起動（ワイヤレスデバッグで一度起動した後）</string>
+    <string name="settings_add_tile_added">タイルを追加しました</string>
+    <string name="settings_add_tile_already_added">タイルはすでにクイック設定にあります</string>
 </resources>

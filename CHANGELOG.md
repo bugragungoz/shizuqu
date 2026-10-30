@@ -53,6 +53,7 @@ Based on Shizuku 13.6.0 (upstream `b844bc49`).
 - Quick Settings tile: shows whether the service runs; a tap starts it
   through wireless debugging (Android 13+, after a first start from the
   app), otherwise opens the app. Asks to unlock the phone first.
+  Settings > "Add Quick Settings tile" adds it (Android 13+).
 - Start screen: "Copy log" copies the start log with the app, Android and
   device versions, ready for a bug report.
 - Releases: pushing a `v*` tag creates a draft GitHub release with the

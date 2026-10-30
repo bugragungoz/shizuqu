@@ -1,11 +1,16 @@
 package moe.shizuku.manager.settings
 
+import android.app.StatusBarManager
 import android.content.ComponentName
 import android.content.Context
+import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.util.TypedValue
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -22,6 +27,7 @@ import moe.shizuku.manager.ktx.isComponentEnabled
 import moe.shizuku.manager.ktx.setComponentEnabled
 import moe.shizuku.manager.ktx.toHtml
 import moe.shizuku.manager.receiver.BootCompleteReceiver
+import moe.shizuku.manager.starter.StartTileService
 import moe.shizuku.manager.utils.CustomTabsHelper
 import rikka.core.util.ResourceUtils
 import rikka.material.app.LocaleDelegate
@@ -116,6 +122,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
             activity?.recreate()
         }
 
+        val addTilePreference: Preference = findPreference("add_tile")!!
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            addTilePreference.setOnPreferenceClickListener {
+                requestAddTile(context)
+                true
+            }
+        } else {
+            addTilePreference.isVisible = false
+        }
+
         translationPreference.summary =
             context.getString(R.string.settings_translation_summary, context.getString(R.string.app_name))
         translationPreference.setOnPreferenceClickListener {
@@ -128,6 +144,29 @@ class SettingsFragment : PreferenceFragmentCompat() {
             translationContributorsPreference.summary = contributors
         } else {
             translationContributorsPreference.isVisible = false
+        }
+    }
+
+    /** Shows the system's "add this tile?" prompt for [StartTileService]. */
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun requestAddTile(context: Context) {
+        val statusBar = context.getSystemService(StatusBarManager::class.java) ?: return
+        try {
+            statusBar.requestAddTileService(
+                ComponentName(context, StartTileService::class.java),
+                context.getString(R.string.app_name),
+                Icon.createWithResource(context, R.drawable.ic_system_icon),
+                context.mainExecutor
+            ) { result ->
+                val message = when (result) {
+                    StatusBarManager.TILE_ADD_REQUEST_RESULT_TILE_ADDED -> R.string.settings_add_tile_added
+                    StatusBarManager.TILE_ADD_REQUEST_RESULT_TILE_ALREADY_ADDED -> R.string.settings_add_tile_already_added
+                    else -> 0
+                }
+                if (message != 0) Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Throwable) {
+            Log.w("SettingsFragment", "requestAddTileService failed", e)
         }
     }
 

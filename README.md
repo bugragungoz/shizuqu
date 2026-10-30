@@ -80,7 +80,8 @@ Samsung (One UI 9): turn off **Auto Blocker** while pairing/starting, and see
 [docs/ANDROID17.md §7](docs/ANDROID17.md#7-samsung-one-ui-9).
 
 After a reboot (no root), the **Quick Settings tile** starts the service with
-one tap: add "Shizuqu" to Quick Settings. It needs Android 13+ and one start
+one tap: Settings > "Add Quick Settings tile", or add "Shizuqu" by editing
+Quick Settings. It needs Android 13+ and one start
 from the app before; on the lock screen it asks to unlock first.
 
 If starting fails, **Copy log** on the start screen copies the log with the

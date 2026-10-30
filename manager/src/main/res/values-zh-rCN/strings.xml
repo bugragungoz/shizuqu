@@ -147,4 +147,8 @@
     <string name="notification_boot_start_failed_title">无法启动 Shizuku</string>
     <string name="notification_boot_start_failed_text">无法使用无线调试。请连接到已允许无线调试的 WLAN 网络，然后在应用中启动 Shizuku。</string>
     <string name="about_based_on_upstream">基于 RikkaApps 的 %s（Apache License 2.0）</string>
+    <string name="settings_add_tile">添加快捷设置图块</string>
+    <string name="settings_add_tile_summary">在通知栏中点按一下即可启动（需先通过无线调试启动一次）</string>
+    <string name="settings_add_tile_added">已添加图块</string>
+    <string name="settings_add_tile_already_added">图块已在快捷设置中</string>
 </resources>

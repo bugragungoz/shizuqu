@@ -44,7 +44,7 @@ Sırayla gidin; her adımda "Beklenen" olmuyorsa durun, aşağıdaki
 
 | Adım | Beklenen |
 |---|---|
-| Bildirim panelini açın > kalem (düzenle) > "Shizuqu" kutucuğunu ekleyin | Kutucuk eklenir; servis çalışıyorsa "Çalışıyor" |
+| Shizuqu Ayarlar > "Hızlı Ayarlar kutucuğu ekle" | Sistem "kutucuk eklensin mi?" diye sorar; Ekle deyince bildirim panelinde "Shizuqu" kutucuğu, servis çalışıyorsa "Çalışıyor" |
 | Menüden "Shizuqu'yu durdur", sonra kutucuğa dokunun | "Başlatılıyor…", kısa süre sonra "Çalışıyor" (Wi-Fi açık olmalı) |
 | Kilit ekranında kutucuğa dokunun | Önce kilidi açmanızı ister |
 | (İsteğe bağlı) Ayarlar > Sistem açılışında başlat > aç, telefonu yeniden başlatın | Wi-Fi bağlanınca birkaç saniye "Shizuqu başlatılıyor" bildirimi, sonra servis çalışır |

@@ -10,6 +10,12 @@
             android:summary="@string/settings_start_on_boot_summary"
             android:title="@string/settings_start_on_boot" />
 
+        <!-- Android 13+: asks the system to add the Quick Settings tile -->
+        <Preference
+            android:key="add_tile"
+            android:summary="@string/settings_add_tile_summary"
+            android:title="@string/settings_add_tile" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/settings_language">

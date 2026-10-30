@@ -153,4 +153,8 @@
     <string name="notification_boot_start_failed_title">No se pudo iniciar Shizuku</string>
     <string name="notification_boot_start_failed_text">No se pudo usar la depuración inalámbrica. Conéctate a una red Wi-Fi que hayas permitido para la depuración inalámbrica e inicia Shizuku desde la app.</string>
     <string name="about_based_on_upstream">Basado en %s de RikkaApps (Apache License 2.0)</string>
+    <string name="settings_add_tile">Añadir icono de Ajustes rápidos</string>
+    <string name="settings_add_tile_summary">Inicia con un toque desde el panel de notificaciones (tras un inicio con depuración inalámbrica)</string>
+    <string name="settings_add_tile_added">Icono añadido</string>
+    <string name="settings_add_tile_already_added">El icono ya está en Ajustes rápidos</string>
 </resources>

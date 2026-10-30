@@ -152,4 +152,8 @@
     <string name="notification_boot_start_failed_title">無法啟動 Shizuku</string>
     <string name="notification_boot_start_failed_text">無法使用無線偵錯。請連線到已允許無線偵錯的 Wi-Fi 網路，然後在應用程式中啟動 Shizuku。</string>
     <string name="about_based_on_upstream">以 RikkaApps 的 %s 為基礎（Apache License 2.0）</string>
+    <string name="settings_add_tile">新增快速設定圖塊</string>
+    <string name="settings_add_tile_summary">在通知欄輕觸一下即可啟動（需先透過無線偵錯啟動一次）</string>
+    <string name="settings_add_tile_added">已新增圖塊</string>
+    <string name="settings_add_tile_already_added">圖塊已在快速設定中</string>
 </resources>

@@ -95,8 +95,8 @@ Geliştirici seçeneklerini kapatın.
 
 Servis telefon yeniden başlayana kadar çalışır. Root yoksa her yeniden
 başlatmadan sonra tekrar başlatmak gerekir. En kolayı **Hızlı Ayarlar
-kutucuğu**: bildirim panelini açıp düzenle (kalem) ile "Shizuqu" kutucuğunu
-ekleyin; Wi-Fi'ye bağlıyken tek dokunuşla başlatır (Android 13+, uygulamadan
+kutucuğu**: Ayarlar > "Hızlı Ayarlar kutucuğu ekle" ya da bildirim panelinde
+düzenle (kalem) ile "Shizuqu" kutucuğunu ekleyin; Wi-Fi'ye bağlıyken tek dokunuşla başlatır (Android 13+, uygulamadan
 en az bir kez başlatmış olmak gerekir; kilit ekranındaysa önce kilidi açtırır). İsterseniz Ayarlar > **Sistem
 açılışında başlat**'ı açabilirsiniz (varsayılan kapalı; Android 13+, son
 başlatma kablosuz hata ayıklama ile yapılmış olmalı, izin verilen bir Wi-Fi ağı

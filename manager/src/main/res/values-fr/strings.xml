@@ -147,4 +147,8 @@
     <string name="notification_boot_start_failed_title">Impossible de démarrer Shizuku</string>
     <string name="notification_boot_start_failed_text">Le débogage sans fil n\'a pas pu être utilisé. Connectez-vous à un réseau Wi-Fi autorisé pour le débogage sans fil et démarrez Shizuku depuis l\'appli.</string>
     <string name="about_based_on_upstream">Basé sur %s de RikkaApps (Apache License 2.0)</string>
+    <string name="settings_add_tile">Ajouter la vignette Réglages rapides</string>
+    <string name="settings_add_tile_summary">Démarrer d\'un geste depuis le volet des notifications (après un démarrage par débogage sans fil)</string>
+    <string name="settings_add_tile_added">Vignette ajoutée</string>
+    <string name="settings_add_tile_already_added">La vignette est déjà dans les Réglages rapides</string>
 </resources>

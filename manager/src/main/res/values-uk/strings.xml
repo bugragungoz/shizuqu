@@ -155,4 +155,8 @@
     <string name="notification_boot_start_failed_title">Не вдалося запустити Shizuku</string>
     <string name="notification_boot_start_failed_text">Не вдалося використати налагодження через Wi-Fi. Підключіться до мережі Wi-Fi, дозволеної для налагодження через Wi-Fi, і запустіть Shizuku із застосунку.</string>
     <string name="about_based_on_upstream">Засновано на %s від RikkaApps (Apache License 2.0)</string>
+    <string name="settings_add_tile">Додати плитку швидких налаштувань</string>
+    <string name="settings_add_tile_summary">Запуск одним дотиком із панелі сповіщень (після одного запуску через налагодження Wi-Fi)</string>
+    <string name="settings_add_tile_added">Плитку додано</string>
+    <string name="settings_add_tile_already_added">Плитка вже є у швидких налаштуваннях</string>
 </resources>

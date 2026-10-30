@@ -152,4 +152,8 @@
     <string name="notification_boot_start_failed_title">Shizuku를 시작할 수 없음</string>
     <string name="notification_boot_start_failed_text">무선 디버깅을 사용할 수 없습니다. 무선 디버깅을 허용한 Wi-Fi 네트워크에 연결한 후 앱에서 Shizuku를 시작하세요.</string>
     <string name="about_based_on_upstream">RikkaApps의 %s 기반 (Apache License 2.0)</string>
+    <string name="settings_add_tile">빠른 설정 타일 추가</string>
+    <string name="settings_add_tile_summary">알림 창에서 한 번 탭하여 시작(무선 디버깅으로 한 번 시작한 후)</string>
+    <string name="settings_add_tile_added">타일을 추가함</string>
+    <string name="settings_add_tile_already_added">타일이 이미 빠른 설정에 있음</string>
 </resources>
