@@ -45,9 +45,18 @@ class StartTileService : TileService() {
     }
 
     override fun onStopListening() {
+        removeListeners()
+        super.onStopListening()
+    }
+
+    override fun onDestroy() {
+        removeListeners()
+        super.onDestroy()
+    }
+
+    private fun removeListeners() {
         Shizuku.removeBinderReceivedListener(binderReceived)
         Shizuku.removeBinderDeadListener(binderDead)
-        super.onStopListening()
     }
 
     override fun onClick() {
