@@ -102,6 +102,9 @@ açılışında başlat**'ı açabilirsiniz (varsayılan kapalı; Android 13+, s
 başlatma kablosuz hata ayıklama ile yapılmış olmalı, izin verilen bir Wi-Fi ağı
 gerekli). Açıkken her açılışta kablosuz hata ayıklamayı kendisi açar.
 
+Telefonda adım adım deneme listesi (beklenen sonuçlarla):
+[docs/TEST_PLAN_TR.md](docs/TEST_PLAN_TR.md).
+
 ### Sorun giderme
 
 | Belirti | Çözüm |
