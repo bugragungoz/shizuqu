@@ -1,5 +1,6 @@
 package moe.shizuku.manager.starter
 
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Build
@@ -81,6 +82,8 @@ class StartTileService : TileService() {
         tile.updateTile()
     }
 
+    // the Intent variant only below Android 14, where the PendingIntent one does not exist
+    @SuppressLint("StartActivityAndCollapseDeprecated")
     private fun openApp() {
         val intent = Intent(this, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         try {
