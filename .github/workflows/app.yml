@@ -7,6 +7,11 @@ on:
       - '**.md'
   pull_request:
   workflow_dispatch:
+    inputs:
+      release:
+        description: Publish a release of this commit (tag v<app.versionBase>)
+        type: boolean
+        default: false
 
 jobs:
   build:
@@ -117,11 +122,12 @@ jobs:
           compression-level: 9
 
   release:
-    # Push a tag like v13.7.0 to publish a release with the signed APK, its
-    # checksum and the CHANGELOG section of that version. Only this job can
-    # write.
+    # Publishes a release with the signed APK, its checksum and the CHANGELOG
+    # section of that version. Push a tag like v13.7.0, or run the workflow by
+    # hand with "release" checked; that creates the tag v<app.versionBase> on
+    # the commit. Only this job can write.
     needs: build
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && inputs.release)
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -141,6 +147,7 @@ jobs:
       - name: Publish GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
         run: |
           apk=$(ls artifact/apk/release/*-release.apk | head -n1)
           apksigner=$(ls "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -n1)
@@ -152,7 +159,12 @@ jobs:
             # an APK signed with another key cannot update installed copies
             echo "::error::release APK is not signed with signing/release.p12 (got ${cert:-none})"; exit 1
           fi
-          version="${GITHUB_REF_NAME#v}"
+          if [ "$GITHUB_REF_TYPE" = tag ]; then
+            tag="$GITHUB_REF_NAME"
+          else
+            tag="v$(sed -n 's/^app.versionBase=//p' branding.properties)"
+          fi
+          version="${tag#v}"
           # the "## <version>" section, heading matched exactly (13.7.1 is not 13.7.10)
           awk -v v="$version" '
             /^## / { if (found) exit; if ($2 == v) { found = 1; next } }
@@ -172,5 +184,5 @@ jobs:
             echo
             echo "Signing certificate SHA-256: \`$cert\`"
           } > release-notes.md
-          gh release create "$GITHUB_REF_NAME" "$asset" \
+          gh release create "$tag" "$asset" --target "$GITHUB_SHA" \
             --title "$name $version" --notes-file release-notes.md

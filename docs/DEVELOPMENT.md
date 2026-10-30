@@ -60,7 +60,8 @@ Android installs an update only if it is signed with the same key.
 
 1. Set `app.versionBase` in `branding.properties`.
 2. Add a `## <version>` section to `CHANGELOG.md`.
-3. Push a tag: `git tag v13.7.1 && git push origin v13.7.1`.
+3. Push a tag (`git tag v13.7.1 && git push origin v13.7.1`), or open
+   Actions > App > Run workflow and check "release".
 
 When the tag arrives, CI checks that the APK is signed with the release key
 and publishes a GitHub release with the APK, its SHA-256 and the CHANGELOG
