@@ -67,6 +67,8 @@ class AdbClient(
 
             val sslContext = key.sslContext
             tlsSocket = sslContext.socketFactory.createSocket(socket, socket.inetAddress.hostAddress, port, true) as SSLSocket
+            // the TLS socket keeps its own read timeout (it bounds the handshake too)
+            tlsSocket.soTimeout = readTimeoutMs
             tlsSocket.startHandshake()
             Log.d(TAG, "Handshake succeeded.")
 

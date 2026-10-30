@@ -21,6 +21,10 @@ import java.util.Set;
 @SuppressWarnings("unused")
 public class UserManagerApis {
 
+    /**
+     * On Android 17+ partial and pre-created users are always excluded: the only
+     * remaining variant is getUsers(excludeDying).
+     */
     @SuppressLint("NewApi")
     @NonNull
     public static List<UserInfo> getUsers(boolean excludePartial, boolean excludeDying, boolean excludePreCreated) throws RemoteException {

@@ -83,8 +83,16 @@ public class UidObserverAdapter extends IUidObserver.Stub {
     }
 
     /**
-     * Report a change in the oom adjustment of a uid.
+     * Android 14's shape of {@link #onUidProcAdjChanged(int, int)} (no adj).
+     */
+    public final void onUidProcAdjChanged(int uid) throws RemoteException {
+        onUidProcAdjChanged(uid, 0);
+    }
+
+    /**
+     * Report a change in the oom adjustment of a uid (only with UID_OBSERVER_PROCADJ).
      *
+     * @param adj the new adj; 0 on Android 14, which does not pass it
      * @since API 34 (14)
      */
     public void onUidProcAdjChanged(int uid, int adj) throws RemoteException {

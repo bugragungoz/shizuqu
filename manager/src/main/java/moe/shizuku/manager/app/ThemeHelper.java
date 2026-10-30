@@ -1,7 +1,6 @@
 package moe.shizuku.manager.app;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import androidx.annotation.StyleRes;
 
@@ -17,8 +16,6 @@ public class ThemeHelper {
 
     public static final String KEY_LIGHT_THEME = "light_theme";
     public static final String KEY_BLACK_NIGHT_THEME = "black_night_theme";
-    /** Before palettes: the "use system theme color" switch. Read once, see {@link #getPalette()}. */
-    private static final String KEY_USE_SYSTEM_COLOR = "use_system_color";
 
     public static boolean isBlackNightTheme(Context context) {
         return ShizukuSettings.getPreferences().getBoolean(KEY_BLACK_NIGHT_THEME, EnvironmentUtils.isWatch(context));
@@ -27,14 +24,14 @@ public class ThemeHelper {
     /** Preference key of the color palette; values are {@link Palette#getId()}. */
     public static final String KEY_COLOR_PALETTE = "color_palette";
 
+    /*
+     * The old "use system theme color" switch (use_system_color) is not migrated: the
+     * switch saved its default the first time Settings was opened, so its value does not
+     * tell a choice, and upstream installs cannot be updated in place anyway (different
+     * signature). Everyone starts with Palette.DEFAULT.
+     */
     public static Palette getPalette() {
-        SharedPreferences preferences = ShizukuSettings.getPreferences();
-        if (!preferences.contains(KEY_COLOR_PALETTE) && preferences.contains(KEY_USE_SYSTEM_COLOR)) {
-            // the user flipped the old switch: on = Material You, off = the old indigo theme
-            Palette migrated = preferences.getBoolean(KEY_USE_SYSTEM_COLOR, true) ? Palette.SYSTEM : Palette.INDIGO;
-            preferences.edit().putString(KEY_COLOR_PALETTE, migrated.getId()).remove(KEY_USE_SYSTEM_COLOR).apply();
-        }
-        return Palette.Companion.fromId(preferences.getString(KEY_COLOR_PALETTE, null));
+        return Palette.Companion.fromId(ShizukuSettings.getPreferences().getString(KEY_COLOR_PALETTE, null));
     }
 
     public static void setPalette(Palette palette) {

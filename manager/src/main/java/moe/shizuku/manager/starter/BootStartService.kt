@@ -27,6 +27,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import moe.shizuku.manager.MainActivity
 import moe.shizuku.manager.R
@@ -117,7 +118,8 @@ class BootStartService : Service() {
             }
         } catch (e: Throwable) {
             Log.w(TAG, "startForeground failed", e)
-            stopSelfResult(startId)
+            // a running attempt keeps going (and stops the service when it is done)
+            if (job?.isActive != true) stopSelfResult(startId)
             return START_NOT_STICKY
         }
 
@@ -129,12 +131,14 @@ class BootStartService : Service() {
             val started = try {
                 startService()
             } catch (e: CancellationException) {
-                Shizuku.pingBinder()
+                // onTimeout or onDestroy: they clean up themselves
+                throw e
             } catch (e: Throwable) {
                 Log.w(TAG, "start on boot failed", e)
                 false
             }
-            finish(started)
+            // on the main thread, like onStartCommand, so the two never interleave
+            withContext(Dispatchers.Main) { finish(started) }
         }
         return START_NOT_STICKY
     }
@@ -228,14 +232,20 @@ class BootStartService : Service() {
         } ?: false
     }
 
+    // main thread
     private fun finish(started: Boolean) {
         Log.i(TAG, "finished, started=$started")
-        if (!started) {
-            getSystemService(NotificationManager::class.java)
-                .notify(RESULT_NOTIFICATION_ID, failedNotification())
-        }
+        // the attempt is over: a start request delivered after this launches a new one
+        // (its coroutine may still look active for a moment)
+        job = null
+        if (!started) notifyFailed()
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelfResult(lastStartId)
+    }
+
+    private fun notifyFailed() {
+        getSystemService(NotificationManager::class.java)
+            .notify(RESULT_NOTIFICATION_ID, failedNotification())
     }
 
     // Android 14+: the system ends a short service after about 3 minutes and
@@ -243,6 +253,7 @@ class BootStartService : Service() {
     override fun onTimeout(startId: Int) {
         Log.w(TAG, "short service timeout")
         job?.cancel()
+        if (!Shizuku.pingBinder()) notifyFailed()
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
     }

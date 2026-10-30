@@ -23,7 +23,9 @@ public interface IUidObserver {
 
     void onUidCachedChanged(int uid, boolean cached) throws RemoteException;
 
-    // from Android 14
+    // Android 14: uid only; later versions (17 included) also pass the adj
+    void onUidProcAdjChanged(int uid) throws RemoteException;
+
     void onUidProcAdjChanged(int uid, int adj) throws RemoteException;
 
     abstract class Stub extends Binder implements IUidObserver {

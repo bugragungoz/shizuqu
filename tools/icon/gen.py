@@ -44,11 +44,11 @@ def launcher_colors():
 
 
 def stroke(points, width):
-    return LineString(points).buffer(width / 2, cap_style="round", join_style="round", quad_segs=12)
+    return LineString(points).buffer(width / 2, cap_style="round", join_style="round", quad_segs=6)
 
 
 def rounded_rect(x0, y0, x1, y1, r):
-    return box(x0 + r, y0 + r, x1 - r, y1 - r).buffer(r, quad_segs=12)
+    return box(x0 + r, y0 + r, x1 - r, y1 - r).buffer(r, quad_segs=8)
 
 
 def terminal():
@@ -79,7 +79,7 @@ def center(geom, size=108.0):
     return affinity.translate(geom, size / 2 - (x0 + x1) / 2, size / 2 - (y0 + y1) / 2)
 
 
-def path_data(geom, digits=2):
+def path_data(geom, digits=1):
     polygons = geom.geoms if isinstance(geom, MultiPolygon) else [geom]
     rings = []
     for polygon in polygons:
@@ -128,7 +128,7 @@ def main():
             vector(f"Shizuqu themed (monochrome) icon: {what}.", 108, 108, "#FF000000", path_data(mark)),
         os.path.join(DRAWABLE, "ic_system_icon.xml"):
             vector("Shizuqu small icon (status bar, notifications, permission dialog).", 24, 24, "#FFFFFFFF",
-                   path_data(small, 3)),
+                   path_data(small, 2)),
     }
     colors = launcher_colors()
     os.makedirs(DOCS, exist_ok=True)

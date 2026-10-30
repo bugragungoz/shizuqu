@@ -13,7 +13,7 @@ Base: [RikkaW/HiddenApi](https://github.com/RikkaW/HiddenApi) @ `28122e6`
 | `compat/.../PackageManagerApis.java` | `getInstalledPackages`: Android 17 signature first, old one, then reflection; `getInstalledApplications`: reflection fallback; log failures; static `checkSignatures(String, String, int)` |
 | `compat/.../UserManagerApis.java` | `getUsers`: `getUsers(boolean)` on Android 17 (3-argument version removed) |
 | `compat/.../PermissionManagerApis.java` | try the `persistentDeviceId` variants of `get/updatePermissionFlags` first |
-| `compat/.../adapter/UidObserverAdapter.java` | implement `onUidProcAdjChanged` |
+| `stub/.../IUidObserver.java`, `compat/.../adapter/UidObserverAdapter.java` | `onUidProcAdjChanged` in both shapes: `(int)` on Android 14, `(int, int)` later |
 | `compat/.../util/ReflectCompat.java` | new: call a method by name + parameter types, ignoring the return type |
 | `*/build.gradle` | no Maven publishing; module names `:hidden-stub` / `:hidden-compat` |
 
