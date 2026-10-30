@@ -20,7 +20,13 @@ import moe.shizuku.manager.ShizukuSettings
 import moe.shizuku.manager.app.Palette
 import moe.shizuku.manager.settings.PalettePreference
 import moe.shizuku.manager.utils.EmptySharedPreferencesImpl
+import moe.shizuku.manager.databinding.AboutDialogBinding
+import moe.shizuku.manager.databinding.AdbPairingTutorialActivityBinding
 import moe.shizuku.manager.databinding.ConfirmationDialogBinding
+import moe.shizuku.manager.databinding.HomeExtraStepRequiredBinding
+import moe.shizuku.manager.databinding.HomeStartAdbBinding
+import moe.shizuku.manager.databinding.HomeStartRootBinding
+import moe.shizuku.manager.databinding.TerminalTutorialActivityBinding
 import moe.shizuku.manager.databinding.HomeItemContainerBinding
 import moe.shizuku.manager.databinding.HomeLearnMoreBinding
 import moe.shizuku.manager.databinding.HomeManageAppsItemBinding
@@ -197,6 +203,12 @@ class DesignScreenshots {
         paparazzi.snapshot(column)
     }
 
+    // layoutlib cannot inflate <adaptive-icon> (no system icon mask), so stack its layers
+    private fun launcherDrawable(context: Context) = android.graphics.drawable.LayerDrawable(arrayOf(
+        ContextCompat.getDrawable(context, R.drawable.ic_launcher_background)!!,
+        ContextCompat.getDrawable(context, R.drawable.ic_launcher_foreground)!!,
+    ))
+
     /** Launcher icon in the common masks and the themed icon (the small icon is in the permission dialog). */
     @Test
     fun icon() {
@@ -207,11 +219,7 @@ class DesignScreenshots {
             setBackgroundColor(0xFFEEF0F4.toInt())
             setPadding(dp(context, 16), dp(context, 16), dp(context, 16), dp(context, 16))
         }
-        // layoutlib cannot inflate <adaptive-icon> (no system icon mask), so stack its layers
-        fun launcher() = android.graphics.drawable.LayerDrawable(arrayOf(
-            ContextCompat.getDrawable(context, R.drawable.ic_launcher_background)!!,
-            ContextCompat.getDrawable(context, R.drawable.ic_launcher_foreground)!!,
-        ))
+        fun launcher() = launcherDrawable(context)
         fun masked(drawable: Int, radiusFraction: Float, size: Int, background: Int? = null, tint: Int? = null) =
             FrameLayout(context).apply {
                 val px = dp(context, size)
@@ -241,6 +249,74 @@ class DesignScreenshots {
         row.addView(masked(R.drawable.ic_launcher, 0.3f, 48))
         row.addView(masked(R.drawable.ic_monochrome, 0.5f, 72, background = 0xFF2E3A2F.toInt(), tint = 0xFFD9F2DC.toInt()))
         paparazzi.snapshot(row)
+    }
+
+    /**
+     * The start cards not on the main home screenshot: root, computer (adb), adb limited.
+     * Two images, because a render taller than the device screen squeezes the last card.
+     */
+    @Test
+    fun home_other_cards_bugra_dark() = otherCards(root = true)
+
+    @Test
+    fun home_other_cards_2_bugra_dark() = otherCards(root = false)
+
+    private fun otherCards(root: Boolean) {
+        night(true)
+        val context = themed(Palette.BUGRA, true)
+        val inflater = LayoutInflater.from(context)
+        val list = LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+            setBackgroundColor(context.attrColor(android.R.attr.colorBackground))
+            layoutParams = ViewGroup.LayoutParams(dp(context, 412), ViewGroup.LayoutParams.WRAP_CONTENT)
+        }
+        if (root) list.addView(card(inflater, list) { i, p ->
+            HomeStartRootBinding.inflate(i, p, true).text1.text = context.getString(R.string.home_root_description, "<b>Sui</b>")
+                .let { androidx.core.text.HtmlCompat.fromHtml(it, androidx.core.text.HtmlCompat.FROM_HTML_MODE_COMPACT) }
+        })
+        if (root) list.addView(card(inflater, list) { i, p ->
+            HomeStartAdbBinding.inflate(i, p, true).text1.text = context.getString(R.string.home_adb_description, "")
+                .let { androidx.core.text.HtmlCompat.fromHtml(it, androidx.core.text.HtmlCompat.FROM_HTML_MODE_COMPACT) }
+        })
+        if (!root) list.addView(card(inflater, list) { i, p -> HomeExtraStepRequiredBinding.inflate(i, p, true) })
+        paparazzi.snapshot(list)
+    }
+
+    @Test
+    fun about_dialog_bugra_dark() {
+        night(true)
+        val context = themed(Palette.BUGRA, true)
+        val b = AboutDialogBinding.inflate(LayoutInflater.from(context))
+        b.icon.setImageDrawable(launcherDrawable(context))
+        b.versionName.text = "13.7.0.r1120.abcdef12"
+        b.sourceCode.text = androidx.core.text.HtmlCompat.fromHtml(
+            context.getString(R.string.about_view_source_code, "<b><a href=\"https://github.com/\">GitHub</a></b>") + "<br>" +
+                context.getString(R.string.about_based_on_upstream, "<b><a href=\"https://github.com/RikkaApps/Shizuku\">Shizuku</a></b>"),
+            androidx.core.text.HtmlCompat.FROM_HTML_MODE_COMPACT
+        )
+        b.root.setBackgroundColor(context.attrColor(com.google.android.material.R.attr.colorSurfaceContainerHigh))
+        b.root.layoutParams = ViewGroup.LayoutParams(dp(context, 360), ViewGroup.LayoutParams.WRAP_CONTENT)
+        paparazzi.snapshot(FrameLayout(context).apply { addView(b.root) })
+    }
+
+    @Test
+    fun wireless_tutorial_bugra_dark() {
+        night(true)
+        val context = themed(Palette.BUGRA, true)
+        val b = AdbPairingTutorialActivityBinding.inflate(LayoutInflater.from(context))
+        b.root.setBackgroundColor(context.attrColor(android.R.attr.colorBackground))
+        b.root.layoutParams = ViewGroup.LayoutParams(dp(context, 412), dp(context, 900))
+        paparazzi.snapshot(b.root)
+    }
+
+    @Test
+    fun terminal_tutorial_bugra_dark() {
+        night(true)
+        val context = themed(Palette.BUGRA, true)
+        val b = TerminalTutorialActivityBinding.inflate(LayoutInflater.from(context))
+        b.root.setBackgroundColor(context.attrColor(android.R.attr.colorBackground))
+        b.root.layoutParams = ViewGroup.LayoutParams(dp(context, 412), dp(context, 900))
+        paparazzi.snapshot(b.root)
     }
 
     @Test
