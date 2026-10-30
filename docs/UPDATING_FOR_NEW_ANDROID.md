@@ -106,3 +106,21 @@ git merge upstream/master
 `api/` and `hidden-api/` are plain directories here (no submodules). To take
 changes from RikkaApps/Shizuku-API or RikkaW/HiddenApi, diff them against the
 commit noted in the vendoring commit message and apply the diff.
+
+## 7. Before releasing
+
+```bash
+./gradlew :manager:testDebugUnitTest :manager:assembleRelease :manager:lintRelease
+```
+
+* The Robolectric tests run on the newest Android that Robolectric supports
+  (the targetSdk). When raising `targetSdk`, update Robolectric too and check
+  the behavior-change pages for the new target (for 37: the local network
+  permission, see [CLIENT_APPS.md](CLIENT_APPS.md)).
+* Look at the screenshots after UI changes:
+  `./gradlew :manager:recordPaparazziDebug -Pscreenshots`.
+* Bump `app.versionBase` in `branding.properties`, and
+  `SERVER_PATCH_VERSION` in `api/shared/.../ShizukuApiConstants.java` when
+  the server changed (the app then asks to restart an older running server).
+* Add a CHANGELOG section for the version and push a `v<version>` tag: CI
+  drafts the GitHub release (see [BUILDING.md](BUILDING.md#releases)).
