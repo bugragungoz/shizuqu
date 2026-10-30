@@ -35,14 +35,15 @@
             android:textAppearance="?textAppearanceBodyLarge"
             tools:text="Shizuku" />
 
+        <!-- package name, in the code font -->
         <TextView
             android:id="@android:id/summary"
+            style="@style/Widget.Shizuqu.TextView.Code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?textAppearanceBodyMedium"
             android:layout_marginTop="2sp"
-            android:textColor="?textColorOnSurfaceHighEmphasis"
-            android:textSize="14sp"
+            android:textColor="?android:textColorSecondary"
+            android:textSize="12sp"
             tools:text="moe.shizuku.manager" />
 
         <LinearLayout
