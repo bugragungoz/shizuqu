@@ -153,8 +153,10 @@ jobs:
           apksigner=$(ls "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -n1)
           # certificate of signing/release.p12 (update it if you sign with another key)
           expected=e449ece69b5a674e22ef0386a9ff901ec4b1565bb889da58f0239323e6d801e6
+          # every signer line ("Signer #1 certificate ..." before build-tools 37,
+          # "V2 Signer: certificate ..." since) must name this one certificate
           cert=$("$apksigner" verify --print-certs "$apk" \
-            | sed -n 's/^Signer #1 certificate SHA-256 digest: //p')
+            | sed -n 's/^.*certificate SHA-256 digest: //p' | sort -u)
           if [ "$cert" != "$expected" ]; then
             # an APK signed with another key cannot update installed copies
             echo "::error::release APK is not signed with signing/release.p12 (got ${cert:-none})"; exit 1
