@@ -73,5 +73,9 @@ then it cannot declare `moe.shizuku.manager.permission.API_V23`, which every
 Shizuku client requests. Store distribution of a Shizuku-compatible manager
 is therefore effectively not allowed; GitHub releases are fine.
 
+When the repository goes public, turn on **Settings > Code security >
+Private vulnerability reporting** (SECURITY.md points reporters there), and
+update the repository URLs in the READMEs (clone commands, build badge).
+
 Keep [`NOTICE`](../NOTICE) and the license files (`LICENSE`, `api/LICENSE`,
 `hidden-api/LICENSE`).

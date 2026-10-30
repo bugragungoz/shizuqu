@@ -4,6 +4,8 @@
 
 <p align="center">Shizuku for Android 17. Same API, same apps, fixed for API 37.</p>
 
+<p align="center"><a href="https://github.com/bugragungoz/shizuqu/actions/workflows/app.yml"><img src="https://github.com/bugragungoz/shizuqu/actions/workflows/app.yml/badge.svg" alt="Build"></a></p>
+
 > App name, package name, version and links are set in
 > [`branding.properties`](branding.properties) - see [docs/RENAMING.md](docs/RENAMING.md).
 
@@ -112,6 +114,7 @@ call through `ShizukuBinderWrapper`. See [docs/CLIENT_APPS.md](docs/CLIENT_APPS.
 * [docs/BUILDING.md](docs/BUILDING.md) - building, signing, CI
 * [docs/SAFETY.md](docs/SAFETY.md) - what the app changes on the phone, risks, how to undo
 * [CHANGELOG.md](CHANGELOG.md) - everything this fork changes
+* [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md) - pull requests, reporting vulnerabilities
 
 ## How Shizuku works (short)
 
