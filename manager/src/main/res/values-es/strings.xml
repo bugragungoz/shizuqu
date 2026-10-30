@@ -133,4 +133,18 @@
     </plurals>
     <string name="dialog_adb_invalid_port">Puerto es un número del 1 al 65535.</string>
     <string name="dialog_adb_port">Puerto</string>
+    <string name="settings_color_palette">Paleta de colores</string>
+    <string name="palette_indigo">Índigo</string>
+    <string name="palette_ocean">Océano</string>
+    <string name="palette_teal">Verde azulado</string>
+    <string name="palette_violet">Violeta</string>
+    <string name="palette_rose">Rosa</string>
+    <string name="palette_amber">Ámbar</string>
+    <string name="palette_graphite">Grafito</string>
+    <string name="starter_copy_log">Copiar registro</string>
+    <string name="starter_log_copied">Registro copiado</string>
+    <string name="tile_running">En ejecución</string>
+    <string name="tile_starting">Iniciando…</string>
+    <string name="tile_tap_to_start">Toca para iniciar</string>
+    <string name="tile_open_app">Abrir la app</string>
 </resources>

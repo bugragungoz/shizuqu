@@ -132,4 +132,18 @@
 \n
 \n操作を有効にするために､ Shizukuを再起動する必要がある場合があります。</string>
     <string name="dialog_adb_discovery_message_toggle_wireless_debugging">検索され続ける場合は、「ワイヤレスデバッグ」の無効化と有効化をしてみてください。</string>
+    <string name="settings_color_palette">カラーパレット</string>
+    <string name="palette_indigo">インディゴ</string>
+    <string name="palette_ocean">オーシャン</string>
+    <string name="palette_teal">ティール</string>
+    <string name="palette_violet">バイオレット</string>
+    <string name="palette_rose">ローズ</string>
+    <string name="palette_amber">アンバー</string>
+    <string name="palette_graphite">グラファイト</string>
+    <string name="starter_copy_log">ログをコピー</string>
+    <string name="starter_log_copied">ログをコピーしました</string>
+    <string name="tile_running">実行中</string>
+    <string name="tile_starting">起動中…</string>
+    <string name="tile_tap_to_start">タップして起動</string>
+    <string name="tile_open_app">アプリを開く</string>
 </resources>

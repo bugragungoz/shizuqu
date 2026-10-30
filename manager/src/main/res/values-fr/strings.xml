@@ -127,4 +127,18 @@
     <string name="home_adb_is_limited_title">Une étape supplémentaire est nécessaire</string>
     <string name="home_app_management_empty">Les applications qui ont demandé ou déclaré l\'accès à Shizuku apparaîtront ici.</string>
     <string name="dialog_adb_discovery_message_toggle_wireless_debugging">Merci d\'essayer de désactiver et de réactiver le \"Débogage sans-fil\" si ça continue à chercher.</string>
+    <string name="settings_color_palette">Palette de couleurs</string>
+    <string name="palette_indigo">Indigo</string>
+    <string name="palette_ocean">Océan</string>
+    <string name="palette_teal">Sarcelle</string>
+    <string name="palette_violet">Violet</string>
+    <string name="palette_rose">Rose</string>
+    <string name="palette_amber">Ambre</string>
+    <string name="palette_graphite">Graphite</string>
+    <string name="starter_copy_log">Copier le journal</string>
+    <string name="starter_log_copied">Journal copié</string>
+    <string name="tile_running">Actif</string>
+    <string name="tile_starting">Démarrage…</string>
+    <string name="tile_tap_to_start">Touchez pour démarrer</string>
+    <string name="tile_open_app">Ouvrir l\'appli</string>
 </resources>

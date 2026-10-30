@@ -135,4 +135,18 @@
     <string name="adb_pairing_tutorial_content_left_is_clickable">Należy pamiętać, że lewą część opcji „Debugowanie sieci bezprzewodowej” można kliknąć, dotknięcie jej spowoduje otwarcie nowej strony. Jedynie włączenie przełącznika po prawej stronie jest nieprawidłowe.</string>
     <string name="adb_pairing_tutorial_content_miui_2">W przeciwnym razie wprowadzenie kodu parowania z powiadomienia może nie być możliwe.</string>
     <string name="dialog_adb_discovery_message_toggle_wireless_debugging">Proszę spróbować wyłączyć i włączyć ponownie \"Debugowanie bezprzewodowe\" jeśli nadal szuka.</string>
+    <string name="settings_color_palette">Paleta kolorów</string>
+    <string name="palette_indigo">Indygo</string>
+    <string name="palette_ocean">Ocean</string>
+    <string name="palette_teal">Morski</string>
+    <string name="palette_violet">Fioletowy</string>
+    <string name="palette_rose">Różany</string>
+    <string name="palette_amber">Bursztynowy</string>
+    <string name="palette_graphite">Grafitowy</string>
+    <string name="starter_copy_log">Kopiuj dziennik</string>
+    <string name="starter_log_copied">Skopiowano dziennik</string>
+    <string name="tile_running">Działa</string>
+    <string name="tile_starting">Uruchamianie…</string>
+    <string name="tile_tap_to_start">Dotknij, aby uruchomić</string>
+    <string name="tile_open_app">Otwórz aplikację</string>
 </resources>

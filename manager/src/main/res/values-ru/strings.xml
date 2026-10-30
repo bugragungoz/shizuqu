@@ -135,4 +135,18 @@
 \n
 \nВозможно Вам понадобится перезапустить Shizuku для применения изменений.</string>
     <string name="home_adb_is_limited_title">Нужен дополнительный шаг</string>
+    <string name="settings_color_palette">Цветовая палитра</string>
+    <string name="palette_indigo">Индиго</string>
+    <string name="palette_ocean">Океан</string>
+    <string name="palette_teal">Бирюзовый</string>
+    <string name="palette_violet">Фиолетовый</string>
+    <string name="palette_rose">Розовый</string>
+    <string name="palette_amber">Янтарный</string>
+    <string name="palette_graphite">Графит</string>
+    <string name="starter_copy_log">Копировать журнал</string>
+    <string name="starter_log_copied">Журнал скопирован</string>
+    <string name="tile_running">Работает</string>
+    <string name="tile_starting">Запуск…</string>
+    <string name="tile_tap_to_start">Нажмите, чтобы запустить</string>
+    <string name="tile_open_app">Открыть приложение</string>
 </resources>

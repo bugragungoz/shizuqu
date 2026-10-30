@@ -132,4 +132,18 @@
     <string name="home_adb_is_limited_title">추가 단계를 진행해야 합니다</string>
     <string name="home_app_management_empty">Shizuku에 요청 또는 선언한 앱들이 여기에 표시됩니다.</string>
     <string name="dialog_adb_discovery_message_toggle_wireless_debugging">\"무선 디버깅\"이 검색중으로 유지된다면 비활성화했다가 다시 활성화해 보세요.</string>
+    <string name="settings_color_palette">색상 팔레트</string>
+    <string name="palette_indigo">인디고</string>
+    <string name="palette_ocean">오션</string>
+    <string name="palette_teal">틸</string>
+    <string name="palette_violet">바이올렛</string>
+    <string name="palette_rose">로즈</string>
+    <string name="palette_amber">앰버</string>
+    <string name="palette_graphite">그래파이트</string>
+    <string name="starter_copy_log">로그 복사</string>
+    <string name="starter_log_copied">로그 복사됨</string>
+    <string name="tile_running">실행 중</string>
+    <string name="tile_starting">시작하는 중…</string>
+    <string name="tile_tap_to_start">탭하여 시작</string>
+    <string name="tile_open_app">앱 열기</string>
 </resources>

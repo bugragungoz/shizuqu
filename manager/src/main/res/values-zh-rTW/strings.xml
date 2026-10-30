@@ -132,4 +132,18 @@
 \n通常，在「開發人員選項」中調整一些選項即可解除此限制。請閱讀說明來瞭解具體的作業方式。
 \n
 \n您可能需要重新啟動 Shizuku 以使作業生效。</string>
+    <string name="settings_color_palette">色彩配置</string>
+    <string name="palette_indigo">靛藍</string>
+    <string name="palette_ocean">海洋</string>
+    <string name="palette_teal">青綠</string>
+    <string name="palette_violet">紫羅蘭</string>
+    <string name="palette_rose">玫瑰</string>
+    <string name="palette_amber">琥珀</string>
+    <string name="palette_graphite">石墨</string>
+    <string name="starter_copy_log">複製記錄</string>
+    <string name="starter_log_copied">已複製記錄</string>
+    <string name="tile_running">執行中</string>
+    <string name="tile_starting">正在啟動…</string>
+    <string name="tile_tap_to_start">輕觸以啟動</string>
+    <string name="tile_open_app">開啟應用程式</string>
 </resources>

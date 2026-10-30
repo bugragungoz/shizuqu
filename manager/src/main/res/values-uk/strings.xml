@@ -135,4 +135,18 @@
 \nМожливо потрібно буде перезапустити Shizuku.</string>
     <string name="home_adb_is_limited_title">Потрібен ще один крок</string>
     <string name="dialog_adb_discovery_message_toggle_wireless_debugging">Будь ласка, спробуйте вимкнути та увімкнути \"Налагодження через Wi-Fi\", якщо пошук продовжується.</string>
+    <string name="settings_color_palette">Палітра кольорів</string>
+    <string name="palette_indigo">Індиго</string>
+    <string name="palette_ocean">Океан</string>
+    <string name="palette_teal">Бірюзовий</string>
+    <string name="palette_violet">Фіолетовий</string>
+    <string name="palette_rose">Рожевий</string>
+    <string name="palette_amber">Бурштиновий</string>
+    <string name="palette_graphite">Графіт</string>
+    <string name="starter_copy_log">Копіювати журнал</string>
+    <string name="starter_log_copied">Журнал скопійовано</string>
+    <string name="tile_running">Працює</string>
+    <string name="tile_starting">Запуск…</string>
+    <string name="tile_tap_to_start">Торкніться, щоб запустити</string>
+    <string name="tile_open_app">Відкрити застосунок</string>
 </resources>

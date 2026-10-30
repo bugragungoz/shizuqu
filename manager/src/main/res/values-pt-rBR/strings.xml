@@ -133,4 +133,18 @@
 \nNormalmente, essa limitação pode ser eliminada ajustando algumas opções nas “Opções do desenvolvedor”. Por favor, leia a ajuda para obter detalhes sobre como fazer isso.
 \n
 \nPode ser necessário reiniciar o Shizuku para que a operação tenha efeito.</string>
+    <string name="settings_color_palette">Paleta de cores</string>
+    <string name="palette_indigo">Índigo</string>
+    <string name="palette_ocean">Oceano</string>
+    <string name="palette_teal">Verde-azulado</string>
+    <string name="palette_violet">Violeta</string>
+    <string name="palette_rose">Rosa</string>
+    <string name="palette_amber">Âmbar</string>
+    <string name="palette_graphite">Grafite</string>
+    <string name="starter_copy_log">Copiar log</string>
+    <string name="starter_log_copied">Log copiado</string>
+    <string name="tile_running">Em execução</string>
+    <string name="tile_starting">Iniciando…</string>
+    <string name="tile_tap_to_start">Toque para iniciar</string>
+    <string name="tile_open_app">Abrir o app</string>
 </resources>

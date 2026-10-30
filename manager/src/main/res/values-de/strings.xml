@@ -133,4 +133,18 @@
     <string name="home_app_management_empty">Apps, die Shizuku angefordert oder deklariert haben, werden hier angezeigt.</string>
     <string name="adb_pairing_tutorial_content_left_is_clickable">Bitte beachte, dass der linke Teil der \"Wireless debugging\"-Option anklickbar ist; wird es angetippt öffnet es eine neue Seite. Lediglich den Schalter auf der rechten Seite umzulegen ist falsch.</string>
     <string name="dialog_adb_discovery_message_toggle_wireless_debugging">Bitte versuche \"Wireless debugging\" aus- und einzuschalten, falls es weiterhin sucht.</string>
+    <string name="settings_color_palette">Farbpalette</string>
+    <string name="palette_indigo">Indigo</string>
+    <string name="palette_ocean">Ozean</string>
+    <string name="palette_teal">Türkis</string>
+    <string name="palette_violet">Violett</string>
+    <string name="palette_rose">Rosé</string>
+    <string name="palette_amber">Bernstein</string>
+    <string name="palette_graphite">Graphit</string>
+    <string name="starter_copy_log">Protokoll kopieren</string>
+    <string name="starter_log_copied">Protokoll kopiert</string>
+    <string name="tile_running">Läuft</string>
+    <string name="tile_starting">Wird gestartet…</string>
+    <string name="tile_tap_to_start">Zum Starten tippen</string>
+    <string name="tile_open_app">App öffnen</string>
 </resources>

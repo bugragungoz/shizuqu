@@ -132,4 +132,18 @@
     <string name="home_adb_is_limited_title">Anda perlu mengambil langkah ekstra</string>
     <string name="home_app_management_empty">Aplikasi yang telah meminta atau mendeklarasikan Shizuku akan ditampilkan di sini.</string>
     <string name="dialog_adb_discovery_message_toggle_wireless_debugging">Coba untuk matikan dan hidupkan kembali \"Debug nirkabel\" jika terus mencari.</string>
+    <string name="settings_color_palette">Palet warna</string>
+    <string name="palette_indigo">Nila</string>
+    <string name="palette_ocean">Samudra</string>
+    <string name="palette_teal">Hijau kebiruan</string>
+    <string name="palette_violet">Violet</string>
+    <string name="palette_rose">Mawar</string>
+    <string name="palette_amber">Amber</string>
+    <string name="palette_graphite">Grafit</string>
+    <string name="starter_copy_log">Salin log</string>
+    <string name="starter_log_copied">Log disalin</string>
+    <string name="tile_running">Berjalan</string>
+    <string name="tile_starting">Memulai…</string>
+    <string name="tile_tap_to_start">Ketuk untuk memulai</string>
+    <string name="tile_open_app">Buka aplikasi</string>
 </resources>

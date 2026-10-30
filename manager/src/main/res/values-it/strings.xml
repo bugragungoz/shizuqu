@@ -134,4 +134,18 @@
 \nPotrebbe essere necessario riavviare Shizuku per rendere effettiva l\'operazione.</string>
     <string name="home_app_management_empty">Le app che hanno richiesto o dichiarato Shizuku verranno visualizzate qui</string>
     <string name="dialog_adb_discovery_message_toggle_wireless_debugging">Prova a disabilitare e abilitare \"Debug Wireless\" se continua a cercare.</string>
+    <string name="settings_color_palette">Tavolozza colori</string>
+    <string name="palette_indigo">Indaco</string>
+    <string name="palette_ocean">Oceano</string>
+    <string name="palette_teal">Verde acqua</string>
+    <string name="palette_violet">Viola</string>
+    <string name="palette_rose">Rosa</string>
+    <string name="palette_amber">Ambra</string>
+    <string name="palette_graphite">Grafite</string>
+    <string name="starter_copy_log">Copia log</string>
+    <string name="starter_log_copied">Log copiato</string>
+    <string name="tile_running">In esecuzione</string>
+    <string name="tile_starting">Avvio…</string>
+    <string name="tile_tap_to_start">Tocca per avviare</string>
+    <string name="tile_open_app">Apri l\'app</string>
 </resources>
