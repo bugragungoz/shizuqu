@@ -78,6 +78,17 @@ python3 tools/hiddenapi-check/check.py check manager/build/outputs/apk/debug/*.a
 
 Needs `dexdump` from build-tools (found through `ANDROID_HOME`).
 
+## Smoke tests
+
+```bash
+./gradlew :manager:testDebugUnitTest
+```
+
+Robolectric (no device) opens the home screen in every palette, light and
+dark, and checks the palette's colors really apply; it also opens Settings,
+the app list and the two guides. A theme or layout mistake that would crash
+the app at launch fails here (and in CI) instead of on a phone.
+
 ## Screenshot tests (design review)
 
 ```bash

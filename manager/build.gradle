@@ -13,11 +13,12 @@ plugins {
 // Screenshot tests render real layouts with layoutlib (no device):
 //   ./gradlew :manager:recordPaparazziDebug -Pscreenshots
 // They are opt-in so the normal build does not depend on layoutlib. Their code is in
-// src/screenshotTest and joins the unit tests only in this mode; the images stay in
-// src/test/snapshots, where Paparazzi keeps them.
+// src/screenshotTest and replaces the unit tests (src/test, Robolectric) in this mode;
+// the images stay in src/test/snapshots, where Paparazzi keeps them.
 if (project.hasProperty('screenshots')) {
     apply plugin: 'app.cash.paparazzi'
-    android.sourceSets.test.java.srcDirs += 'src/screenshotTest/java'
+    // only the screenshot tests: the Robolectric tests in src/test do not mix with layoutlib
+    android.sourceSets.test.java.srcDirs = ['src/screenshotTest/java']
     // this mode builds against compileSdk 35 and HiddenApiBypass 6.1: never ship it
     gradle.taskGraph.whenReady { graph ->
         if (graph.allTasks.any { it.name ==~ /(assemble|bundle|package).*Release.*/ }) {
@@ -44,6 +45,10 @@ if (project.hasProperty('screenshots')) {
 }
 
 android {
+    testOptions {
+        // Robolectric smoke tests (src/test) inflate the real resources
+        unitTests.includeAndroidResources = true
+    }
     namespace 'moe.shizuku.manager'
     defaultConfig {
         applicationId rootProject.ext.branding.applicationId
@@ -201,6 +206,12 @@ configurations.configureEach {
 }
 
 dependencies {
+    if (!project.hasProperty('screenshots')) {
+        // ./gradlew :manager:testDebugUnitTest: open every screen in every palette (src/test)
+        testImplementation 'junit:junit:4.13.2'
+        testImplementation 'org.robolectric:robolectric:4.17'
+    }
+
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2'
 
@@ -255,3 +266,22 @@ dependencies {
 
 apply from: rootProject.file('signing.gradle')
 apply from: 'branding.gradle'
+
+// Robolectric registers BouncyCastle's provider when it starts. The jars on the unit test
+// classpath went through the build's bytecode transforms but keep their signatures, so the
+// JVM rejects them ("SHA-256 digest error"). Put the original, untouched bcprov first and
+// leave out the app's other BouncyCastle jars (the smoke tests do not use them). Keep the
+// version equal to the bcprov Robolectric resolves (:manager:dependencies).
+if (!project.hasProperty('screenshots')) {
+    def bouncyCastle = configurations.detachedConfiguration(dependencies.create('org.bouncycastle:bcprov-jdk18on:1.85'))
+    bouncyCastle.transitive = false
+    tasks.withType(Test).configureEach {
+        doFirst { classpath = bouncyCastle + classpath }
+        // Robolectric reads FileDescriptor internals (JDK 17+ hides them)
+        jvmArgs '--add-opens=java.base/java.io=ALL-UNNAMED', '--add-exports=java.base/jdk.internal.access=ALL-UNNAMED'
+    }
+    configurations.matching { it.name.endsWith('UnitTestRuntimeClasspath') }.configureEach {
+        exclude group: 'org.bouncycastle', module: 'bcpkix-jdk18on'
+        exclude group: 'org.bouncycastle', module: 'bcutil-jdk18on'
+    }
+}

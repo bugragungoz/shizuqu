@@ -80,6 +80,10 @@ jobs:
           echo "releaseName=$name" >> "$GITHUB_OUTPUT"
           echo "releaseApk=$apk" >> "$GITHUB_OUTPUT"
 
+      - name: Smoke tests
+        # Robolectric opens every screen in every palette, light and dark
+        run: ./gradlew :manager:testDebugUnitTest
+
       - name: Check branding
         # The launcher label must be app.name from branding.properties and no
         # "Shizuku" may be left in the manager's strings.
