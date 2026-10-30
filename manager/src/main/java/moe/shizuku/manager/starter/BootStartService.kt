@@ -49,18 +49,22 @@ object BootStart {
                 && context.checkSelfPermission(WRITE_SECURE_SETTINGS) == PackageManager.PERMISSION_GRANTED
     }
 
+    /** @return false if the system refused to start the service */
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    fun start(context: Context) {
-        try {
+    fun start(context: Context): Boolean {
+        return try {
             context.startForegroundService(Intent(context, BootStartService::class.java))
+            true
         } catch (e: Throwable) {
             Log.w(TAG, "can't start BootStartService", e)
+            false
         }
     }
 }
 
 /**
- * Starts the service through wireless debugging after a reboot (no root).
+ * Starts the service through wireless debugging without root: after a reboot
+ * ("Start on boot") and from the Quick Settings tile ([StartTileService]).
  *
  * Upstream did this inside the boot receiver with a 3 second window, which
  * usually ends before Wi-Fi is connected, so it rarely worked. This short

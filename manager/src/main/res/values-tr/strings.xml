@@ -86,10 +86,10 @@
     <string name="home_app_management_view_authorized_apps">Yetkilendirilmiş uygulamaları yönetmek için dokunun</string>
     <string name="settings_start_on_boot_summary">Root: Shizuku açılışta otomatik başlar. Root olmadan (Android 13+, en son kablosuz hata ayıklama ile başlatıldıysa): Shizuku izin verilen bir Wi-Fi ağına bağlanınca kablosuz hata ayıklamayı açar ve başlar</string>
     <string name="settings_start_on_boot">Sistem açılışında başlat</string>
-    <string name="notification_channel_boot_start">Açılışta başlatma</string>
+    <string name="notification_channel_boot_start">Root olmadan başlatma</string>
     <string name="notification_boot_start_title">Shizuku başlatılıyor</string>
     <string name="notification_boot_start_text">Wi-Fi ve kablosuz hata ayıklama bekleniyor…</string>
-    <string name="notification_boot_start_failed_title">Shizuku açılışta başlatılamadı</string>
+    <string name="notification_boot_start_failed_title">Shizuku başlatılamadı</string>
     <string name="notification_boot_start_failed_text">Kablosuz hata ayıklama kullanılamadı. Kablosuz hata ayıklamaya izin verdiğiniz bir Wi-Fi ağına bağlanıp Shizuku’yu uygulamadan başlatın.</string>
     <string name="grant_dialog_button_allow_always">Her zaman izin ver</string>
     <string name="grant_dialog_button_deny">Reddet</string>
@@ -151,4 +151,9 @@
 \nİşlemin etkili olabilmesi için Shizuku yeniden başlatılmalı.</string>
     <string name="starter_copy_log">Kaydı kopyala</string>
     <string name="starter_log_copied">Kayıt kopyalandı</string>
+    <!-- Quick Settings tile subtitles -->
+    <string name="tile_running">Çalışıyor</string>
+    <string name="tile_starting">Başlatılıyor…</string>
+    <string name="tile_tap_to_start">Başlatmak için dokunun</string>
+    <string name="tile_open_app">Uygulamayı açın</string>
 </resources>

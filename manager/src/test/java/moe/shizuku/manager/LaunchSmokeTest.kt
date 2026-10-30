@@ -8,6 +8,7 @@ import moe.shizuku.manager.app.ThemeHelper
 import moe.shizuku.manager.management.ApplicationManagementActivity
 import moe.shizuku.manager.settings.SettingsActivity
 import moe.shizuku.manager.shell.ShellTutorialActivity
+import moe.shizuku.manager.starter.StartTileService
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
@@ -76,5 +77,27 @@ class LaunchSmokeTest {
                 open(screen, Palette.BUGRA, night)
             }
         }
+    }
+
+    @Test
+    fun tileWithoutServiceOpensTheApp() {
+        val tile = Robolectric.setupService(StartTileService::class.java)
+        tile.onStartListening()
+        // service not running and never paired: the tap must not try to start anything
+        tile.onClick()
+        tile.onStopListening()
+        val started = org.robolectric.Shadows.shadowOf(RuntimeEnvironment.getApplication()).nextStartedService
+        assertEquals(null, started)
+    }
+
+    @Test
+    fun tileStartsTheServiceOncePaired() {
+        // a first start from the app grants WRITE_SECURE_SETTINGS
+        val app = RuntimeEnvironment.getApplication()
+        org.robolectric.Shadows.shadowOf(app).grantPermissions(android.Manifest.permission.WRITE_SECURE_SETTINGS)
+        val tile = Robolectric.setupService(StartTileService::class.java)
+        tile.onClick()
+        val started = org.robolectric.Shadows.shadowOf(app).nextStartedService
+        assertEquals(moe.shizuku.manager.starter.BootStartService::class.java.name, started?.component?.className)
     }
 }
