@@ -117,9 +117,9 @@ jobs:
           compression-level: 9
 
   release:
-    # Push a tag like v13.7.0 to get a draft release with the signed APK, its
-    # checksum and the CHANGELOG section of that version. It stays a draft
-    # until it is published by hand on GitHub. Only this job can write.
+    # Push a tag like v13.7.0 to publish a release with the signed APK, its
+    # checksum and the CHANGELOG section of that version. Only this job can
+    # write.
     needs: build
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
@@ -138,7 +138,7 @@ jobs:
           name: ${{ needs.build.outputs.releaseName }}
           path: artifact
 
-      - name: Draft GitHub release
+      - name: Publish GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -161,7 +161,9 @@ jobs:
             echo "::error::CHANGELOG.md has no '## $version' section"; exit 1
           fi
           name=$(grep '^app.name=' branding.properties | cut -d= -f2-)
-          sha=$(sha256sum "$apk" | cut -d' ' -f1)
+          asset="$name-v$version.apk"
+          cp "$apk" "$asset"
+          sha=$(sha256sum "$asset" | cut -d' ' -f1)
           {
             cat changelog-section.md
             echo
@@ -170,5 +172,5 @@ jobs:
             echo
             echo "Signing certificate SHA-256: \`$cert\`"
           } > release-notes.md
-          gh release create "$GITHUB_REF_NAME" "$apk" --draft \
+          gh release create "$GITHUB_REF_NAME" "$asset" \
             --title "$name $version" --notes-file release-notes.md

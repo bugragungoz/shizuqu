@@ -13,6 +13,14 @@ manager/src/main/assets/licenses:
   Geist           https://github.com/vercel/geist-font         Copyright 2024 The Geist Project Authors
   JetBrains Mono  https://github.com/JetBrains/JetBrainsMono   Copyright 2020 The JetBrains Mono Project Authors
 
+The launcher icon (tools/icon/gen.py) uses the Android robot. The Android
+robot is reproduced or modified from work created and shared by Google and
+used according to terms described in the Creative Commons 3.0 Attribution
+License. Android is a trademark of Google LLC.
+
+Shizuqu is an unofficial fork. It is not affiliated with or endorsed by
+RikkaApps or Google.
+
 "Shizuku" is the name of the upstream project. This fork does not use it as
 its app name and does not ship upstream's launcher icons (see README.md,
 "License").

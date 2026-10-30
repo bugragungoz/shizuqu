@@ -2,24 +2,20 @@
 """
 Generates the Shizuqu icon drawables from one geometry.
 
-The mark is a terminal window with Android's two antennae and a ">_" prompt
-cut out of it (command line + adb + Android). The default concept is
-"terminal"; "android-head" is the alternative (Android's head with the
-prompt as its face).
+The mark: an Android head rising from the bottom edge, with a ">_" prompt above
+it. The Android robot is reproduced or modified from work created and shared by
+Google and used according to terms described in the Creative Commons 3.0
+Attribution License.
 
     pip install shapely
-    python3 tools/icon/gen.py [--concept terminal|android-head]
+    python3 tools/icon/gen.py
 
 Writes (manager/src/main/res/drawable):
-    ic_launcher_foreground.xml  adaptive icon foreground (108dp), color @color/launcher_glyph
-    ic_monochrome.xml           themed icon (Android 13+), black, tinted by the launcher
+    ic_launcher_foreground.xml  adaptive icon foreground (head + prompt, two colors)
+    ic_monochrome.xml           themed icon (Android 13+), one color
     ic_system_icon.xml          24dp: status bar, notifications, permission dialog
-and docs/assets/icon.svg (README).
-
-Colors come from manager/src/main/res/values/launcher_colors.xml (the
-app uses them directly; only icon.svg needs them copied).
+and docs/assets/icon.svg (README). Colors: res/values/launcher_colors.xml.
 """
-import argparse
 import math
 import os
 import xml.etree.ElementTree as ET
@@ -33,50 +29,37 @@ DRAWABLE = os.path.join(ROOT, "manager", "src", "main", "res", "drawable")
 DOCS = os.path.join(ROOT, "docs", "assets")
 COLORS = os.path.join(ROOT, "manager", "src", "main", "res", "values", "launcher_colors.xml")
 
-
-def launcher_colors():
-    """{name: "#RRGGBB"} from launcher_colors.xml (alpha dropped, the colors are opaque)."""
-    colors = {}
-    for color in ET.parse(COLORS).getroot().iter("color"):
-        value = color.text.strip()
-        colors[color.get("name")] = "#" + value[-6:]
-    return colors
+# 108x108 adaptive icon grid; the launcher shows about 18..90
+HEAD_CENTER = (54.0, 93.4)
+HEAD_RADIUS = 34.5
 
 
 def stroke(points, width):
     return LineString(points).buffer(width / 2, cap_style="round", join_style="round", quad_segs=6)
 
 
-def rounded_rect(x0, y0, x1, y1, r):
-    return box(x0 + r, y0 + r, x1 - r, y1 - r).buffer(r, quad_segs=8)
+def head():
+    """Android head: a disc cut by the bottom edge, two antennae, two eye holes."""
+    cx, cy = HEAD_CENTER
+    dome = Point(cx, cy).buffer(HEAD_RADIUS, quad_segs=24)
+
+    def antenna(side):
+        a = math.radians(32)
+        tip = (cx + 20.8 * side, 53.4)
+        base = (tip[0] - 14 * math.sin(a) * side, tip[1] + 14 * math.cos(a))
+        return stroke([tip, base], 2.9)
+
+    eyes = unary_union([Point(cx + 15.9 * side, 77.6).buffer(2.8, quad_segs=8) for side in (-1, 1)])
+    shape = unary_union([dome, antenna(-1), antenna(1)]).difference(eyes)
+    return shape.intersection(box(0, 0, 108, 108))
 
 
-def terminal():
-    """Terminal window, two antennae, ">_" cut out. 108x108 grid, centered."""
-    window = rounded_rect(30, 44, 78, 74, 7)
-    antennae = unary_union([stroke([(41, 45), (36, 34)], 4.5), stroke([(67, 45), (72, 34)], 4.5)])
-    prompt = unary_union([stroke([(39.5, 52), (46.5, 59), (39.5, 66)], 5), stroke([(52, 66), (66, 66)], 5)])
-    return unary_union([window, antennae]).difference(prompt)
-
-
-def android_head():
-    """Android's head (half disc + antennae) with ">_" as the face."""
-    cx, cy, r = 54, 69, 25
-    dome = Point(cx, cy).buffer(r, quad_segs=32).intersection(box(0, 0, 108, cy)).buffer(-1.2).buffer(1.2)
-
-    def antenna(deg):
-        a = math.radians(deg)
-        p0 = (cx + (r - 3) * math.sin(a), cy - (r - 3) * math.cos(a))
-        p1 = (cx + (r + 8) * math.sin(a), cy - (r + 8) * math.cos(a))
-        return stroke([p0, p1], 4.5)
-
-    face = unary_union([stroke([(42, 52), (48.5, 58), (42, 64)], 4.8), stroke([(54, 64), (66, 64)], 4.8)])
-    return unary_union([dome, antenna(-32), antenna(32)]).difference(face)
-
-
-def center(geom, size=108.0):
-    x0, y0, x1, y1 = geom.bounds
-    return affinity.translate(geom, size / 2 - (x0 + x1) / 2, size / 2 - (y0 + y1) / 2)
+def prompt():
+    """The ">_" prompt above the head."""
+    return unary_union([
+        stroke([(43, 28.5), (50.5, 36.5), (43, 44.5)], 3.8),
+        stroke([(55, 44.5), (65, 44.5)], 3.8),
+    ])
 
 
 def path_data(geom, digits=1):
@@ -89,60 +72,59 @@ def path_data(geom, digits=1):
     return " ".join(rings)
 
 
-def vector(comment, size_dp, viewport, fill, data):
+def launcher_colors():
+    """{name: "#RRGGBB"} from launcher_colors.xml."""
+    return {c.get("name"): "#" + c.text.strip()[-6:] for c in ET.parse(COLORS).getroot().iter("color")}
+
+
+def vector(comment, size_dp, viewport, paths):
+    body = "".join(f"""
+    <path
+        android:fillColor="{fill}"
+        android:fillType="evenOdd"
+        android:pathData="{data}" />""" for fill, data in paths)
     return f"""<?xml version="1.0" encoding="utf-8"?>
 <!-- {comment}
-     Generated by tools/icon/gen.py, do not edit by hand. -->
+     Generated by tools/icon/gen.py, do not edit by hand.
+     The Android robot is reproduced or modified from work created and shared by Google
+     and used according to terms described in the Creative Commons 3.0 Attribution License. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="{size_dp}dp"
     android:height="{size_dp}dp"
     android:viewportWidth="{viewport}"
-    android:viewportHeight="{viewport}">
-    <path
-        android:fillColor="{fill}"
-        android:fillType="evenOdd"
-        android:pathData="{data}" />
+    android:viewportHeight="{viewport}">{body}
 </vector>
 """
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--concept", choices=["terminal", "android-head"], default="terminal")
-    args = parser.parse_args()
+    h, p = head(), prompt()
+    both = unary_union([h, p])
 
-    mark = center(terminal() if args.concept == "terminal" else android_head())
-    what = "a terminal window with Android's antennae and a >_ prompt" if args.concept == "terminal" \
-        else "Android's head with a >_ prompt as its face"
-
-    # 24dp small icon: the mark fills 22 of 24 (1dp padding), so strokes stay ~2dp
-    x0, y0, x1, y1 = mark.bounds
-    scale = 22.0 / max(x1 - x0, y1 - y0)
-    small = center(affinity.scale(mark, scale, scale, origin=(54, 54)), 108)
-    small = affinity.translate(small, -42, -42)  # 108 grid -> 24 grid, both centered
+    # 24dp small icon: the visible 72x72 area (18..90) scaled to 24
+    small = affinity.translate(affinity.scale(both, 24 / 72, 24 / 72, origin=(0, 0)), -6, -6)
+    small = small.intersection(box(0, 0, 24, 24))
 
     files = {
-        os.path.join(DRAWABLE, "ic_launcher_foreground.xml"):
-            vector(f"Shizuqu launcher icon, foreground: {what}.", 108, 108, "@color/launcher_glyph", path_data(mark)),
-        os.path.join(DRAWABLE, "ic_monochrome.xml"):
-            vector(f"Shizuqu themed (monochrome) icon: {what}.", 108, 108, "#FF000000", path_data(mark)),
-        os.path.join(DRAWABLE, "ic_system_icon.xml"):
-            vector("Shizuqu small icon (status bar, notifications, permission dialog).", 24, 24, "#FFFFFFFF",
-                   path_data(small, 2)),
+        os.path.join(DRAWABLE, "ic_launcher_foreground.xml"): vector(
+            "Shizuqu launcher icon, foreground: an Android head and a >_ prompt.", 108, 108,
+            [("@color/launcher_head", path_data(h)), ("@color/launcher_prompt", path_data(p))]),
+        os.path.join(DRAWABLE, "ic_monochrome.xml"): vector(
+            "Shizuqu themed (monochrome) icon.", 108, 108, [("#FF000000", path_data(both))]),
+        os.path.join(DRAWABLE, "ic_system_icon.xml"): vector(
+            "Shizuqu small icon (status bar, notifications, permission dialog).", 24, 24,
+            [("#FFFFFFFF", path_data(small, 2))]),
     }
-    colors = launcher_colors()
+    c = launcher_colors()
     os.makedirs(DOCS, exist_ok=True)
     files[os.path.join(DOCS, "icon.svg")] = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="18 18 72 72" width="160" height="160">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="{colors['launcher_background_start']}"/>
-      <stop offset="1" stop-color="{colors['launcher_background_end']}"/>
-    </linearGradient>
-    <clipPath id="shape"><rect x="18" y="18" width="72" height="72" rx="22"/></clipPath>
-  </defs>
+  <!-- The Android robot is reproduced or modified from work created and shared by Google and used
+       according to terms described in the Creative Commons 3.0 Attribution License. -->
+  <defs><clipPath id="shape"><rect x="18" y="18" width="72" height="72" rx="20"/></clipPath></defs>
   <g clip-path="url(#shape)">
-    <rect width="108" height="108" fill="url(#bg)"/>
-    <path fill="{colors['launcher_glyph']}" fill-rule="evenodd" d="{path_data(mark)}"/>
+    <rect width="108" height="108" fill="{c['launcher_background']}"/>
+    <path fill="{c['launcher_head']}" fill-rule="evenodd" d="{path_data(h)}"/>
+    <path fill="{c['launcher_prompt']}" fill-rule="evenodd" d="{path_data(p)}"/>
   </g>
 </svg>
 """

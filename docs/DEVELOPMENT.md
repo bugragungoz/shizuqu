@@ -62,14 +62,9 @@ Android installs an update only if it is signed with the same key.
 2. Add a `## <version>` section to `CHANGELOG.md`.
 3. Push a tag: `git tag v13.7.1 && git push origin v13.7.1`.
 
-When the tag arrives, CI does the following:
-
-1. It checks that the APK is signed with the release key.
-2. It creates a draft GitHub release with the APK and its SHA-256.
-3. You then publish the draft on GitHub.
-
-This needs the `KEYSTORE_PASSWORD` secret. Without it, put the signed APK in
-`release/` by hand.
+When the tag arrives, CI checks that the APK is signed with the release key
+and publishes a GitHub release with the APK, its SHA-256 and the CHANGELOG
+section. This needs the `KEYSTORE_PASSWORD` secret.
 
 ## Name, package and icon
 

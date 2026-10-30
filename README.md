@@ -10,21 +10,27 @@ On Android 17, [Shizuku](https://github.com/RikkaApps/Shizuku) shows an empty
 list of authorized apps and apps can no longer connect to it. Shizuqu is a fork
 that fixes this. Apps that use the Shizuku API work with it unchanged.
 
+> [!NOTE]
+> Shizuqu is an unofficial, temporary fork. It was made before Shizuku had an
+> update for Android 17. When RikkaApps releases a Shizuku version that
+> supports Android 17, switch back to the official Shizuku. Shizuqu is not
+> affiliated with or endorsed by RikkaApps or Google.
+
 [Türkçe](docs/README_TR.md)
 
 <p align="center">
-  <img src="manager/src/test/snapshots/images/moe.shizuku.manager.screenshots_DesignScreenshots_home_bugra_dark.png" width="250" alt="Home screen, dark">
-  <img src="manager/src/test/snapshots/images/moe.shizuku.manager.screenshots_DesignScreenshots_home_bugra_light.png" width="250" alt="Home screen, light">
-  <img src="manager/src/test/snapshots/images/moe.shizuku.manager.screenshots_DesignScreenshots_palettes_dark.png" width="250" alt="Color palettes">
+  <img src="docs/assets/screenshots/home.jpg" width="270" alt="Home screen">
+  <img src="docs/assets/screenshots/apps.jpg" width="270" alt="Authorized apps">
 </p>
 
 ## Download
 
-**[Shizuqu 13.7.0](release/Shizuqu-v13.7.0.apk)** (Android 7.0+)
-SHA-256 `f5eefcdc6e72febe5d01ac5c899dde8edebcb79c912dc58edbbdeeda210c1521`
+Get the APK from **[Releases](https://github.com/bugragungoz/shizuqu/releases/latest)**
+(Android 7.0+). The release notes list its SHA-256.
 
 Uninstall the original Shizuku first. Both use the same package name with
-different signatures, so they cannot be installed side by side.
+different signatures, so they cannot be installed side by side. To switch back
+later, uninstall Shizuqu, install Shizuku, and allow your apps again.
 
 ## Start the service
 
@@ -78,6 +84,9 @@ Uninstalling Shizuqu undoes everything.
 * The [Geist](https://github.com/vercel/geist-font) and
   [JetBrains Mono](https://github.com/JetBrains/JetBrainsMono) fonts (SIL OFL 1.1).
 * The Shizuku translators.
+* The icon uses the Android robot. The Android robot is reproduced or modified
+  from work created and shared by Google and used according to terms described
+  in the [Creative Commons 3.0 Attribution License](https://creativecommons.org/licenses/by/3.0/).
 * Built with [Claude Code](https://claude.com/claude-code) (Anthropic).
 
 ## License
@@ -86,4 +95,5 @@ Apache License 2.0, the same as upstream; `hidden-api/` is MIT. See
 [NOTICE](NOTICE).
 
 "Shizuku" and its icons belong to the upstream project. Shizuqu has its own
-name and icon, and is distributed only through GitHub.
+name and icon, and is distributed only through GitHub. Android is a trademark
+of Google LLC.
