@@ -36,6 +36,9 @@ Based on Shizuku 13.6.0 (upstream `b844bc49`).
   `AppBindData.info`.
 - `clean` + build in one Gradle call no longer loses the branding.
 - Hidden API check also fails on unknown missing classes.
+- Boot start: the TLS connection to adbd has a read timeout too, and a
+  start request at the end of an attempt can no longer leave the service
+  in the foreground with nothing running.
 
 ### Design
 - Bugra design system on Shizuku's layout: warm black and Android green
