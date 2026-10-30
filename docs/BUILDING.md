@@ -78,13 +78,16 @@ python3 tools/hiddenapi-check/check.py check manager/build/outputs/apk/debug/*.a
 
 Needs `dexdump` from build-tools (found through `ANDROID_HOME`).
 
-## Smoke tests
+## Unit and smoke tests
 
 ```bash
 ./gradlew :manager:testDebugUnitTest
 ```
 
-Robolectric (no device) opens the home screen in every palette, light and
+`AdbMdnsTest` drives the wireless debugging port discovery through NsdManager's
+asynchronous start/stop callbacks (stop before start confirmed, restart while
+stopping, failed start or stop). `LaunchSmokeTest` (Robolectric, no device)
+opens the home screen in every palette, light and
 dark, and checks that each palette's primary color really applies (except
 Material You, which follows the wallpaper); it also opens Settings, the app
 list and the two guides, and checks when the Quick Settings tile may start
