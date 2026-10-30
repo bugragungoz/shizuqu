@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Launcher icon colors (drawable/ic_launcher_background.xml, ic_launcher_foreground.xml).
+     Bugra colorway instead of indigo: start #24211E, end #0C0B0A, glyph #3DDC84. -->
+<resources>
+    <color name="launcher_background_start">#FF7B83EB</color>
+    <color name="launcher_background_end">#FF3730A3</color>
+    <color name="launcher_glyph">#FFFFFFFF</color>
+</resources>

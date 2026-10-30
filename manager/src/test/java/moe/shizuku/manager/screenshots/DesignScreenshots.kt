@@ -197,6 +197,52 @@ class DesignScreenshots {
         paparazzi.snapshot(column)
     }
 
+    /** Launcher icon in the common masks and the themed icon (the small icon is in the permission dialog). */
+    @Test
+    fun icon() {
+        night(false)
+        val context = themed(Palette.BUGRA, false)
+        val row = LinearLayout(context).apply {
+            orientation = LinearLayout.HORIZONTAL
+            setBackgroundColor(0xFFEEF0F4.toInt())
+            setPadding(dp(context, 16), dp(context, 16), dp(context, 16), dp(context, 16))
+        }
+        // layoutlib cannot inflate <adaptive-icon> (no system icon mask), so stack its layers
+        fun launcher() = android.graphics.drawable.LayerDrawable(arrayOf(
+            ContextCompat.getDrawable(context, R.drawable.ic_launcher_background)!!,
+            ContextCompat.getDrawable(context, R.drawable.ic_launcher_foreground)!!,
+        ))
+        fun masked(drawable: Int, radiusFraction: Float, size: Int, background: Int? = null, tint: Int? = null) =
+            FrameLayout(context).apply {
+                val px = dp(context, size)
+                layoutParams = LinearLayout.LayoutParams(px, px).apply { marginEnd = dp(context, 16) }
+                outlineProvider = object : android.view.ViewOutlineProvider() {
+                    override fun getOutline(view: View, outline: android.graphics.Outline) {
+                        outline.setRoundRect(0, 0, view.width, view.height, view.width * radiusFraction)
+                    }
+                }
+                clipToOutline = true
+                background?.let { setBackgroundColor(it) }
+                addView(android.widget.ImageView(context).apply {
+                    setImageDrawable(
+                        if (drawable == R.drawable.ic_launcher) launcher()
+                        else ContextCompat.getDrawable(context, drawable)!!.mutate().apply { tint?.let { setTint(it) } }
+                    )
+                    scaleType = android.widget.ImageView.ScaleType.FIT_XY
+                    // adaptive icons draw 108dp with the outer 18dp outside the mask
+                    val inset = if (drawable == R.drawable.ic_launcher || drawable == R.drawable.ic_monochrome) -px / 4 else 0
+                    layoutParams = FrameLayout.LayoutParams(px - 2 * inset, px - 2 * inset).apply {
+                        leftMargin = inset; topMargin = inset
+                    }
+                })
+            }
+        row.addView(masked(R.drawable.ic_launcher, 0.5f, 96))
+        row.addView(masked(R.drawable.ic_launcher, 0.3f, 96))
+        row.addView(masked(R.drawable.ic_launcher, 0.3f, 48))
+        row.addView(masked(R.drawable.ic_monochrome, 0.5f, 72, background = 0xFF2E3A2F.toInt(), tint = 0xFFD9F2DC.toInt()))
+        paparazzi.snapshot(row)
+    }
+
     @Test
     fun palettes_dark() = palettes(true)
 

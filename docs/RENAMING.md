@@ -12,6 +12,14 @@ Everything user-visible comes from [`branding.properties`](../branding.propertie
 
 After editing it: `./gradlew clean :manager:assembleRelease`.
 
+## Icon
+
+* Colors: `manager/src/main/res/values/launcher_colors.xml` (gradient and glyph).
+* Shape: `tools/icon/gen.py` writes the launcher foreground, the themed
+  (monochrome) icon, the 24dp status bar icon and `docs/assets/icon.svg` from one
+  geometry (`pip install shapely`, then `python3 tools/icon/gen.py`;
+  `--concept android-head` is the alternative mark).
+
 ## Choosing the application id
 
 * `moe.shizuku.privileged.api` (default): drop-in replacement for Shizuku.

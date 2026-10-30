@@ -35,8 +35,19 @@ Based on Shizuku 13.6.0 (upstream `b844bc49`).
 - `clean` + build in one Gradle call no longer loses the branding.
 - Hidden API check also fails on unknown missing classes.
 
+### Design
+- Bugra design system on Shizuku's layout: warm black and Android green
+  palette by default, Geist and JetBrains Mono type, 14dp flat cards with a
+  hairline border, one filled action per card.
+- Color palettes in Settings: Bugra, Material You (Android 12+), Indigo,
+  Ocean, Teal, Violet, Rose, Amber, Graphite; each in light and dark.
+- Opt-in screenshot tests (`-Pscreenshots`) for reviewing the design without
+  a device.
+
 ### Fork
-- New "Shizuqu" icon: a drop shaped as a Q.
+- Icon: a terminal window with Android's antennae and a `>_` prompt, as
+  launcher (adaptive and themed), status bar and permission dialog icon.
+  Generated from one geometry by `tools/icon/gen.py`.
 - Release key in `signing/release.p12` (encrypted); CI needs only the
   `KEYSTORE_PASSWORD` secret.
 - App name, package name, APK name, source URL and version in
