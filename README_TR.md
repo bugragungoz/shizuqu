@@ -108,6 +108,7 @@ gerekli). Açıkken her açılışta kablosuz hata ayıklamayı kendisi açar.
 | Uygulama listede yok | Uygulama Shizuku izni istemiş olmalı (bir kez açın); liste yalnızca Shizuku API kullanan uygulamaları gösterir |
 | Uygulama "Shizuku çalışmıyor" diyor | Uygulamayı kapatıp açın; hâlâ olmuyorsa servisi yeniden başlatın |
 | Telefon yeniden başlayınca durdu | Root olmadan normal; "Sistem açılışında başlat"ı açın veya elle başlatın |
+| Başlatma başarısız, sebebi belli değil | Başlatma ekranında sağ üstteki **Kaydı kopyala** ile kaydı (uygulama, Android ve cihaz sürümüyle) alıp hata bildirimine yapıştırın |
 
 ## Takip edilen risk: cihaz içi ADB kısıtlaması
 

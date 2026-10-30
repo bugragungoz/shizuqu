@@ -79,6 +79,9 @@ Every screen above is rendered from the real layouts by the screenshot tests
 Samsung (One UI 9): turn off **Auto Blocker** while pairing/starting, and see
 [docs/ANDROID17.md §7](docs/ANDROID17.md#7-samsung-one-ui-9).
 
+If starting fails, **Copy log** on the start screen copies the log with the
+app, Android and device versions for a bug report.
+
 ## Build
 
 ```bash
