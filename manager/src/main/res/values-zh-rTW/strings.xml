@@ -156,4 +156,5 @@
     <string name="settings_add_tile_summary">在通知欄輕觸一下即可啟動（需先透過無線偵錯啟動一次）</string>
     <string name="settings_add_tile_added">已新增圖塊</string>
     <string name="settings_add_tile_already_added">圖塊已在快速設定中</string>
+    <string name="settings_add_tile_failed">無法新增圖塊。請編輯快速設定來新增。</string>
 </resources>

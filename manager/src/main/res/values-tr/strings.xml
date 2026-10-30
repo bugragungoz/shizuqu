@@ -160,4 +160,5 @@
     <string name="settings_add_tile_summary">Bildirim panelinden tek dokunuşla başlatın (kablosuz hata ayıklama ile bir kez başlattıktan sonra)</string>
     <string name="settings_add_tile_added">Kutucuk eklendi</string>
     <string name="settings_add_tile_already_added">Kutucuk zaten Hızlı Ayarlar\'da</string>
+    <string name="settings_add_tile_failed">Kutucuk eklenemedi. Hızlı Ayarlar\'ı düzenleyerek ekleyin.</string>
 </resources>

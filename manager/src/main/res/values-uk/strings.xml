@@ -159,4 +159,5 @@
     <string name="settings_add_tile_summary">Запуск одним дотиком із панелі сповіщень (після одного запуску через налагодження Wi-Fi)</string>
     <string name="settings_add_tile_added">Плитку додано</string>
     <string name="settings_add_tile_already_added">Плитка вже є у швидких налаштуваннях</string>
+    <string name="settings_add_tile_failed">Не вдалося додати плитку. Додайте її, змінивши швидкі налаштування.</string>
 </resources>

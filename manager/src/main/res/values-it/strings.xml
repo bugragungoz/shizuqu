@@ -158,4 +158,5 @@
     <string name="settings_add_tile_summary">Avvia con un tocco dalla tendina delle notifiche (dopo un avvio con debug wireless)</string>
     <string name="settings_add_tile_added">Riquadro aggiunto</string>
     <string name="settings_add_tile_already_added">Il riquadro è già nelle Impostazioni rapide</string>
+    <string name="settings_add_tile_failed">Impossibile aggiungere il riquadro. Aggiungilo modificando le Impostazioni rapide.</string>
 </resources>

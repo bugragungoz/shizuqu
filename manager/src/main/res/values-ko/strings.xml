@@ -156,4 +156,5 @@
     <string name="settings_add_tile_summary">알림 창에서 한 번 탭하여 시작(무선 디버깅으로 한 번 시작한 후)</string>
     <string name="settings_add_tile_added">타일을 추가함</string>
     <string name="settings_add_tile_already_added">타일이 이미 빠른 설정에 있음</string>
+    <string name="settings_add_tile_failed">타일을 추가할 수 없습니다. 빠른 설정을 편집하여 추가하세요.</string>
 </resources>

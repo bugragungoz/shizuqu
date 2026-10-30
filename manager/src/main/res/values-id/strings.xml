@@ -156,4 +156,5 @@
     <string name="settings_add_tile_summary">Mulai dengan satu ketukan dari panel notifikasi (setelah sekali dimulai dengan debugging nirkabel)</string>
     <string name="settings_add_tile_added">Kartu ditambahkan</string>
     <string name="settings_add_tile_already_added">Kartu sudah ada di Setelan Cepat</string>
+    <string name="settings_add_tile_failed">Kartu tidak dapat ditambahkan. Tambahkan dengan mengedit Setelan Cepat.</string>
 </resources>

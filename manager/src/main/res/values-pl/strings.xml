@@ -159,4 +159,5 @@
     <string name="settings_add_tile_summary">Uruchamiaj jednym dotknięciem z panelu powiadomień (po jednym uruchomieniu przez debugowanie bezprzewodowe)</string>
     <string name="settings_add_tile_added">Dodano kafelek</string>
     <string name="settings_add_tile_already_added">Kafelek jest już w Szybkich ustawieniach</string>
+    <string name="settings_add_tile_failed">Nie udało się dodać kafelka. Dodaj go, edytując Szybkie ustawienia.</string>
 </resources>

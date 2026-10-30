@@ -151,4 +151,5 @@
     <string name="settings_add_tile_summary">Démarrer d\'un geste depuis le volet des notifications (après un démarrage par débogage sans fil)</string>
     <string name="settings_add_tile_added">Vignette ajoutée</string>
     <string name="settings_add_tile_already_added">La vignette est déjà dans les Réglages rapides</string>
+    <string name="settings_add_tile_failed">Impossible d\'ajouter la vignette. Ajoutez-la en modifiant les Réglages rapides.</string>
 </resources>

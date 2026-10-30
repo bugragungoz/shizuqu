@@ -157,4 +157,5 @@
     <string name="settings_add_tile_summary">Inicie com um toque na aba de notificações (depois de um início pela depuração por Wi-Fi)</string>
     <string name="settings_add_tile_added">Bloco adicionado</string>
     <string name="settings_add_tile_already_added">O bloco já está nas Configurações rápidas</string>
+    <string name="settings_add_tile_failed">Não foi possível adicionar o bloco. Adicione-o editando as Configurações rápidas.</string>
 </resources>

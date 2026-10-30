@@ -156,4 +156,5 @@
     <string name="settings_add_tile_summary">通知パネルからワンタップで起動（ワイヤレスデバッグで一度起動した後）</string>
     <string name="settings_add_tile_added">タイルを追加しました</string>
     <string name="settings_add_tile_already_added">タイルはすでにクイック設定にあります</string>
+    <string name="settings_add_tile_failed">タイルを追加できませんでした。クイック設定を編集して追加してください。</string>
 </resources>

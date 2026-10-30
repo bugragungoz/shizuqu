@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
         android:key="startup"
@@ -10,9 +11,10 @@
             android:summary="@string/settings_start_on_boot_summary"
             android:title="@string/settings_start_on_boot" />
 
-        <!-- Android 13+: asks the system to add the Quick Settings tile -->
+        <!-- Android 13+ (shown by SettingsFragment): asks the system to add the Quick Settings tile -->
         <Preference
             android:key="add_tile"
+            app:isPreferenceVisible="false"
             android:summary="@string/settings_add_tile_summary"
             android:title="@string/settings_add_tile" />
 

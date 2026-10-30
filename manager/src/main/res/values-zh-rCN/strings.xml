@@ -151,4 +151,5 @@
     <string name="settings_add_tile_summary">在通知栏中点按一下即可启动（需先通过无线调试启动一次）</string>
     <string name="settings_add_tile_added">已添加图块</string>
     <string name="settings_add_tile_already_added">图块已在快捷设置中</string>
+    <string name="settings_add_tile_failed">无法添加图块。请编辑快捷设置来添加。</string>
 </resources>

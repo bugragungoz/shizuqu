@@ -122,14 +122,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
             activity?.recreate()
         }
 
-        val addTilePreference: Preference = findPreference("add_tile")!!
+        // hidden in XML; the system prompt exists from Android 13
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            addTilePreference.setOnPreferenceClickListener {
-                requestAddTile(context)
-                true
+            findPreference<Preference>("add_tile")!!.apply {
+                isVisible = true
+                setOnPreferenceClickListener {
+                    requestAddTile(context)
+                    true
+                }
             }
-        } else {
-            addTilePreference.isVisible = false
         }
 
         translationPreference.summary =
@@ -150,23 +151,27 @@ class SettingsFragment : PreferenceFragmentCompat() {
     /** Shows the system's "add this tile?" prompt for [StartTileService]. */
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun requestAddTile(context: Context) {
-        val statusBar = context.getSystemService(StatusBarManager::class.java) ?: return
+        // the answer can come after this screen is gone: keep only the application
+        val app = context.applicationContext
         try {
-            statusBar.requestAddTileService(
-                ComponentName(context, StartTileService::class.java),
-                context.getString(R.string.app_name),
-                Icon.createWithResource(context, R.drawable.ic_system_icon),
-                context.mainExecutor
+            app.getSystemService(StatusBarManager::class.java).requestAddTileService(
+                ComponentName(app, StartTileService::class.java),
+                app.getString(R.string.app_name),
+                Icon.createWithResource(app, R.drawable.ic_system_icon),
+                app.mainExecutor
             ) { result ->
                 val message = when (result) {
                     StatusBarManager.TILE_ADD_REQUEST_RESULT_TILE_ADDED -> R.string.settings_add_tile_added
                     StatusBarManager.TILE_ADD_REQUEST_RESULT_TILE_ALREADY_ADDED -> R.string.settings_add_tile_already_added
-                    else -> 0
+                    // the user said no
+                    StatusBarManager.TILE_ADD_REQUEST_RESULT_TILE_NOT_ADDED -> 0
+                    else -> R.string.settings_add_tile_failed
                 }
-                if (message != 0) Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                if (message != 0) Toast.makeText(app, message, Toast.LENGTH_SHORT).show()
             }
         } catch (e: Throwable) {
             Log.w("SettingsFragment", "requestAddTileService failed", e)
+            Toast.makeText(app, R.string.settings_add_tile_failed, Toast.LENGTH_LONG).show()
         }
     }
 

@@ -159,4 +159,5 @@
     <string name="settings_add_tile_summary">Запуск одним касанием из панели уведомлений (после одного запуска через отладку по Wi-Fi)</string>
     <string name="settings_add_tile_added">Плитка добавлена</string>
     <string name="settings_add_tile_already_added">Плитка уже есть в быстрых настройках</string>
+    <string name="settings_add_tile_failed">Не удалось добавить плитку. Добавьте её, изменив быстрые настройки.</string>
 </resources>

@@ -157,4 +157,5 @@
     <string name="settings_add_tile_summary">Inicia con un toque desde el panel de notificaciones (tras un inicio con depuración inalámbrica)</string>
     <string name="settings_add_tile_added">Icono añadido</string>
     <string name="settings_add_tile_already_added">El icono ya está en Ajustes rápidos</string>
+    <string name="settings_add_tile_failed">No se pudo añadir el icono. Añádelo editando los Ajustes rápidos.</string>
 </resources>
