@@ -23,6 +23,8 @@ Based on Shizuku 13.6.0 (upstream `b844bc49`).
   adbd is not reachable on loopback, no crash on a null mDNS host.
 - Start on boot without root (Android 13+): waits for Wi-Fi in a short
   foreground service and retries, instead of a 3 second window.
+- Georgian: the home screen no longer crashes when the server's version
+  differs from the app's (an invalid format string in the translation).
 
 ### Reliability (review round)
 - Start on boot is off by default (it turns wireless debugging on at boot).
@@ -58,6 +60,9 @@ Based on Shizuku 13.6.0 (upstream `b844bc49`).
   device versions, ready for a bug report.
 - Releases: pushing a `v*` tag creates a draft GitHub release with the
   signed APK and its checksums.
+- The new texts are translated into 13 languages (German, Spanish, French,
+  Italian, Brazilian Portuguese, Russian, Ukrainian, Polish, Chinese,
+  Japanese, Korean, Indonesian, Turkish).
 
 ### Fork
 - Icon: a terminal window with Android's antennae and a `>_` prompt, as
@@ -70,4 +75,6 @@ Based on Shizuku 13.6.0 (upstream `b844bc49`).
 - `api/` (Shizuku-API) and `hidden-api/` (HiddenApi) vendored as plain directories.
 - `tools/hiddenapi-check`: hidden API linkage check against Android 17.0/17.1
   framework signatures, run in CI.
+- CI also runs lint (0 errors) and Robolectric tests (every screen in every
+  palette, the tile's start rules, mDNS discovery).
 - compileSdk 37 (targetSdk 36), NDK 29.0.14206865.
