@@ -4,7 +4,6 @@
     <style name="Base.AppTheme.Light" parent="Theme.Material3.Light.Shizuku">
         <item name="android:statusBarColor">?android:colorBackground</item>
 
-        <item name="appColorPrimary">@color/app_color_light</item>
         <!-- Bugra design system: type, shape, cards (res/values/design_bugra.xml) -->
         <!-- Fonts come from text appearances only. A theme-level fontFamily would win over
              every text appearance's font (AppCompat reads it as a view attribute). -->
@@ -58,7 +57,6 @@
     <style name="Theme.Light" parent="Base.AppTheme.Light" />
 
     <style name="Base.AppTheme" parent="Theme.Material3.Dark.Shizuku">
-        <item name="appColorPrimary">@color/app_color_dark</item>
         <!-- Bugra design system: type, shape, cards (res/values/design_bugra.xml) -->
         <!-- Fonts come from text appearances only. A theme-level fontFamily would win over
              every text appearance's font (AppCompat reads it as a view attribute). -->

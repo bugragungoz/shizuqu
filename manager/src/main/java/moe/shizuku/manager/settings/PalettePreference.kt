@@ -25,6 +25,7 @@ import moe.shizuku.manager.app.Palette
 import moe.shizuku.manager.app.ThemeHelper
 import rikka.core.res.isNight
 import rikka.core.res.resolveColor
+import kotlin.math.roundToInt
 
 /**
  * Settings row that shows every available [Palette] as a color swatch.
@@ -130,13 +131,15 @@ class PalettePreference @JvmOverloads constructor(
 
     private fun swatchDrawable(context: Context, color: Int, selected: Boolean): Drawable {
         val density = context.resources.displayMetrics.density
+        fun px(dp: Int) = maxOf(1, (dp * density).roundToInt())
+        val hairline = px(1)
         val ring = GradientDrawable().apply {
             shape = GradientDrawable.OVAL
             if (selected) {
-                setStroke((2 * density).toInt(), context.theme.resolveColor(com.google.android.material.R.attr.colorOnSurface))
+                setStroke(px(2), context.theme.resolveColor(com.google.android.material.R.attr.colorOnSurface))
             } else {
                 // hairline so light swatches stay visible on light grounds
-                setStroke((1 * density).toInt(), context.theme.resolveColor(com.google.android.material.R.attr.colorOutlineVariant))
+                setStroke(hairline, context.theme.resolveColor(com.google.android.material.R.attr.colorOutlineVariant))
             }
         }
         val fill = GradientDrawable().apply {
@@ -144,9 +147,10 @@ class PalettePreference @JvmOverloads constructor(
             setColor(color)
         }
         return LayerDrawable(arrayOf(ring, fill)).apply {
-            val inset = ((if (selected) 5 else 4) * density).toInt()
+            val inset = px(if (selected) 5 else 4)
             setLayerInset(1, inset, inset, inset, inset)
-            if (!selected) setLayerInset(0, inset - (1 * density).toInt(), inset - (1 * density).toInt(), inset - (1 * density).toInt(), inset - (1 * density).toInt())
+            // unselected: the hairline hugs the swatch
+            if (!selected) setLayerInset(0, inset - hairline, inset - hairline, inset - hairline, inset - hairline)
         }
     }
 }

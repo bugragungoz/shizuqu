@@ -62,7 +62,6 @@
     <string name="settings_translation">Participă la traducere</string>
     <string name="settings_translation_summary">Ajută-ne să traducem %s în limba ta</string>
     <string name="settings_start_on_boot">Start la pornire (root)</string>
-    <string name="settings_use_system_color">Utilizează culoarea temei de sistem</string>
     <string name="action_about">Despre</string>
     <string name="about_view_source_code">Vizualizează codul sursă la %s</string>
     <string name="action_stop">Oprire Shizuku</string>

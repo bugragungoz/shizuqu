@@ -16,7 +16,6 @@
     <string name="action_stop">Ustavi Shizuku</string>
     <string name="about_view_source_code">Poglej izvorno kodo na %s</string>
     <string name="action_about">O</string>
-    <string name="settings_use_system_color">Uporabi sistemsko barvo teme</string>
     <string name="settings_start_on_boot_summary">Za naprave z rootom, se lahko Shizuku zažene avtomatsko na zagonu</string>
     <string name="settings_start_on_boot">Zaženi na zagonu (root)</string>
     <string name="settings_translation_summary">Pomagajte nam prevajati %s v vaš jezik</string>

@@ -16,11 +16,13 @@ Writes (manager/src/main/res/drawable):
     ic_system_icon.xml          24dp: status bar, notifications, permission dialog
 and docs/assets/icon.svg (README).
 
-Colors are in manager/src/main/res/values/launcher_colors.xml, not here.
+Colors come from manager/src/main/res/values/launcher_colors.xml (the
+app uses them directly; only icon.svg needs them copied).
 """
 import argparse
 import math
 import os
+import xml.etree.ElementTree as ET
 
 from shapely import affinity
 from shapely.geometry import LineString, MultiPolygon, Point, box
@@ -29,6 +31,16 @@ from shapely.ops import unary_union
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 DRAWABLE = os.path.join(ROOT, "manager", "src", "main", "res", "drawable")
 DOCS = os.path.join(ROOT, "docs", "assets")
+COLORS = os.path.join(ROOT, "manager", "src", "main", "res", "values", "launcher_colors.xml")
+
+
+def launcher_colors():
+    """{name: "#RRGGBB"} from launcher_colors.xml (alpha dropped, the colors are opaque)."""
+    colors = {}
+    for color in ET.parse(COLORS).getroot().iter("color"):
+        value = color.text.strip()
+        colors[color.get("name")] = "#" + value[-6:]
+    return colors
 
 
 def stroke(points, width):
@@ -118,18 +130,19 @@ def main():
             vector("Shizuqu small icon (status bar, notifications, permission dialog).", 24, 24, "#FFFFFFFF",
                    path_data(small, 3)),
     }
+    colors = launcher_colors()
     os.makedirs(DOCS, exist_ok=True)
     files[os.path.join(DOCS, "icon.svg")] = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="18 18 72 72" width="160" height="160">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#7B83EB"/>
-      <stop offset="1" stop-color="#3730A3"/>
+      <stop offset="0" stop-color="{colors['launcher_background_start']}"/>
+      <stop offset="1" stop-color="{colors['launcher_background_end']}"/>
     </linearGradient>
     <clipPath id="shape"><rect x="18" y="18" width="72" height="72" rx="22"/></clipPath>
   </defs>
   <g clip-path="url(#shape)">
     <rect width="108" height="108" fill="url(#bg)"/>
-    <path fill="#FFFFFF" fill-rule="evenodd" d="{path_data(mark)}"/>
+    <path fill="{colors['launcher_glyph']}" fill-rule="evenodd" d="{path_data(mark)}"/>
   </g>
 </svg>
 """

@@ -124,7 +124,6 @@
     <string name="adb_pairing_tutorial_content_miui_2">Jika tidak, Anda mungkin tidak dapat memasukan kode penyandingan dari notifikasi.</string>
     <string name="adb_pairing_tutorial_content_network">Shizuku membutuhkan akses ke jaringan lokal. Itu dikontrol oleh izin jaringan.</string>
     <string name="adb_pairing_tutorial_content_network_limation_not_foreground">Beberapa sistem (seperti MIUI) melarang aplikasi untuk mengakses jaringan ketika tidak terlihat, bahkan jika aplikasi berjalan dilatar depan. Tolong matikan fitur optimisasi baterai untuk Shizuku pada sistem tersebut.</string>
-    <string name="settings_use_system_color">Gunakan tema warna sistem</string>
     <string name="home_adb_is_limited_description">Produsen perangkat Anda telah membatasi izin adb dan aplikasi yang menggunakan Shizuku tidak akan berfungsi dengan baik.
 \n
 \nBiasanya, batasan ini dapat dihilangkan dengan menyesuaikan beberapa opsi di \"Opsi pengembang\". Silakan baca bantuan untuk detail tentang cara melakukan ini.

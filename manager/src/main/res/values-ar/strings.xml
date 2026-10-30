@@ -112,7 +112,6 @@
     <string name="dialog_requesting_legacy_message">يحتوي &lt;b&gt; %1$s &lt;/b&gt; على دعم Shizuku الحديث ، لكنه يتطلب شيزوكو القديم. قد يكون هذا بسبب عدم تشغيل Shizuku ، يرجى التحقق في تطبيق Shizuku. &lt;p&gt; تم إيقاف Legacy Shizuku منذ آذار (مارس) 2019.</string>
     <string name="settings_translation_summary">ساعدنا في ترجمة %s إلى لغتك</string>
     <string name="settings_start_on_boot_summary">بالنسبة للأجهزة المجذرة (تستخدم الروت) ، يمكن لـShizuku البدء تلقائيًا عند التشغيل من حالة القفل</string>
-    <string name="settings_use_system_color">استخدم لون سمة النظام</string>
     <string name="notification_service_start_no_root">فشل في طلب إذن الجذر (الروت).</string>
     <string name="notification_adb_pairing_searching_for_service_title">البحث عن خدمة الاقتران</string>
     <string name="notification_adb_pairing_succeed_text">يمكنك بدء خدمة Shizuku الآن.</string>

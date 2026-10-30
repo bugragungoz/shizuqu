@@ -98,7 +98,6 @@
     <string name="home_wireless_adb_description_pre_11">Před Androidem 11, připojení k počítači je vyžadováno k povolení Bezdrátového Ladění.</string>
     <string name="home_wireless_adb_view_guide_button">Návod krok-za-krokem</string>
     <string name="notification_settings">Nastavení oznámení</string>
-    <string name="settings_use_system_color">Použít systémovou barvu motivu</string>
     <string name="terminal_export_files">Exportovat soubory</string>
     <string name="terminal_tutorial_1">Prvně, Exportujte soubory kamkoliv chcete. Najdete dva soubory, %1$s a %2$s.</string>
     <string name="terminal_tutorial_2">Pak, použijte jakýkoliv textový editor k otevření a upravení %1$s.</string>

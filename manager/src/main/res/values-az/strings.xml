@@ -37,7 +37,6 @@
     <string name="action_stop">Shizikunu dayandır</string>
     <string name="about_view_source_code">Qaynaq kodlarına buradan baxın %s</string>
     <string name="action_about">Haqqında</string>
-    <string name="settings_use_system_color">Sistem teması rəngindən istifadə edin</string>
     <string name="settings_start_on_boot_summary">Rootlu cihazlar üçün, Shizuku boot zamanı avtomatik başlaya bilir</string>
     <string name="settings_start_on_boot">Boot anında başlatın (Root lazımdır)</string>
     <string name="settings_translation_summary">%s dilini öz dilinizə tərcümə etməkdə bizə kömək edin</string>

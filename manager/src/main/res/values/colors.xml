@@ -6,6 +6,4 @@
     <!-- Bugra design system accent (Android green) -->
     <color name="bugra_accent">#3DDC84</color>
 
-    <color name="app_color_light">#086B37</color>
-    <color name="app_color_dark">#3DDC84</color>
 </resources>

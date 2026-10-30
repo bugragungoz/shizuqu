@@ -113,7 +113,6 @@
     <string name="action_stop">Detener Shizuku</string>
     <string name="about_view_source_code">Ver código fuente en %s</string>
     <string name="action_about">Acerca de</string>
-    <string name="settings_use_system_color">Usar el color del tema del sistema</string>
     <string name="settings_start_on_boot_summary">Para dispositivos rooteados, Shizuku puede iniciarse automáticamente en el arranque</string>
     <string name="settings_start_on_boot">Iniciar en el arranque (root)</string>
     <string name="settings_translation_summary">Ayúdanos a traducir %s a tu idioma</string>

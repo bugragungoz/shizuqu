@@ -1,7 +1,7 @@
 package moe.shizuku.manager.app;
 
 import android.content.Context;
-import android.os.Build;
+import android.content.SharedPreferences;
 
 import androidx.annotation.StyleRes;
 
@@ -17,9 +17,8 @@ public class ThemeHelper {
 
     public static final String KEY_LIGHT_THEME = "light_theme";
     public static final String KEY_BLACK_NIGHT_THEME = "black_night_theme";
-    /** @deprecated replaced by {@link #KEY_COLOR_PALETTE}, kept so old settings files stay readable */
-    @Deprecated
-    public static final String KEY_USE_SYSTEM_COLOR = "use_system_color";
+    /** Before palettes: the "use system theme color" switch. Read once, see {@link #getPalette()}. */
+    private static final String KEY_USE_SYSTEM_COLOR = "use_system_color";
 
     public static boolean isBlackNightTheme(Context context) {
         return ShizukuSettings.getPreferences().getBoolean(KEY_BLACK_NIGHT_THEME, EnvironmentUtils.isWatch(context));
@@ -29,15 +28,17 @@ public class ThemeHelper {
     public static final String KEY_COLOR_PALETTE = "color_palette";
 
     public static Palette getPalette() {
-        return Palette.Companion.fromId(ShizukuSettings.getPreferences().getString(KEY_COLOR_PALETTE, null));
+        SharedPreferences preferences = ShizukuSettings.getPreferences();
+        if (!preferences.contains(KEY_COLOR_PALETTE) && preferences.contains(KEY_USE_SYSTEM_COLOR)) {
+            // the user flipped the old switch: on = Material You, off = the old indigo theme
+            Palette migrated = preferences.getBoolean(KEY_USE_SYSTEM_COLOR, true) ? Palette.SYSTEM : Palette.INDIGO;
+            preferences.edit().putString(KEY_COLOR_PALETTE, migrated.getId()).remove(KEY_USE_SYSTEM_COLOR).apply();
+        }
+        return Palette.Companion.fromId(preferences.getString(KEY_COLOR_PALETTE, null));
     }
 
     public static void setPalette(Palette palette) {
         ShizukuSettings.getPreferences().edit().putString(KEY_COLOR_PALETTE, palette.getId()).apply();
-    }
-
-    public static boolean isUsingSystemColor() {
-        return getPalette() == Palette.SYSTEM;
     }
 
     public static String getTheme(Context context) {

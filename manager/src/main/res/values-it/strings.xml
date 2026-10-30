@@ -103,7 +103,6 @@
     <string name="settings_start_on_boot">Avvia all\'accensione (root)</string>
     <string name="toast_copied_to_clipboard">%s
 \nè stato copiato negli appunti.</string>
-    <string name="settings_use_system_color">Usa il colore del tema di sistema</string>
     <string name="action_about">Info</string>
     <string name="about_view_source_code">Visualizza il codice sorgente a %s</string>
     <string name="dialog_stop_message">Il servizio Shizuku verrà interrotto.</string>

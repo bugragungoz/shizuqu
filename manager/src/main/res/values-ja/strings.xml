@@ -120,7 +120,6 @@
     <string name="adb_pairing_tutorial_content_notification_blocked">ペアリング手順はShizukuからの通知を操作する必要があります。Shizukuからの通知を許可してください。</string>
     <string name="adb_pairing_tutorial_content_finish">Shizukuに戻り、スタートします。</string>
     <string name="notification_adb_pairing_service_found_title">ペアリングサービスを見つけました</string>
-    <string name="settings_use_system_color">システムテーマカラー</string>
     <string name="home_adb_is_limited_title">もう一段階行う必要がある</string>
     <string name="home_app_management_empty">Shizukuを権限をリクエストしたアプリはここに表示されます。</string>
     <string name="adb_pairing_tutorial_content_network_limation_not_foreground">一部のシステム（MIUIなど）では、アプリが標準でフォアグラウンドサービスを使用していても、アプリが表示されていないときはネットワークにアクセスすることを許可しないようになっています。そのようなシステムでは、Shizukuのバッテリー最適化機能を無効にしてください。</string>

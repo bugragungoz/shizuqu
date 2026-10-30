@@ -105,7 +105,6 @@
     <string name="dialog_legacy_not_support_title">%1$s не підтримує сучасну версію Shizuku</string>
     <string name="dialog_requesting_legacy_title">%1$s просить стару версію Shizuku</string>
     <string name="dialog_requesting_legacy_message">&lt;b&gt;%1$s&lt;/b&gt; має підтримку нової версії Shizuku, але просить стару версію Shizuku. Це може трапитися тому, що Shizuku не запущено, будь ласка, перевірте у програмі Shizuku.&lt;p&gt;Підтримка старої версії Shizuku завершилася у березні 2019 року.</string>
-    <string name="settings_use_system_color">Використовувати системний колір</string>
     <string name="notification_channel_adb_pairing">Парування для налагодження по Wi-Fi</string>
     <string name="notification_adb_pairing_input_paring_code">Уведіть код парування</string>
     <string name="notification_adb_pairing_searching_for_service_title">Пошук пристрою для парування</string>

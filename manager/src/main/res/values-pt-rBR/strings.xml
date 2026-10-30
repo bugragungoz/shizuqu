@@ -125,7 +125,6 @@
     <string name="adb_pairing_tutorial_content_left_is_clickable">‎Por favor, note que a parte esquerda da opção \"Depuração sem fio\" é clicável, tocando nela abrirá uma nova página. Apenas ligar o interruptor à direita está incorreto.</string>
     <string name="adb_pairing_tutorial_content_miui_2">‎Caso contrário, você pode não conseguir inserir o código de paring a partir da notificação.</string>
     <string name="adb_pairing_tutorial_content_network">Shizuku precisa acessar a rede local. É controlado pela permissão da rede.</string>
-    <string name="settings_use_system_color">Usar tema do sistema</string>
     <string name="home_adb_is_limited_title">Você precisa de um passo adicional</string>
     <string name="home_app_management_empty">Apps que solicitaram ou declararam acesso ao Shizuku aparecerão aqui.</string>
     <string name="dialog_adb_discovery_message_toggle_wireless_debugging">Por favor, tente desativar e reativar a \"Depuração por Wi-Fi\" se não parar de ficar procurando.</string>

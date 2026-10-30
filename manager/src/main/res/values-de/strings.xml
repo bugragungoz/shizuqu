@@ -124,7 +124,6 @@
     <string name="notification_settings">Benachrichtigungsoptionen</string>
     <string name="adb_pairing_tutorial_content_network">Shizuku muss auf das lokale Netzwerk zugreifen. Dies wird durch die Netzwerkberechtigung gesteuert.</string>
     <string name="adb_pairing_tutorial_content_network_limation_not_foreground">Einige Systeme (z. B. MIUI) verbieten Apps den Netzwerkzugriff, wenn sie nicht sichtbar sind, selbst wenn die App standardmäßig einen Vordergrunddienst verwendet. Bitte auf solchen Systemen die Akku-Optimierungsfunktionen für Shizuku deaktivieren.</string>
-    <string name="settings_use_system_color">Verwende Farbe des Systemdesigns</string>
     <string name="home_adb_is_limited_description">Ihr Gerätehersteller hat ADB-Berechtigungen eingeschränkt. Dadurch werden Apps, die Shizuku verwenden, nicht ordnungsgemäß funktionieren.
 \n
 \nMeist kann diese Einschränkung aufgehoben werden, wenn bestimmte Einstellungen in den \"Entwicklereinstellungen\" angepasst werden. Bitte lesen Sie die Hilfeseite, um mehr darüber zu erfahren.
