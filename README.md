@@ -41,9 +41,15 @@ Details and evidence: [docs/ANDROID17.md](docs/ANDROID17.md).
 
 Also in this fork:
 
+* **Quick Settings tile**: shows whether the service runs and starts it with
+  one tap after a reboot (no root, Android 13+).
+* **Copy log** on the start screen, with the app, Android and device versions,
+  for bug reports.
 * [`tools/hiddenapi-check`](tools/hiddenapi-check): finds every framework method
   an APK calls that does not exist on a given Android build. CI runs it against
   Android 17.0 and 17.1 on every push. Upstream 13.6.0 fails it, this fork passes.
+* CI also runs lint (0 errors) and Robolectric tests: every screen in every
+  palette, the tile's start rules, the wireless debugging port discovery.
 * The hidden API layer ([RikkaW/HiddenApi](https://github.com/RikkaW/HiddenApi))
   and the client API ([Shizuku-API](https://github.com/RikkaApps/Shizuku-API)) are
   vendored as plain directories, so they can be fixed in the same commit.
@@ -69,7 +75,7 @@ Every screen above is rendered from the real layouts by the screenshot tests
 ## Install
 
 1. Uninstall the original Shizuku (same package name by default, different signature).
-2. Install the APK (GitHub Actions artifact, or build it, see below).
+2. Install the APK (a GitHub release, a GitHub Actions build, or build it, see below).
 3. Open the app and start the service:
    * **Without root, Android 11+**: Developer options > Wireless debugging > on,
      allow the current Wi-Fi network, then use "Pair" and "Start" in the app.
@@ -83,8 +89,8 @@ Samsung (One UI 9): turn off **Auto Blocker** while pairing/starting, and see
 
 After a reboot (no root), the **Quick Settings tile** starts the service with
 one tap: Settings > "Add Quick Settings tile", or add "Shizuqu" by editing
-Quick Settings. It needs Android 13+ and one start
-from the app before; on the lock screen it asks to unlock first.
+Quick Settings. It needs Android 13+ and one start from the app before; on
+the lock screen it asks to unlock first.
 
 If starting fails, **Copy log** on the start screen copies the log with the
 app, Android and device versions for a bug report.
