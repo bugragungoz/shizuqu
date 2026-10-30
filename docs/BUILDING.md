@@ -78,6 +78,12 @@ python3 tools/hiddenapi-check/check.py check manager/build/outputs/apk/debug/*.a
 
 Needs `dexdump` from build-tools (found through `ANDROID_HOME`).
 
+## Lint
+
+`./gradlew :manager:lintRelease` must report 0 errors (CI runs it). Missing
+translations are warnings (translations are partial by nature); the TV
+launcher check is off on purpose.
+
 ## Unit and smoke tests
 
 ```bash

@@ -41,6 +41,7 @@
     <plurals name="home_app_management_authorized_apps_count">
         <item quantity="one">Autorizovaná %d aplikace</item>
         <item quantity="few">Autorizováno %d aplikací</item>
+        <item quantity="many">Autorizovány %d aplikace</item>
         <item quantity="other">Autorizovány %d aplikace</item>
     </plurals>
     <string name="home_app_management_title">Správa aplikací</string>

@@ -49,6 +49,13 @@ android {
         // Robolectric smoke tests (src/test) inflate the real resources
         unitTests.includeAndroidResources = true
     }
+    lint {
+        // translations come from the community and are partial; untranslated strings show English
+        warning 'MissingTranslation'
+        // the TV launcher entry is left out on purpose (see MainActivity in the manifest)
+        disable 'MissingLeanbackLauncher'
+        // CI runs lintRelease: any other error fails the build
+    }
     namespace 'moe.shizuku.manager'
     defaultConfig {
         applicationId rootProject.ext.branding.applicationId

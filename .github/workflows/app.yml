@@ -74,8 +74,9 @@ jobs:
           echo 'android.native.buildOutput=verbose' >> gradle.properties
           echo 'org.gradle.caching=true' >> gradle.properties
           echo 'org.gradle.parallel=true' >> gradle.properties
-          # smoke tests (Robolectric: every screen in every palette) in the same run
-          ./gradlew :manager:testDebugUnitTest :manager:assemble
+          # in the same run: smoke tests (Robolectric: every screen in every palette)
+          # and lint (any error fails, e.g. an invalid format string in a translation)
+          ./gradlew :manager:testDebugUnitTest :manager:assemble :manager:lintRelease
           apk=$(ls manager/build/outputs/apk/release/*-release.apk | head -n1)
           name=$(basename "$apk" -release.apk)
           echo "releaseName=$name" >> "$GITHUB_OUTPUT"
