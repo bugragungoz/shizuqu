@@ -12,7 +12,8 @@ import org.robolectric.annotation.Config
 /**
  * The discovery state machine of [AdbMdns]: NsdManager reports start and stop
  * asynchronously, and a stop or restart in between must neither leak a running
- * discovery nor reuse a listener NsdManager still holds.
+ * discovery nor reuse a listener NsdManager still holds; failures must not leave it
+ * stuck; found services are resolved one at a time.
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(application = moe.shizuku.manager.SmokeTestApplication::class)
@@ -23,6 +24,8 @@ class AdbMdnsTest {
         var stops = 0
         // NsdManager rejects a listener that is still in use
         var listenerInUse = false
+        var throwOnStop = false
+        val resolves = mutableListOf<Pair<NsdServiceInfo, NsdManager.ResolveListener>>()
 
         override fun discoverServices(serviceType: String, listener: NsdManager.DiscoveryListener) {
             check(!listenerInUse) { "listener already in use" }
@@ -32,10 +35,19 @@ class AdbMdnsTest {
 
         override fun stopServiceDiscovery(listener: NsdManager.DiscoveryListener) {
             stops++
+            if (throwOnStop) {
+                // what NsdManager does when it no longer holds the listener
+                listenerInUse = false
+                throw IllegalArgumentException("listener not registered")
+            }
         }
 
-        override fun resolveService(info: NsdServiceInfo, listener: NsdManager.ResolveListener) {}
+        override fun resolveService(info: NsdServiceInfo, listener: NsdManager.ResolveListener) {
+            resolves += info to listener
+        }
     }
+
+    private fun service(name: String) = NsdServiceInfo().apply { serviceName = name }
 
     private val nsd = FakeNsd()
     private val mdns = AdbMdns(AdbMdns.TLS_CONNECT, Observer { }, nsd)
@@ -99,10 +111,49 @@ class AdbMdnsTest {
         mdns.start()
         nsd.listenerInUse = false
         listener.onStartDiscoveryFailed(AdbMdns.TLS_CONNECT, NsdManager.FAILURE_INTERNAL_ERROR)
-        mdns.stop()
-        assertEquals("nothing to stop after a failed start", 0, nsd.stops)
+        // the failed start ended the session: start() tries again, no stop() needed
         mdns.start()
         assertEquals(2, nsd.discovers)
+        mdns.stop()
+        assertEquals("nothing started yet, nothing to stop", 0, nsd.stops)
+    }
+
+    @Test
+    fun aThrowingStopDoesNotBlockTheNextStart() {
+        nsd.throwOnStop = true
+        mdns.start()
+        systemStarted()
+        mdns.stop()
+        // no onDiscoveryStopped will come
+        mdns.start()
+        assertEquals(2, nsd.discovers)
+    }
+
+    @Test
+    fun servicesAreResolvedOneAtATime() {
+        mdns.start()
+        systemStarted()
+        listener.onServiceFound(service("other phone"))
+        listener.onServiceFound(service("this phone"))
+        assertEquals("before Android 14 a second resolve would fail", 1, nsd.resolves.size)
+        val (info, resolveListener) = nsd.resolves[0]
+        resolveListener.onResolveFailed(info, NsdManager.FAILURE_INTERNAL_ERROR)
+        assertEquals("the next one after the first finished", 2, nsd.resolves.size)
+        assertEquals("this phone", nsd.resolves[1].first.serviceName)
+    }
+
+    @Test
+    fun nothingIsResolvedAfterStop() {
+        mdns.start()
+        systemStarted()
+        listener.onServiceFound(service("a"))
+        listener.onServiceFound(service("b"))
+        mdns.stop()
+        // found before onDiscoveryStopped arrived
+        listener.onServiceFound(service("c"))
+        val (info, resolveListener) = nsd.resolves[0]
+        resolveListener.onResolveFailed(info, NsdManager.FAILURE_INTERNAL_ERROR)
+        assertEquals("only the resolve that was already running", 1, nsd.resolves.size)
     }
 
     @Test

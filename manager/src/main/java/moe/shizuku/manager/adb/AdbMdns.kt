@@ -42,7 +42,7 @@ class AdbMdns internal constructor(
         }
     }
 
-    // NsdManager reports start/stop asynchronously, so track three states:
+    // NsdManager reports start/stop asynchronously, so track three states (all under lock):
     // running   - the caller wants results (start() .. stop())
     // requested - discoverServices() was called and the discovery has not stopped yet
     // registered - onDiscoveryStarted() arrived, stopServiceDiscovery() is allowed
@@ -55,6 +55,8 @@ class AdbMdns internal constructor(
     private var requested = false
     private var registered = false
     private var serviceName: String? = null
+    private val pendingResolves = ArrayDeque<NsdServiceInfo>()
+    private var resolving = false
     internal val listener = DiscoveryListener(this)
 
     fun start() {
@@ -69,6 +71,7 @@ class AdbMdns internal constructor(
         synchronized(lock) {
             if (!running) return
             running = false
+            pendingResolves.clear()
             // if the discovery has not started yet, onDiscoveryStart() stops it
             if (registered) stopDiscoveryLocked()
         }
@@ -79,8 +82,8 @@ class AdbMdns internal constructor(
         try {
             nsd.discoverServices(serviceType, listener)
         } catch (e: Throwable) {
-            requested = false
             Log.w(TAG, "discoverServices failed", e)
+            failedLocked()
         }
     }
 
@@ -88,8 +91,19 @@ class AdbMdns internal constructor(
         try {
             nsd.stopServiceDiscovery(listener)
         } catch (e: Throwable) {
+            // NsdManager does not hold the listener (anymore): nothing will call back
             Log.w(TAG, "stopServiceDiscovery failed", e)
+            registered = false
+            requested = false
         }
+    }
+
+    // a discovery that could not start ends this session; start() tries again
+    private fun failedLocked() {
+        registered = false
+        requested = false
+        running = false
+        pendingResolves.clear()
     }
 
     private fun onDiscoveryStart() {
@@ -110,13 +124,43 @@ class AdbMdns internal constructor(
 
     private fun onDiscoveryFailed() {
         synchronized(lock) {
-            registered = false
-            requested = false
+            failedLocked()
         }
     }
 
+    // Before Android 14 NsdManager resolves one service at a time (a second resolve fails
+    // with FAILURE_ALREADY_ACTIVE), and other phones on the Wi-Fi may announce adb too:
+    // resolve the found services one after another.
     private fun onServiceFound(info: NsdServiceInfo) {
-        nsd.resolveService(info, ResolveListener(this))
+        synchronized(lock) {
+            if (!running) return
+            pendingResolves.addLast(info)
+            if (!resolving) resolveNextLocked()
+        }
+    }
+
+    private fun resolveNextLocked() {
+        resolving = false
+        if (!running) {
+            pendingResolves.clear()
+            return
+        }
+        while (true) {
+            val next = pendingResolves.removeFirstOrNull() ?: return
+            try {
+                nsd.resolveService(next, ResolveListener(this))
+                resolving = true
+                return
+            } catch (e: Throwable) {
+                Log.w(TAG, "resolveService failed", e)
+            }
+        }
+    }
+
+    private fun onResolveFinished() {
+        synchronized(lock) {
+            resolveNextLocked()
+        }
     }
 
     private fun onServiceLost(info: NsdServiceInfo) {
@@ -176,10 +220,18 @@ class AdbMdns internal constructor(
     }
 
     internal class ResolveListener(private val adbMdns: AdbMdns) : NsdManager.ResolveListener {
-        override fun onResolveFailed(nsdServiceInfo: NsdServiceInfo, i: Int) {}
+        override fun onResolveFailed(nsdServiceInfo: NsdServiceInfo, i: Int) {
+            Log.v(TAG, "onResolveFailed: ${nsdServiceInfo.serviceName}, $i")
+
+            adbMdns.onResolveFinished()
+        }
 
         override fun onServiceResolved(nsdServiceInfo: NsdServiceInfo) {
-            adbMdns.onServiceResolved(nsdServiceInfo)
+            try {
+                adbMdns.onServiceResolved(nsdServiceInfo)
+            } finally {
+                adbMdns.onResolveFinished()
+            }
         }
 
     }
