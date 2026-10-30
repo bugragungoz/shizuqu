@@ -87,7 +87,7 @@ Uninstalling Shizuqu undoes everything.
 * The icon uses the Android robot. The Android robot is reproduced or modified
   from work created and shared by Google and used according to terms described
   in the [Creative Commons 3.0 Attribution License](https://creativecommons.org/licenses/by/3.0/).
-* Built with [Claude Code](https://claude.com/claude-code) (Anthropic).
+* Built with [Claude Code](https://claude.com/claude-code) (Opus 5.5).
 
 ## License
 
