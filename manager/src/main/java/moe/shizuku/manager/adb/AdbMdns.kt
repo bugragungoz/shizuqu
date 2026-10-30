@@ -9,10 +9,38 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 
 @RequiresApi(Build.VERSION_CODES.R)
-class AdbMdns(
-    context: Context, private val serviceType: String,
-    private val observer: Observer<Int>
+class AdbMdns internal constructor(
+    private val serviceType: String,
+    private val observer: Observer<Int>,
+    private val nsd: Nsd,
 ) {
+
+    constructor(context: Context, serviceType: String, observer: Observer<Int>) :
+            this(serviceType, observer, Nsd.of(context))
+
+    /** The NsdManager calls this class makes (a seam for the unit tests). */
+    internal interface Nsd {
+        fun discoverServices(serviceType: String, listener: NsdManager.DiscoveryListener)
+        fun stopServiceDiscovery(listener: NsdManager.DiscoveryListener)
+        fun resolveService(info: NsdServiceInfo, listener: NsdManager.ResolveListener)
+
+        companion object {
+            fun of(context: Context): Nsd {
+                val manager = context.getSystemService(NsdManager::class.java)
+                return object : Nsd {
+                    override fun discoverServices(serviceType: String, listener: NsdManager.DiscoveryListener) =
+                        manager.discoverServices(serviceType, NsdManager.PROTOCOL_DNS_SD, listener)
+
+                    override fun stopServiceDiscovery(listener: NsdManager.DiscoveryListener) =
+                        manager.stopServiceDiscovery(listener)
+
+                    @Suppress("DEPRECATION")
+                    override fun resolveService(info: NsdServiceInfo, listener: NsdManager.ResolveListener) =
+                        manager.resolveService(info, listener)
+                }
+            }
+        }
+    }
 
     // NsdManager reports start/stop asynchronously, so track three states:
     // running   - the caller wants results (start() .. stop())
@@ -27,8 +55,7 @@ class AdbMdns(
     private var requested = false
     private var registered = false
     private var serviceName: String? = null
-    private val listener = DiscoveryListener(this)
-    private val nsdManager: NsdManager = context.getSystemService(NsdManager::class.java)
+    internal val listener = DiscoveryListener(this)
 
     fun start() {
         synchronized(lock) {
@@ -50,7 +77,7 @@ class AdbMdns(
     private fun discoverLocked() {
         requested = true
         try {
-            nsdManager.discoverServices(serviceType, NsdManager.PROTOCOL_DNS_SD, listener)
+            nsd.discoverServices(serviceType, listener)
         } catch (e: Throwable) {
             requested = false
             Log.w(TAG, "discoverServices failed", e)
@@ -59,7 +86,7 @@ class AdbMdns(
 
     private fun stopDiscoveryLocked() {
         try {
-            nsdManager.stopServiceDiscovery(listener)
+            nsd.stopServiceDiscovery(listener)
         } catch (e: Throwable) {
             Log.w(TAG, "stopServiceDiscovery failed", e)
         }
@@ -89,7 +116,7 @@ class AdbMdns(
     }
 
     private fun onServiceFound(info: NsdServiceInfo) {
-        nsdManager.resolveService(info, ResolveListener(this))
+        nsd.resolveService(info, ResolveListener(this))
     }
 
     private fun onServiceLost(info: NsdServiceInfo) {
