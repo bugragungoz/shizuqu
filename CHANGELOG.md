@@ -32,7 +32,10 @@ Based on Shizuku 13.6.0 (upstream `b844bc49`).
   fits the ~3 minute short-service limit, stops with its start id, socket
   read timeout.
 - mDNS discovery: no leaked discovery or listener reuse on fast start/stop
-  or a failed stop.
+  or a failed stop; a failed start can be retried; found services are
+  resolved one at a time (Android 11-13 reject parallel resolves, which
+  could hide this phone's adbd when another phone on the Wi-Fi announces
+  adb too).
 - The manager no longer crashes at launch if HiddenApiBypass fails.
 - User service OEM fallback only for NullPointerException, and sets
   `AppBindData.info`.
