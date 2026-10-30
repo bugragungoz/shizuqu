@@ -58,6 +58,16 @@ Without it, CI release APKs are signed with the runner's throw-away debug key
 also set `KEYSTORE` (`base64 -w0 your.jks`), `KEYSTORE_ALIAS` and
 `KEYSTORE_ALIAS_PASSWORD`.
 
+## Releases
+
+1. Set the version in `branding.properties` (`app.versionBase`) and give the
+   `CHANGELOG.md` section that version as its heading (`## 13.7.0 ...`).
+2. Tag and push: `git tag v13.7.0 && git push origin v13.7.0`.
+3. CI builds, checks that the APK is signed with `signing/release.p12` (the
+   job fails otherwise, since another key cannot update installed copies),
+   and creates a **draft** GitHub release with the APK, its SHA-256 and that
+   CHANGELOG section. Review it and publish it on GitHub.
+
 ## Hidden API check locally
 
 ```bash
