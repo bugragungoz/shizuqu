@@ -6,6 +6,13 @@ This product includes software developed by RikkaApps and contributors:
   Shizuku-API     https://github.com/RikkaApps/Shizuku-API     Apache License 2.0  (api/)
   HiddenApi       https://github.com/RikkaW/HiddenApi          MIT License         (hidden-api/)
 
+It also bundles these fonts (manager/src/main/res/font, static instances of
+the variable fonts), each under the SIL Open Font License 1.1, license text in
+manager/src/main/assets/licenses:
+
+  Geist           https://github.com/vercel/geist-font         Copyright 2024 The Geist Project Authors
+  JetBrains Mono  https://github.com/JetBrains/JetBrainsMono   Copyright 2020 The JetBrains Mono Project Authors
+
 "Shizuku" is the name of the upstream project. This fork does not use it as
 its app name and does not ship upstream's launcher icons (see README.md,
 "License").

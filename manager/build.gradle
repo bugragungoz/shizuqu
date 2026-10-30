@@ -15,6 +15,12 @@ plugins {
 // They are opt-in so the normal build does not depend on layoutlib.
 if (project.hasProperty('screenshots')) {
     apply plugin: 'app.cash.paparazzi'
+    // this mode builds against compileSdk 35 and HiddenApiBypass 6.1: never ship it
+    gradle.taskGraph.whenReady { graph ->
+        if (graph.allTasks.any { it.name ==~ /(assemble|bundle|package).*Release.*/ }) {
+            throw new GradleException('-Pscreenshots is only for the screenshot tests; build releases without it')
+        }
+    }
     // layoutlib's instrumented framework classes fail bytecode verification on JDK 21
     tasks.withType(Test).configureEach {
         jvmArgs '-Xverify:none'

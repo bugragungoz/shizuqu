@@ -13,6 +13,8 @@ Based on Shizuku 13.6.0 (upstream `b844bc49`).
 - HiddenApiBypass 6.2 (hidden API fixes for Android 17 / 17.1).
 - Device-id aware permission flag APIs, `checkSignatures(..., userId)`,
   `IUidObserver.onUidProcAdjChanged`.
+- Server version 13.7 (patch version 7), so the app asks to restart a
+  server that is still the original 13.6.
 
 ### Fixes
 - User services: retry `makeApplication` with a bound application on OEM

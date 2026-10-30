@@ -67,3 +67,28 @@ python3 tools/hiddenapi-check/check.py check manager/build/outputs/apk/debug/*.a
 ```
 
 Needs `dexdump` from build-tools (found through `ANDROID_HOME`).
+
+## Screenshot tests (design review)
+
+```bash
+./gradlew :manager:recordPaparazziDebug -Pscreenshots   # write images
+./gradlew :manager:verifyPaparazziDebug -Pscreenshots   # compare with them
+```
+
+They render the real layouts and themes with layoutlib (no device or
+emulator) into `manager/src/test/snapshots/images/`: home cards, permission
+dialog, starter log, palette picker, every palette in light and dark, and the
+icon. Review the images in a diff after changing colors, type, shapes or
+layouts.
+
+`-Pscreenshots` switches to compileSdk 35 and HiddenApiBypass 6.1, because
+layoutlib does not know API 37 yet. Never build a release with it.
+
+Paparazzi's layoutlib cannot inflate `<adaptive-icon>` or `MaterialSwitch`;
+the tests draw the icon's layers themselves and leave the switch rows out.
+
+## Icon
+
+`tools/icon/gen.py` (needs `pip install shapely`) writes every icon drawable
+from one geometry; colors are in `res/values/launcher_colors.xml`. See
+[RENAMING.md](RENAMING.md#icon).

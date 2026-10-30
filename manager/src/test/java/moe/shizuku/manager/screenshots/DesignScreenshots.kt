@@ -94,7 +94,7 @@ class DesignScreenshots {
             val b = HomeServerStatusBinding.inflate(i, p, true)
             b.icon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_server_ok_24dp))
             b.text1.text = context.getString(R.string.home_status_service_is_running, context.getString(R.string.app_name))
-            b.text2.text = context.getString(R.string.home_status_service_version, "adb", "13.6")
+            b.text2.text = context.getString(R.string.home_status_service_version, "adb", "13.7")
         })
         list.addView(card(inflater, list) { i, p ->
             val b = HomeManageAppsItemBinding.inflate(i, p, true)
@@ -274,7 +274,7 @@ class DesignScreenshots {
                 val b = HomeServerStatusBinding.inflate(i, p, true)
                 b.icon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_server_ok_24dp))
                 b.text1.text = context.getString(R.string.home_status_service_is_running, context.getString(R.string.app_name))
-                b.text2.text = context.getString(R.string.home_status_service_version, "adb", "13.6")
+                b.text2.text = context.getString(R.string.home_status_service_version, "adb", "13.7")
             })
             val buttons = LinearLayout(context).apply { orientation = LinearLayout.HORIZONTAL }
             buttons.addView(com.google.android.material.button.MaterialButton(

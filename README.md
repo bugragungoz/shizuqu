@@ -1,4 +1,8 @@
-# Shizuqu
+<p align="center"><img src="docs/assets/icon.svg" width="96" height="96" alt=""></p>
+
+<h1 align="center">Shizuqu</h1>
+
+<p align="center">Shizuku for Android 17. Same API, same apps, fixed for API 37.</p>
 
 > App name, package name, version and links are set in
 > [`branding.properties`](branding.properties) - see [docs/RENAMING.md](docs/RENAMING.md).
@@ -13,6 +17,12 @@ the service started never get access. This fork fixes that, verified against the
 real Android 17.0 and 17.1 framework and the AOSP `android17-release` sources.
 
 [Türkçe kullanım kılavuzu → README_TR.md](README_TR.md)
+
+<p align="center">
+  <img src="manager/src/test/snapshots/images/moe.shizuku.manager.screenshots_DesignScreenshots_home_bugra_dark.png" width="250" alt="Home screen, dark">
+  <img src="manager/src/test/snapshots/images/moe.shizuku.manager.screenshots_DesignScreenshots_home_bugra_light.png" width="250" alt="Home screen, light">
+  <img src="manager/src/test/snapshots/images/moe.shizuku.manager.screenshots_DesignScreenshots_palettes_dark.png" width="250" alt="Color palettes, dark">
+</p>
 
 ## What is fixed
 
@@ -35,7 +45,24 @@ Also in this fork:
 * The hidden API layer ([RikkaW/HiddenApi](https://github.com/RikkaW/HiddenApi))
   and the client API ([Shizuku-API](https://github.com/RikkaApps/Shizuku-API)) are
   vendored as plain directories, so they can be fixed in the same commit.
-* Own launcher icons (upstream's may not be reused) and all branding in one file.
+* Own icon and all branding in one file ([`branding.properties`](branding.properties)).
+
+## Look and feel
+
+Shizuku's screens and flow, in the Bugra design system on Material 3:
+
+* **Palettes**: Bugra (default: warm black, Android green), Material You
+  (wallpaper colors, Android 12+), Indigo, Ocean, Teal, Violet, Rose, Amber and
+  Graphite. Settings > Appearance > Color palette. Each one has light, dark and
+  black variants.
+* **Type**: Geist for the interface, JetBrains Mono for commands and logs.
+* **Shape**: flat cards with a hairline border, 14dp corners, one filled
+  action per card.
+* **Icon**: a terminal window with Android's antennae and a `>_` prompt, also
+  as a themed icon (Android 13+).
+
+Every screen above is rendered from the real layouts by the screenshot tests
+(`./gradlew :manager:recordPaparazziDebug -Pscreenshots`, no device needed).
 
 ## Install
 
@@ -76,6 +103,7 @@ call through `ShizukuBinderWrapper`. See [docs/CLIENT_APPS.md](docs/CLIENT_APPS.
 * [docs/RENAMING.md](docs/RENAMING.md) - renaming the app / going public
 * [docs/BUILDING.md](docs/BUILDING.md) - building, signing, CI
 * [docs/SAFETY.md](docs/SAFETY.md) - what the app changes on the phone, risks, how to undo
+* [CHANGELOG.md](CHANGELOG.md) - everything this fork changes
 
 ## How Shizuku works (short)
 
@@ -100,4 +128,20 @@ publish to app stores an APK named "Shizuku", using the
 icons; keep it to GitHub releases / personal use. See
 [docs/RENAMING.md](docs/RENAMING.md#before-making-it-public-or-publishing-it).
 
-Thanks to RikkaApps and the Shizuku contributors.
+## Credits
+
+* [Shizuku](https://github.com/RikkaApps/Shizuku) by RikkaApps and its
+  contributors: the original app this fork is based on (upstream `b844bc49`,
+  13.6.0), Apache License 2.0.
+* [Shizuku-API](https://github.com/RikkaApps/Shizuku-API) (`api/`), Apache
+  License 2.0, and [HiddenApi](https://github.com/RikkaW/HiddenApi)
+  (`hidden-api/`), MIT, both by RikkaW.
+* [HiddenApiBypass](https://github.com/LSPosed/AndroidHiddenApiBypass) by
+  LSPosed, Apache License 2.0.
+* [Geist](https://github.com/vercel/geist-font) and
+  [JetBrains Mono](https://github.com/JetBrains/JetBrainsMono) fonts, SIL Open
+  Font License 1.1 (license texts ship in the app under `assets/licenses`).
+* Translations: the Shizuku translators on Crowdin.
+* Built with [Claude Code](https://claude.com/claude-code) (Anthropic).
+
+See [NOTICE](NOTICE) for the license notices.

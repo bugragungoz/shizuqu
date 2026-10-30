@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/assets/icon.svg" width="96" height="96" alt=""></p>
+
 # Shizuqu — Türkçe kılavuz
 
 Shizuku'nun **Android 17 (API 37) ile uyumlu** fork'u. Shizuku kullanan bütün
@@ -6,6 +8,24 @@ hiçbir değişiklik gerekmeden bununla çalışır; protokol aynıdır.
 
 İsim, paket adı ve dosya adı tek dosyadan değişir:
 [`branding.properties`](branding.properties) → [docs/RENAMING.md](docs/RENAMING.md).
+
+<p align="center">
+  <img src="manager/src/test/snapshots/images/moe.shizuku.manager.screenshots_DesignScreenshots_home_bugra_dark.png" width="250" alt="Ana ekran, koyu">
+  <img src="manager/src/test/snapshots/images/moe.shizuku.manager.screenshots_DesignScreenshots_settings_palette_bugra_light.png" width="250" alt="Renk paleti seçimi, açık">
+</p>
+
+## Görünüm
+
+Ekranlar ve akış orijinal Shizuku ile aynı; tasarım Material 3 üzerinde Bugra
+tasarım sistemi:
+
+* **Renk paletleri** (Ayarlar > Görünüm > Renk paleti): Bugra (varsayılan, sıcak
+  siyah ve Android yeşili), Material You (duvar kağıdı renkleri, Android 12+),
+  Çivit, Okyanus, Turkuaz, Menekşe, Gül, Kehribar, Grafit. Hepsinin açık, koyu
+  ve siyah hâli var.
+* **Yazı tipi**: arayüzde Geist, komut ve loglarda JetBrains Mono.
+* **İkon**: Android antenli bir terminal penceresi ve `>_` komut istemi;
+  Android 13+ temalı ikon desteğiyle.
 
 ## Android 17'de orijinal Shizuku neden bozuldu?
 
@@ -132,6 +152,21 @@ Bir sonraki Android sürümü (18) veya QPR çıktığında yapılacaklar adım 
 telefondan `adb pull /system/framework/framework.jar` alın,
 `tools/hiddenapi-check/check.py` ile APK'yı kontrol edin; eksik çıkan her
 çağrıyı `hidden-api/` içinde düzeltin.
+
+## Kaynakça
+
+* [Shizuku](https://github.com/RikkaApps/Shizuku) (RikkaApps ve katkıda
+  bulunanlar): bu fork'un temel aldığı orijinal uygulama, Apache 2.0.
+* [Shizuku-API](https://github.com/RikkaApps/Shizuku-API) ve
+  [HiddenApi](https://github.com/RikkaW/HiddenApi) (RikkaW),
+  [HiddenApiBypass](https://github.com/LSPosed/AndroidHiddenApiBypass) (LSPosed).
+* [Geist](https://github.com/vercel/geist-font) ve
+  [JetBrains Mono](https://github.com/JetBrains/JetBrainsMono) yazı tipleri
+  (SIL Open Font License 1.1).
+* Çeviriler: Crowdin'deki Shizuku çevirmenleri.
+* [Claude Code](https://claude.com/claude-code) (Anthropic) ile geliştirildi.
+
+Lisans bildirimleri: [NOTICE](NOTICE).
 
 ## Lisans
 
