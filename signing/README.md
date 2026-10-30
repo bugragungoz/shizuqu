@@ -1,24 +1,13 @@
 # Release signing key
 
-`release.p12` is the key that signs Shizuqu release APKs (alias `release`,
-certificate SHA-256 `e449ece69b5a674e22ef0386a9ff901ec4b1565bb889da58f0239323e6d801e6`).
+`release.p12` signs Shizuqu's release APKs (alias `release`). Its certificate
+SHA-256 is:
 
-It is a PKCS#12 file encrypted with AES-256 (PBKDF2-HMAC-SHA256) under a
-28-character random password, so it is useless without that password. The
-password is **not** in this repository. Keep it in a password manager and in
-the `KEYSTORE_PASSWORD` GitHub Actions secret.
+`e449ece69b5a674e22ef0386a9ff901ec4b1565bb889da58f0239323e6d801e6`
 
-Android installs an update only if it is signed with the same key, so never
-replace this file: a new key means users must uninstall (and re-authorize all
-apps) to update.
+The file is encrypted with AES-256, and its password is not in this
+repository. Never replace this file: an APK signed with a different key cannot
+update an installed copy.
 
-* CI: add the repository secret `KEYSTORE_PASSWORD`; release APKs are then
-  signed with this key (see `.github/workflows/app.yml`).
-* Local build: create `signing.properties` in the repository root (git-ignored):
-
-  ```properties
-  KEYSTORE_FILE=../signing/release.p12
-  KEYSTORE_PASSWORD=<password>
-  KEYSTORE_ALIAS=release
-  KEYSTORE_ALIAS_PASSWORD=<password>
-  ```
+To build signed APKs locally or in CI, see
+[docs/DEVELOPMENT.md](../docs/DEVELOPMENT.md#signing).
