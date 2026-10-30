@@ -7,7 +7,9 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
 public class ShizukuApiConstants {
 
     public static final int SERVER_VERSION = 13;
-    public static final int SERVER_PATCH_VERSION = 6;
+    // 7: this fork's server (Android 17 fixes). The manager shows "13.7" and asks to
+    // restart a running 13.6 server. Clients only compare it with >=.
+    public static final int SERVER_PATCH_VERSION = 7;
 
     // binder
     public static final String BINDER_DESCRIPTOR = "moe.shizuku.server.IShizukuService";
