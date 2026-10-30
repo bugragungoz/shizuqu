@@ -82,8 +82,8 @@
 \n配对过程开始后，您将能够输入配对码。</string>
     <string name="development_settings">开发者选项</string>
     <string name="home_root_description_sui"><![CDATA[如果您正在使用 Magisk，可以尝试 %1$s。对于 root 用户，它将最终取代 Shizuku。注意，已有的应用需要一点点修改来使用 %2$s。]]></string>
-    <string name="settings_start_on_boot_summary">对于已 root 设备，Shizuku 可以开机启动</string>
-    <string name="settings_start_on_boot">开机启动（root）</string>
+    <string name="settings_start_on_boot_summary">Root：开机时 Shizuku 自动启动。无 root（Android 13+，上次通过无线调试启动）：连接到已允许的 WLAN 网络后，Shizuku 会开启无线调试并启动</string>
+    <string name="settings_start_on_boot">开机时启动</string>
     <string name="permission_warning_template"><![CDATA[要允许<b>%1$s</b>%2$s吗？]]></string>
     <string name="grant_dialog_button_allow_always">始终允许</string>
     <string name="grant_dialog_button_deny">拒绝</string>
@@ -141,4 +141,10 @@
     <string name="tile_starting">正在启动…</string>
     <string name="tile_tap_to_start">点按以启动</string>
     <string name="tile_open_app">打开应用</string>
+    <string name="notification_channel_boot_start">无 root 启动</string>
+    <string name="notification_boot_start_title">正在启动 Shizuku</string>
+    <string name="notification_boot_start_text">正在等待 WLAN 和无线调试…</string>
+    <string name="notification_boot_start_failed_title">无法启动 Shizuku</string>
+    <string name="notification_boot_start_failed_text">无法使用无线调试。请连接到已允许无线调试的 WLAN 网络，然后在应用中启动 Shizuku。</string>
+    <string name="about_based_on_upstream">基于 RikkaApps 的 %s（Apache License 2.0）</string>
 </resources>

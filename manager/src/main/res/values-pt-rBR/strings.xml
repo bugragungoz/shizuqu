@@ -30,8 +30,8 @@
     <string name="action_stop">Parar o Shizuku</string>
     <string name="about_view_source_code">Ver o código-fonte no %s</string>
     <string name="action_about">Sobre</string>
-    <string name="settings_start_on_boot_summary">Para dispositivos com acesso root, o Shizuku é capaz de abrir automaticamente na inicialização do sistema</string>
-    <string name="settings_start_on_boot">Iniciar APP no boot (apenas com root)</string>
+    <string name="settings_start_on_boot_summary">Root: o Shizuku inicia automaticamente com o sistema. Sem root (Android 13+, último início pela depuração por Wi-Fi): o Shizuku ativa a depuração por Wi-Fi e inicia assim que uma rede Wi-Fi permitida for conectada</string>
+    <string name="settings_start_on_boot">Iniciar com o sistema</string>
     <string name="settings_translation_summary">Ajude-nos à traduzir %s para o seu idioma</string>
     <string name="settings_translation">Contribua com a tradução</string>
     <string name="settings_translation_contributors">Tradutores deste APP</string>
@@ -147,4 +147,10 @@
     <string name="tile_starting">Iniciando…</string>
     <string name="tile_tap_to_start">Toque para iniciar</string>
     <string name="tile_open_app">Abrir o app</string>
+    <string name="notification_channel_boot_start">Inicialização sem root</string>
+    <string name="notification_boot_start_title">Iniciando o Shizuku</string>
+    <string name="notification_boot_start_text">Aguardando Wi-Fi e depuração por Wi-Fi…</string>
+    <string name="notification_boot_start_failed_title">Não foi possível iniciar o Shizuku</string>
+    <string name="notification_boot_start_failed_text">Não foi possível usar a depuração por Wi-Fi. Conecte-se a uma rede Wi-Fi permitida para a depuração por Wi-Fi e inicie o Shizuku pelo app.</string>
+    <string name="about_based_on_upstream">Baseado em %s da RikkaApps (Apache License 2.0)</string>
 </resources>

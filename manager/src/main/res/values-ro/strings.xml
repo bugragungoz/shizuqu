@@ -61,7 +61,6 @@
     <string name="settings_startup">Lansare</string>
     <string name="settings_translation">Participă la traducere</string>
     <string name="settings_translation_summary">Ajută-ne să traducem %s în limba ta</string>
-    <string name="settings_start_on_boot">Start la pornire (root)</string>
     <string name="action_about">Despre</string>
     <string name="about_view_source_code">Vizualizează codul sursă la %s</string>
     <string name="action_stop">Oprire Shizuku</string>
@@ -120,7 +119,6 @@
     <string name="terminal_tutorial_3_description">Câteva sfaturi: acordă permisiunea de execuție pentru %1$s și adaugă la %2$s, vei putea folosi %1$s direct.</string>
     <string name="rish_description">Cu %1$s, în orice aplicație de terminal, vei putea conecta și interacționa cu shell-urile rulate de Shizuku. &lt;p&gt;Despre utilizarea detaliată %1$s, atinge pentru a vizualiza documentul.</string>
     <string name="settings_translation_contributors">Colaboratori de traduceri</string>
-    <string name="settings_start_on_boot_summary">Pentru dispozitivele root-ate, Shizuku poate porni automat la pornire</string>
     <string name="notification_channel_adb_pairing">Asociere prin depanare fără fir</string>
     <string name="notification_adb_pairing_stop_searching">Oprire căutare</string>
     <string name="notification_adb_pairing_succeed_text">Poți porni serviciul Shizuku acum.</string>

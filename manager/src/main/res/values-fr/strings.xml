@@ -41,8 +41,8 @@
     <string name="action_stop">Arrêter Shizuku</string>
     <string name="about_view_source_code">Voir le code source sur %s</string>
     <string name="action_about">À propos</string>
-    <string name="settings_start_on_boot_summary">Pour les appareils rootés, Shizuku peut se lancer automatiquement au démarrage</string>
-    <string name="settings_start_on_boot">Lancer au démarrage de l\'appareil (root)</string>
+    <string name="settings_start_on_boot_summary">Root : Shizuku se lance automatiquement au démarrage. Sans root (Android 13+, dernier lancement par débogage sans fil) : Shizuku active le débogage sans fil et se lance dès qu\'un réseau Wi-Fi autorisé est connecté</string>
+    <string name="settings_start_on_boot">Lancer au démarrage</string>
     <string name="settings_translation_summary">Aidez-nous à traduire %s dans votre langue</string>
     <string name="settings_translation">Participer à la traduction</string>
     <string name="settings_translation_contributors">Contributeurs à la traduction</string>
@@ -141,4 +141,10 @@
     <string name="tile_starting">Démarrage…</string>
     <string name="tile_tap_to_start">Touchez pour démarrer</string>
     <string name="tile_open_app">Ouvrir l\'appli</string>
+    <string name="notification_channel_boot_start">Démarrage sans root</string>
+    <string name="notification_boot_start_title">Démarrage de Shizuku</string>
+    <string name="notification_boot_start_text">En attente du Wi-Fi et du débogage sans fil…</string>
+    <string name="notification_boot_start_failed_title">Impossible de démarrer Shizuku</string>
+    <string name="notification_boot_start_failed_text">Le débogage sans fil n\'a pas pu être utilisé. Connectez-vous à un réseau Wi-Fi autorisé pour le débogage sans fil et démarrez Shizuku depuis l\'appli.</string>
+    <string name="about_based_on_upstream">Basé sur %s de RikkaApps (Apache License 2.0)</string>
 </resources>

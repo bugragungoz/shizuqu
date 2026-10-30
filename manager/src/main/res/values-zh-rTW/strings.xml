@@ -84,8 +84,8 @@
     <string name="adb_pairing_requires_multi_window_reason">系統要求配對對話方塊始終可見，使用「分割畫面」模式是使此應用程式和系統對話方塊同時可見的唯一方法。</string>
     <string name="development_settings">開發人員選項</string>
     <string name="home_root_description_sui">如果您正在使用 Magisk，可以嘗試 %1$s。對於 Root 使用者，它將最終取代 Shizuku。注意，已有的應用程式需要一點點修改來使用 %2$s。</string>
-    <string name="settings_start_on_boot_summary">對於已 Root 裝置，Shizuku 可以在開機時自動啟動</string>
-    <string name="settings_start_on_boot">在開機時啟動 (Root)</string>
+    <string name="settings_start_on_boot_summary">Root：開機時 Shizuku 會自動啟動。免 root（Android 13 以上，上次透過無線偵錯啟動）：連線到已允許的 Wi-Fi 網路後，Shizuku 會開啟無線偵錯並啟動</string>
+    <string name="settings_start_on_boot">開機時啟動</string>
     <string name="grant_dialog_button_allow_always">一律允許</string>
     <string name="grant_dialog_button_deny">拒絕</string>
     <string name="permission_warning_template">要允許「%1$s」%2$s 嗎？</string>
@@ -146,4 +146,10 @@
     <string name="tile_starting">正在啟動…</string>
     <string name="tile_tap_to_start">輕觸以啟動</string>
     <string name="tile_open_app">開啟應用程式</string>
+    <string name="notification_channel_boot_start">免 root 啟動</string>
+    <string name="notification_boot_start_title">正在啟動 Shizuku</string>
+    <string name="notification_boot_start_text">正在等待 Wi-Fi 和無線偵錯…</string>
+    <string name="notification_boot_start_failed_title">無法啟動 Shizuku</string>
+    <string name="notification_boot_start_failed_text">無法使用無線偵錯。請連線到已允許無線偵錯的 Wi-Fi 網路，然後在應用程式中啟動 Shizuku。</string>
+    <string name="about_based_on_upstream">以 RikkaApps 的 %s 為基礎（Apache License 2.0）</string>
 </resources>

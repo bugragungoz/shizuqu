@@ -99,8 +99,6 @@ A %1$s segítségével bármely terminálalkalmazásban csatlakozhat a Shizuku �
     <string name="settings_translation_contributors">Fordítási közreműködők</string>
     <string name="settings_translation">Vegyen részt a fordításban</string>
     <string name="settings_translation_summary">Segítsen nekünk lefordítani a %s-t az Ön nyelvére</string>
-    <string name="settings_start_on_boot">Induljon rendszerindításkor (root)</string>
-    <string name="settings_start_on_boot_summary">Rootolt eszközök esetén a Shizuku képes auto. elindulni rendszerindításkor</string>
     <!-- About -->
     <string name="action_about">Rólunk</string>
     <string name="about_view_source_code"><![CDATA[Forráskód megtekintése itt: %s]]></string>

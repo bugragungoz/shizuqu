@@ -35,8 +35,6 @@
     <string name="dialog_stop_message">บริการ Shizuku จะถูกหยุดทำงาน</string>
     <string name="about_view_source_code">ดูซอร์สโค้ดใน %s</string>
     <string name="action_about">เกี่ยวกับ</string>
-    <string name="settings_start_on_boot_summary">สำหรับอุปกรณ์ที่รูทแล้ว Shizuku จะสามารถเริ่มได้โดยอัตโนมัติเมื่อเปิดเครื่อง</string>
-    <string name="settings_start_on_boot">เริ่มเมื่อเปิดเครื่อง (รูท)</string>
     <string name="settings_translation_summary">ช่วยเราแปล %s เป็นภาษาของคุณ</string>
     <string name="settings_translation">มีส่วนร่วมในการแปล</string>
     <string name="settings_translation_contributors">ผู้มีส่วนร่วมในการแปลภาษา</string>

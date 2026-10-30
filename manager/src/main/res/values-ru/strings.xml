@@ -83,8 +83,8 @@
     <string name="home_status_service_not_running">%1$s не запущен</string>
     <string name="home_status_service_is_running">%1$s запущен</string>
     <string name="translation_contributors">sermart1234, ruvlad</string>
-    <string name="settings_start_on_boot_summary">На устройствах с root правами Shizuku может автоматически запускаться после загрузки системы</string>
-    <string name="settings_start_on_boot">Автозапуск (с root правами)</string>
+    <string name="settings_start_on_boot_summary">Root: Shizuku запускается автоматически при загрузке. Без root (Android 13+, последний запуск через отладку по Wi-Fi): Shizuku включает отладку по Wi-Fi и запускается после подключения к разрешённой сети Wi-Fi</string>
+    <string name="settings_start_on_boot">Запуск при загрузке</string>
     <string name="grant_dialog_button_allow_always">Разрешить всегда</string>
     <string name="grant_dialog_button_deny">Запретить</string>
     <string name="permission_warning_template">Разрешить <b>%1$s</b> следующее: %2$s\?</string>
@@ -149,4 +149,10 @@
     <string name="tile_starting">Запуск…</string>
     <string name="tile_tap_to_start">Нажмите, чтобы запустить</string>
     <string name="tile_open_app">Открыть приложение</string>
+    <string name="notification_channel_boot_start">Запуск без root</string>
+    <string name="notification_boot_start_title">Запуск Shizuku</string>
+    <string name="notification_boot_start_text">Ожидание Wi-Fi и отладки по Wi-Fi…</string>
+    <string name="notification_boot_start_failed_title">Не удалось запустить Shizuku</string>
+    <string name="notification_boot_start_failed_text">Не удалось использовать отладку по Wi-Fi. Подключитесь к сети Wi-Fi, разрешённой для отладки по Wi-Fi, и запустите Shizuku из приложения.</string>
+    <string name="about_based_on_upstream">Основано на %s от RikkaApps (Apache License 2.0)</string>
 </resources>

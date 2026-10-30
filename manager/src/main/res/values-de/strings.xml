@@ -61,8 +61,8 @@
     <string name="settings_translation">An der Übersetzung mitarbeiten</string>
     <string name="settings_translation_contributors">Zur Übersetzung beigetragen</string>
     <string name="settings_translation_summary">Uns helfen, %s in Ihre Sprache zu übersetzen</string>
-    <string name="settings_start_on_boot_summary">Bei gerooteten Geräten kann Shizuku beim Booten automatisch starten</string>
-    <string name="settings_start_on_boot">Beim Hochfahren starten (Root)</string>
+    <string name="settings_start_on_boot_summary">Root: Shizuku startet beim Systemstart automatisch. Ohne Root (Android 13+, zuletzt per kabellosem Debugging gestartet): Shizuku schaltet kabelloses Debugging ein und startet, sobald ein zugelassenes WLAN verbunden ist</string>
+    <string name="settings_start_on_boot">Beim Systemstart starten</string>
     <string name="settings_startup">Beim Starten</string>
     <string name="settings_user_interface">Aussehen</string>
     <string name="settings_language">Sprache</string>
@@ -147,4 +147,10 @@
     <string name="tile_starting">Wird gestartet…</string>
     <string name="tile_tap_to_start">Zum Starten tippen</string>
     <string name="tile_open_app">App öffnen</string>
+    <string name="notification_channel_boot_start">Start ohne Root</string>
+    <string name="notification_boot_start_title">Shizuku wird gestartet</string>
+    <string name="notification_boot_start_text">Warten auf WLAN und kabelloses Debugging…</string>
+    <string name="notification_boot_start_failed_title">Shizuku konnte nicht gestartet werden</string>
+    <string name="notification_boot_start_failed_text">Kabelloses Debugging konnte nicht verwendet werden. Verbinde dich mit einem WLAN, das du für kabelloses Debugging zugelassen hast, und starte Shizuku in der App.</string>
+    <string name="about_based_on_upstream">Basiert auf %s von RikkaApps (Apache License 2.0)</string>
 </resources>

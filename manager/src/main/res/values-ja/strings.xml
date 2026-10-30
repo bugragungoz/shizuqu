@@ -84,8 +84,8 @@
     <string name="settings_translation_contributors">翻訳協力者</string>
     <string name="settings_translation">翻訳作業に参加</string>
     <string name="settings_translation_summary">%sをあなたの言語に翻訳するのを手伝ってください</string>
-    <string name="settings_start_on_boot">起動時にスタート（要root)</string>
-    <string name="settings_start_on_boot_summary">root化された端末では、起動時に自動的にShizukuを起動できます</string>
+    <string name="settings_start_on_boot">起動時に開始</string>
+    <string name="settings_start_on_boot_summary">root：起動時に Shizuku が自動的に開始します。root なし（Android 13 以降、前回ワイヤレスデバッグで起動）：許可済みの Wi-Fi ネットワークに接続すると、Shizuku がワイヤレスデバッグをオンにして開始します</string>
     <string name="action_about">このアプリについて</string>
     <string name="dialog_stop_message">Shizukuのサービスを停止します。</string>
     <string name="notification_channel_service_status">サービス開始状況</string>
@@ -146,4 +146,10 @@
     <string name="tile_starting">起動中…</string>
     <string name="tile_tap_to_start">タップして起動</string>
     <string name="tile_open_app">アプリを開く</string>
+    <string name="notification_channel_boot_start">root なしで起動</string>
+    <string name="notification_boot_start_title">Shizuku を起動しています</string>
+    <string name="notification_boot_start_text">Wi-Fi とワイヤレスデバッグを待っています…</string>
+    <string name="notification_boot_start_failed_title">Shizuku を起動できませんでした</string>
+    <string name="notification_boot_start_failed_text">ワイヤレスデバッグを使用できませんでした。ワイヤレスデバッグを許可した Wi-Fi ネットワークに接続し、アプリから Shizuku を起動してください。</string>
+    <string name="about_based_on_upstream">RikkaApps の %s がベースです（Apache License 2.0）</string>
 </resources>

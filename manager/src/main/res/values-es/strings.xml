@@ -113,8 +113,8 @@
     <string name="action_stop">Detener Shizuku</string>
     <string name="about_view_source_code">Ver código fuente en %s</string>
     <string name="action_about">Acerca de</string>
-    <string name="settings_start_on_boot_summary">Para dispositivos rooteados, Shizuku puede iniciarse automáticamente en el arranque</string>
-    <string name="settings_start_on_boot">Iniciar en el arranque (root)</string>
+    <string name="settings_start_on_boot_summary">Root: Shizuku se inicia automáticamente al arrancar. Sin root (Android 13+, último inicio con depuración inalámbrica): Shizuku activa la depuración inalámbrica y se inicia al conectarse a una red Wi-Fi permitida</string>
+    <string name="settings_start_on_boot">Iniciar al arrancar</string>
     <string name="settings_translation_summary">Ayúdanos a traducir %s a tu idioma</string>
     <string name="settings_startup">Empezando</string>
     <string name="settings_user_interface">Apariencia</string>
@@ -147,4 +147,10 @@
     <string name="tile_starting">Iniciando…</string>
     <string name="tile_tap_to_start">Toca para iniciar</string>
     <string name="tile_open_app">Abrir la app</string>
+    <string name="notification_channel_boot_start">Inicio sin root</string>
+    <string name="notification_boot_start_title">Iniciando Shizuku</string>
+    <string name="notification_boot_start_text">Esperando Wi-Fi y depuración inalámbrica…</string>
+    <string name="notification_boot_start_failed_title">No se pudo iniciar Shizuku</string>
+    <string name="notification_boot_start_failed_text">No se pudo usar la depuración inalámbrica. Conéctate a una red Wi-Fi que hayas permitido para la depuración inalámbrica e inicia Shizuku desde la app.</string>
+    <string name="about_based_on_upstream">Basado en %s de RikkaApps (Apache License 2.0)</string>
 </resources>

@@ -38,8 +38,6 @@
     <string name="action_stop">Parar Shizuku</string>
     <string name="about_view_source_code">Veja o código-fonte em %s</string>
     <string name="action_about">Sobre</string>
-    <string name="settings_start_on_boot_summary">Para dispositivos com root, o Shizuku pode iniciar automaticamente na inicialização</string>
-    <string name="settings_start_on_boot">Iniciar na inicialização (root)</string>
     <string name="settings_translation_summary">Ajude-nos a traduzir %s para o seu idioma</string>
     <string name="settings_translation">Participe da tradução</string>
     <string name="settings_translation_contributors">Colaboradores de tradução</string>

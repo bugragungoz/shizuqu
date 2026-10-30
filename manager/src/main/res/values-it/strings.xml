@@ -84,7 +84,7 @@
     <string name="settings_black_night_theme_summary">Usa il tema nero puro se la modalità notte è abilitata</string>
     <string name="settings_translation">Partecipa alla traduzione</string>
     <string name="settings_translation_summary">Aiutaci a tradurre %s nella tua lingua</string>
-    <string name="settings_start_on_boot_summary">Per i dispositivi rootati, Shizuku è in grado di avviarsi automaticamente all\'avvio</string>
+    <string name="settings_start_on_boot_summary">Root: Shizuku si avvia automaticamente all\'accensione. Senza root (Android 13+, ultimo avvio con debug wireless): Shizuku attiva il debug wireless e si avvia appena è connessa una rete Wi-Fi autorizzata</string>
     <string name="notification_channel_service_status">Stato di avvio del servizio</string>
     <string name="grant_dialog_button_allow_always">Consenti sempre</string>
     <string name="notification_service_starting">Il servizio Shizuku si sta avviando…</string>
@@ -100,7 +100,7 @@
     <string name="settings_black_night_theme">Tema nero notte</string>
     <string name="settings_startup">Avvio</string>
     <string name="settings_translation_contributors">Contributori alla traduzione</string>
-    <string name="settings_start_on_boot">Avvia all\'accensione (root)</string>
+    <string name="settings_start_on_boot">Avvia all\'accensione</string>
     <string name="toast_copied_to_clipboard">%s
 \nè stato copiato negli appunti.</string>
     <string name="action_about">Info</string>
@@ -148,4 +148,10 @@
     <string name="tile_starting">Avvio…</string>
     <string name="tile_tap_to_start">Tocca per avviare</string>
     <string name="tile_open_app">Apri l\'app</string>
+    <string name="notification_channel_boot_start">Avvio senza root</string>
+    <string name="notification_boot_start_title">Avvio di Shizuku</string>
+    <string name="notification_boot_start_text">In attesa del Wi-Fi e del debug wireless…</string>
+    <string name="notification_boot_start_failed_title">Impossibile avviare Shizuku</string>
+    <string name="notification_boot_start_failed_text">Impossibile usare il debug wireless. Connettiti a una rete Wi-Fi autorizzata per il debug wireless e avvia Shizuku dall\'app.</string>
+    <string name="about_based_on_upstream">Basato su %s di RikkaApps (Apache License 2.0)</string>
 </resources>

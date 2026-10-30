@@ -104,8 +104,6 @@
     <string name="action_stop">Ihinto ang Shizuku</string>
     <string name="about_view_source_code">Tingnan ang source code sa %s</string>
     <string name="action_about">Tungkol</string>
-    <string name="settings_start_on_boot_summary">Pwede itakdang tumakbo agad pagka-boot ang Shizuku sa mga naka-root na device</string>
-    <string name="settings_start_on_boot">Buksan pagka-boot (root)</string>
     <string name="settings_translation_summary">Tulungan kaming isalin ang %s sa iyong wika</string>
     <string name="settings_translation">Sumali sa pagsasalin</string>
     <string name="settings_translation_contributors">Mga nag-ambag sa pagsasalin</string>

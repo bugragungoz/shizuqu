@@ -34,8 +34,6 @@
     <string name="notification_service_starting">El servicio de Shizuku se está iniciando…</string>
     <string name="action_stop">Detener Shizuku</string>
     <string name="about_view_source_code">Ver código fuente en %s</string>
-    <string name="settings_start_on_boot_summary">Para dispositivos root, Shizuku puede iniciarse automáticamente al arrancar</string>
-    <string name="settings_start_on_boot">Iniciar en el arranque (root)</string>
     <string name="settings_translation">Participe en la traducción</string>
     <string name="settings_translation_contributors">Colaboradores de traducción</string>
     <string name="settings_black_night_theme_summary">Use el tema negro puro si el modo nocturno está habilitado</string>

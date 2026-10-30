@@ -51,8 +51,6 @@
     <string name="rish_description">Với %1$s, trong bất kỳ ứng dụng đầu cuối nào, bạn có thể kết nối và tương tác với shell do Shizuku điều hành. &lt;p&gt;Về cách sử dụng chi tiết %1$s, nhấn để xem tài liệu.</string>
     <string name="settings_title">Cài đặt</string>
     <string name="settings_startup">Khởi động</string>
-    <string name="settings_start_on_boot">Tự khởi động (root)</string>
-    <string name="settings_start_on_boot_summary">Đối với các thiết bị đã root, Shizuku có thể tự khởi động khi thiết bị khởi động</string>
     <string name="notification_channel_service_status">Trạng thái khởi động dịch vụ</string>
     <string name="notification_service_starting">Dịch vụ Shizuku đang khởi động…</string>
     <string name="notification_service_start_failed">Khởi động dịch vụ Shizuku thất bại.</string>

@@ -16,7 +16,7 @@
     <string name="notification_service_starting">Usługa Shizuku się uruchamia…</string>
     <string name="action_stop">Zatrzymaj Shizuku</string>
     <string name="action_about">O aplikacji</string>
-    <string name="settings_start_on_boot">Uruchom przy starcie systemu (tylko dla urządzeń z rootem)</string>
+    <string name="settings_start_on_boot">Uruchamiaj przy starcie</string>
     <string name="settings_black_night_theme">Motyw ciemny</string>
     <string name="settings_black_night_theme_summary">Użyj czysto-czarnego motywu gdy tryb nnocny jest włączony</string>
     <string name="settings_language">Język</string>
@@ -95,7 +95,7 @@
     <string name="starter">Uruchamiacz</string>
     <string name="home_root_description">W dodatku, Shizuku może wystartować automatycznie przy starcie systemu. Jeśli nie, sprawdź czy system lub inne narzędzia zablokowały Shizuku.&lt;br&gt;Możesz odwołać się do%s.</string>
     <string name="settings_translation">Przyłącz się do tłumaczenia</string>
-    <string name="settings_start_on_boot_summary">W urządzeniach zrootowanych, Shizuku może się uruchamiać automatycznie</string>
+    <string name="settings_start_on_boot_summary">Root: Shizuku uruchamia się automatycznie przy starcie. Bez roota (Android 13+, ostatnio uruchomione przez debugowanie bezprzewodowe): Shizuku włącza debugowanie bezprzewodowe i uruchamia się po połączeniu z dozwoloną siecią Wi-Fi</string>
     <string name="about_view_source_code">Zobacz kod źródłowy na %s</string>
     <string name="adb_error_key_store">Nie można wygenerować klucza debugowania bezprzewodowego.
 \nMoże to być spowodowane tym, że mechanizm KeyStore urządzenia jest zepsuty.</string>
@@ -149,4 +149,10 @@
     <string name="tile_starting">Uruchamianie…</string>
     <string name="tile_tap_to_start">Dotknij, aby uruchomić</string>
     <string name="tile_open_app">Otwórz aplikację</string>
+    <string name="notification_channel_boot_start">Uruchamianie bez roota</string>
+    <string name="notification_boot_start_title">Uruchamianie Shizuku</string>
+    <string name="notification_boot_start_text">Oczekiwanie na Wi-Fi i debugowanie bezprzewodowe…</string>
+    <string name="notification_boot_start_failed_title">Nie udało się uruchomić Shizuku</string>
+    <string name="notification_boot_start_failed_text">Nie udało się użyć debugowania bezprzewodowego. Połącz się z siecią Wi-Fi dozwoloną dla debugowania bezprzewodowego i uruchom Shizuku z aplikacji.</string>
+    <string name="about_based_on_upstream">Oparte na %s od RikkaApps (Apache License 2.0)</string>
 </resources>
