@@ -46,6 +46,12 @@ Based on Shizuku 13.6.0 (upstream `b844bc49`).
 - Opt-in screenshot tests (`-Pscreenshots`) for reviewing the design without
   a device.
 
+### Additions
+- Start screen: "Copy log" copies the start log with the app, Android and
+  device versions, ready for a bug report.
+- Releases: pushing a `v*` tag creates a draft GitHub release with the
+  signed APK and its checksums.
+
 ### Fork
 - Icon: a terminal window with Android's antennae and a `>_` prompt, as
   launcher (adaptive and themed), status bar and permission dialog icon.

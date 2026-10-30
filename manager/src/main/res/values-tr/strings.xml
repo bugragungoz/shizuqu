@@ -150,4 +150,6 @@
 \nGenellikle, bu kısıtlama \"Geliştirici seçenekleri\"ndeki bazı ayarlar değiştirilerek kaldırılabilir. Bunun nasıl yapılacağına ilişkin ayrıntılar için lütfen yardımı okuyun. 
 \n 
 \nİşlemin etkili olabilmesi için Shizuku yeniden başlatılmalı.</string>
+    <string name="starter_copy_log">Kaydı kopyala</string>
+    <string name="starter_log_copied">Kayıt kopyalandı</string>
 </resources>

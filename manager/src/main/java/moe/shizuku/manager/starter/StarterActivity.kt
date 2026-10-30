@@ -1,8 +1,14 @@
 package moe.shizuku.manager.starter
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -12,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import moe.shizuku.manager.AppConstants.EXTRA
+import moe.shizuku.manager.BuildConfig
 import moe.shizuku.manager.R
 import moe.shizuku.manager.ShizukuSettings
 import moe.shizuku.manager.adb.AdbClient
@@ -40,13 +47,15 @@ class StarterActivity : AppBarActivity() {
         )
     }
 
+    private lateinit var binding: StarterActivityBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close_24)
 
-        val binding = StarterActivityBinding.inflate(layoutInflater)
+        binding = StarterActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         viewModel.output.observe(this) {
@@ -90,6 +99,38 @@ class StarterActivity : AppBarActivity() {
                 }
             }
             binding.text1.text = output
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.starter, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_copy_log) {
+            copyLog()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    /** Copies the log with the app, Android and device versions, for bug reports. */
+    private fun copyLog() {
+        val text = buildString {
+            appendLine("${getString(R.string.app_name)} ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})")
+            append("Android ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT}")
+            append(", patch ${Build.VERSION.SECURITY_PATCH}")
+            appendLine(")")
+            appendLine("${Build.MANUFACTURER} ${Build.MODEL} (${Build.DEVICE}), ${Build.DISPLAY}")
+            appendLine()
+            append(binding.text1.text)
+        }
+        getSystemService(ClipboardManager::class.java)
+            ?.setPrimaryClip(ClipData.newPlainText(getString(R.string.app_name), text))
+        // Android 13+ shows its own confirmation
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            Toast.makeText(this, R.string.starter_log_copied, Toast.LENGTH_SHORT).show()
         }
     }
 
